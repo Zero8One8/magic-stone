@@ -1,0 +1,189 @@
+import { Link } from "react-router-dom";
+import AnimateOnScroll from "@/components/AnimateOnScroll";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import { ArrowLeft, Eye, Shield, Zap, Heart, MessageCircle, CheckCircle2 } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
+
+const TELEGRAM_BOT = "https://t.me/The_magic_of_stones_bot?start=diagnostika";
+
+const steps = [
+  {
+    num: "01",
+    title: "Отправьте 2 фотографии",
+    desc: "Фото спереди и сзади в полный рост, глаза смотрят в камеру. Нейтральный фон, свободная одежда, без аксессуаров.",
+  },
+  {
+    num: "02",
+    title: "Мастер проводит диагностику",
+    desc: "Полный анализ энергетических центров, блоков, привязок, наличия программ и деструктивных влияний. Срок — до 48 часов.",
+  },
+  {
+    num: "03",
+    title: "Получите персональный отчёт",
+    desc: "Подробное описание состояния каждой чакры, выявленных проблем и рекомендации по камням, подобранным индивидуально под вас.",
+  },
+];
+
+const includes = [
+  { icon: Eye, text: "Диагностика 7 основных энергетических центров" },
+  { icon: Shield, text: "Выявление блоков, привязок и деструктивных программ" },
+  { icon: Zap, text: "Оценка общего энергетического состояния" },
+  { icon: Heart, text: "Индивидуальный подбор камней под ваш запрос" },
+];
+
+const Diagnostika = () => {
+  return (
+    <main className="min-h-screen bg-background text-foreground">
+      {/* Header */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+          <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors text-sm flex items-center gap-2">
+            <ArrowLeft className="w-4 h-4" />
+            На главную
+          </Link>
+          <Link to="/quiz" className="text-primary/70 hover:text-primary text-sm transition-colors">
+            Бесплатная мини-диагностика →
+          </Link>
+        </div>
+      </div>
+
+      <div className="pt-24 pb-20 px-6">
+        {/* Hero */}
+        <div className="max-w-3xl mx-auto text-center mb-20">
+          <AnimateOnScroll>
+            <p className="text-primary/60 text-sm tracking-[0.3em] uppercase mb-6">
+              Индивидуальная работа
+            </p>
+            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-light leading-[1.1] mb-8">
+              <span className="text-foreground">Диагностика</span><br />
+              <span className="text-gradient-gold italic">энергетических центров</span>
+            </h1>
+            <p className="text-muted-foreground text-lg md:text-xl max-w-xl mx-auto leading-relaxed font-light mb-4">
+              Глубинный анализ вашего энергетического поля по фото. Не гадание — 
+              а точная диагностика состояния чакр, блоков и деструктивных программ.
+            </p>
+            <p className="text-muted-foreground/50 text-sm max-w-md mx-auto">
+              Проводит практикующий мастер с многолетним опытом работы с энергетикой и натуральными минералами
+            </p>
+          </AnimateOnScroll>
+        </div>
+
+        {/* What you get */}
+        <div className="max-w-3xl mx-auto mb-20">
+          <AnimateOnScroll>
+            <h2 className="font-display text-2xl md:text-3xl text-center mb-12 font-light">
+              Что входит в диагностику
+            </h2>
+          </AnimateOnScroll>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {includes.map(({ icon: Icon, text }, i) => (
+              <AnimateOnScroll key={i} delay={i * 100}>
+                <div className="flex items-start gap-4 p-5 rounded-xl border border-border/50 bg-card/30">
+                  <Icon className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <p className="text-foreground/80 text-sm leading-relaxed">{text}</p>
+                </div>
+              </AnimateOnScroll>
+            ))}
+          </div>
+        </div>
+
+        {/* How it works */}
+        <div className="max-w-3xl mx-auto mb-20">
+          <AnimateOnScroll>
+            <h2 className="font-display text-2xl md:text-3xl text-center mb-12 font-light">
+              Как это работает
+            </h2>
+          </AnimateOnScroll>
+          <div className="space-y-6">
+            {steps.map((step, i) => (
+              <AnimateOnScroll key={i} delay={i * 120}>
+                <div className="flex gap-6 p-6 rounded-xl border border-border/50 bg-card/30">
+                  <span className="text-primary/40 font-display text-3xl font-light flex-shrink-0 leading-none pt-1">
+                    {step.num}
+                  </span>
+                  <div>
+                    <h3 className="font-display text-xl mb-2 font-light">{step.title}</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+              </AnimateOnScroll>
+            ))}
+          </div>
+        </div>
+
+        {/* Why not just a quiz */}
+        <div className="max-w-3xl mx-auto mb-20">
+          <AnimateOnScroll>
+            <div className="rounded-2xl border border-primary/20 bg-primary/5 p-8 md:p-12">
+              <h2 className="font-display text-2xl md:text-3xl mb-6 font-light text-center">
+                Чем отличается от бесплатного квиза?
+              </h2>
+              <div className="space-y-4 text-sm text-foreground/80 leading-relaxed max-w-xl mx-auto">
+                <div className="flex gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <p><strong className="text-foreground">Квиз</strong> — алгоритм подбирает камни по вашим ответам. Это хорошая отправная точка, но она не видит глубинных процессов.</p>
+                </div>
+                <div className="flex gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <p><strong className="text-foreground">Диагностика мастера</strong> — считывание реального состояния энергетического поля. Видны скрытые блоки, привязки, деструктивные программы и сущности, которые невозможно определить через вопросы.</p>
+                </div>
+                <div className="flex gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <p><strong className="text-foreground">Подбор камней</strong> после диагностики — точечный, под конкретные задачи и проблематику, с учётом индивидуальной энергетики.</p>
+                </div>
+              </div>
+            </div>
+          </AnimateOnScroll>
+        </div>
+
+        {/* Testimonials */}
+        <TestimonialsSection />
+
+        {/* CTA */}
+        <div className="max-w-3xl mx-auto text-center">
+          <AnimateOnScroll>
+            <div className="rounded-2xl border border-border/50 bg-card/50 p-8 md:p-14">
+              <h2 className="font-display text-3xl md:text-4xl mb-4 font-light">
+                Готовы узнать <span className="text-gradient-gold italic">правду</span>?
+              </h2>
+              <p className="text-muted-foreground text-sm mb-8 max-w-md mx-auto">
+                Запись на диагностику — через Telegram-бот. Там же вы сможете ознакомиться со всеми услугами и задать вопросы мастеру.
+              </p>
+              <a
+                href={TELEGRAM_BOT}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-lg text-lg font-medium hover:bg-primary/90 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Записаться на диагностику
+              </a>
+              <p className="text-muted-foreground/40 text-xs mt-4">
+                Ответ в течение 24 часов
+              </p>
+            </div>
+          </AnimateOnScroll>
+
+          {/* Резервная форма заявки */}
+          <AnimateOnScroll className="mt-12">
+            <div className="max-w-lg mx-auto">
+              <p className="text-muted-foreground/60 text-xs text-center mb-4">
+                Или оставьте заявку прямо на сайте — мы сами свяжемся с вами
+              </p>
+              <ContactForm />
+            </div>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll className="mt-12">
+            <p className="text-muted-foreground/50 text-xs leading-relaxed max-w-sm mx-auto">
+              Диагностика не является медицинской услугой и не заменяет обращение к врачу. 
+              Работа с энергетикой — это дополнительный инструмент самопознания.
+            </p>
+          </AnimateOnScroll>
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export default Diagnostika;
