@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { crystals, allChakras, allProblems, type Crystal } from "@/data/crystals";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -11,8 +11,8 @@ const slugify = (name: string) =>
 const Catalog = () => {
   const [selectedChakra, setSelectedChakra] = useState<string | null>(null);
   const [selectedProblem, setSelectedProblem] = useState<string | null>(null);
-  const [expandedCrystal, setExpandedCrystal] = useState<string | null>(null);
   const { toggle, isFavorite, count } = useFavorites();
+  const navigate = useNavigate();
 
   const filtered = crystals.filter((c) => {
     if (selectedChakra && !c.chakras.includes(selectedChakra)) return false;
@@ -99,10 +99,8 @@ const Catalog = () => {
           {filtered.map((crystal, i) => (
             <AnimateOnScroll key={crystal.name} delay={i * 80}>
               <div
-                className={`group bg-card/60 border rounded-xl overflow-hidden transition-all duration-500 cursor-pointer ${
-                  expandedCrystal === crystal.name ? "border-primary/40" : "border-border/40 hover:border-primary/20"
-                }`}
-                onClick={() => setExpandedCrystal(expandedCrystal === crystal.name ? null : crystal.name)}
+                className="group bg-card/60 border rounded-xl overflow-hidden transition-all duration-500 cursor-pointer border-border/40 hover:border-primary/20"
+                onClick={() => navigate(`/catalog/${slugify(crystal.name)}`)}
               >
                 <div className="relative h-52 overflow-hidden">
                   <img
@@ -115,7 +113,7 @@ const Catalog = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
                   <h3 className="absolute bottom-4 left-6 font-display text-2xl text-foreground">{crystal.name}</h3>
-                   <Link
+                  <Link
                     to={`/catalog/${slugify(crystal.name)}`}
                     className="absolute top-4 right-12 font-body text-xs px-3 py-1.5 rounded-full bg-primary/80 text-primary-foreground hover:bg-primary transition-colors"
                     onClick={(e) => e.stopPropagation()}
@@ -142,28 +140,6 @@ const Catalog = () => {
                 <div className="p-6">
                   <p className="font-body text-muted-foreground text-sm leading-relaxed">{crystal.description}</p>
                 </div>
-
-                {expandedCrystal === crystal.name && (
-                  <div className="px-6 pb-6 border-t border-border/30 pt-4 space-y-4">
-                    <div>
-                      <h4 className="font-display text-lg text-foreground mb-2">Что делает</h4>
-                      <ul className="space-y-1">
-                        {crystal.effects.map((e) => (
-                          <li key={e} className="font-body text-sm text-muted-foreground flex items-start gap-2">
-                            <span className="text-primary mt-0.5">•</span> {e}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-display text-lg text-foreground mb-2">Как использовать</h4>
-                      <p className="font-body text-sm text-muted-foreground">{crystal.howToUse}</p>
-                    </div>
-                    <blockquote className="border-l-2 border-primary/40 pl-4">
-                      <p className="font-display text-lg italic text-primary/80">{crystal.quote}</p>
-                    </blockquote>
-                  </div>
-                )}
               </div>
             </AnimateOnScroll>
           ))}
