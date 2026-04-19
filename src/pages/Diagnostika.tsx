@@ -6,6 +6,86 @@ import ContactForm from "@/components/ContactForm";
 
 const TELEGRAM_BOT = "https://t.me/The_magic_of_stones_bot?start=diagnostika";
 
+const chakras = [
+  {
+    num: "1",
+    name: "Муладхара",
+    sanskrit: "Mūlādhāra",
+    location: "Основание позвоночника",
+    color: "#FF4B4B",
+    element: "Земля",
+    keywords: "Безопасность, стабильность, выживание, опора",
+    signs: "Хроническая тревога, страхи, нестабильность, проблемы с деньгами и жильём, болезни ног, позвоночника, прямой кишки.",
+    stones: "Чёрный турмалин, гематит, обсидиан, красный яшма, гранат",
+  },
+  {
+    num: "2",
+    name: "Свадхистана",
+    sanskrit: "Svādhiṣṭhāna",
+    location: "Область крестца, ниже пупка",
+    color: "#FF8C00",
+    element: "Вода",
+    keywords: "Эмоции, сексуальность, творчество, удовольствие",
+    signs: "Подавленные эмоции, творческий блок, сексуальные проблемы, зависимости, болезни почек, мочевого пузыря, репродуктивной системы.",
+    stones: "Карнелиан, оранжевый кальцит, лунный камень, перламутр",
+  },
+  {
+    num: "3",
+    name: "Манипура",
+    sanskrit: "Maṇipūra",
+    location: "Солнечное сплетение",
+    color: "#FFD700",
+    element: "Огонь",
+    keywords: "Воля, сила, уверенность, самооценка",
+    signs: "Неуверенность в себе, зависимость от чужого мнения, прокрастинация, потеря воли, проблемы с желудком, поджелудочной, печенью.",
+    stones: "Цитрин, тигровый глаз, жёлтый яспис, пирит, янтарь",
+  },
+  {
+    num: "4",
+    name: "Анахата",
+    sanskrit: "Anāhata",
+    location: "Центр груди",
+    color: "#3CB371",
+    element: "Воздух",
+    keywords: "Любовь, сострадание, принятие, исцеление",
+    signs: "Закрытость, недоверие, старые обиды, страх близости, горе, болезни сердца, лёгких, верхней части спины.",
+    stones: "Розовый кварц, родонит, малахит, зелёный авантюрин, изумруд",
+  },
+  {
+    num: "5",
+    name: "Вишудха",
+    sanskrit: "Viśuddha",
+    location: "Область горла",
+    color: "#4169E1",
+    element: "Пространство (эфир)",
+    keywords: "Общение, самовыражение, честность, творчество",
+    signs: "Страх говорить правду, трудности с самовыражением, ложь себе, болезни горла, щитовидной железы, шеи.",
+    stones: "Голубой топаз, аквамарин, лазурит, бирюза, ангелит",
+  },
+  {
+    num: "6",
+    name: "Аджна",
+    sanskrit: "Ājñā",
+    location: "Область третьего глаза (лоб)",
+    color: "#6A0DAD",
+    element: "Свет",
+    keywords: "Интуиция, ясновидение, мудрость, внутреннее знание",
+    signs: "Спутанность мыслей, игнорирование интуиции, головные боли, нарушения сна, проблемы со зрением и гормонами.",
+    stones: "Лабрадорит, лазурит, аметист, флюорит, иолит",
+  },
+  {
+    num: "7",
+    name: "Сахасрара",
+    sanskrit: "Sahasrāra",
+    location: "Макушка головы",
+    color: "#9B59B6",
+    element: "Мысль/сознание",
+    keywords: "Связь с высшим, осознанность, духовность, просветление",
+    signs: "Духовная пустота, ощущение бессмысленности, отрезанность от мира, депрессии, хронические боли без причины.",
+    stones: "Аметист, горный хрусталь, селенит, лепидолит, белый топаз",
+  },
+];
+
 const steps = [
   {
     num: "01",
@@ -104,6 +184,53 @@ const Diagnostika = () => {
                   <div>
                     <h3 className="font-display text-xl mb-2 font-light">{step.title}</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+              </AnimateOnScroll>
+            ))}
+          </div>
+        </div>
+
+        {/* Chakras Section */}
+        <div className="max-w-3xl mx-auto mb-20">
+          <AnimateOnScroll>
+            <h2 className="font-display text-2xl md:text-3xl text-center mb-4 font-light">
+              7 энергетических центров
+            </h2>
+            <p className="text-muted-foreground text-sm text-center max-w-xl mx-auto mb-12">
+              Диагностика охватывает все семь чакр. Каждый центр отвечает за определённую сферу жизни — физическую, эмоциональную и духовную.
+            </p>
+          </AnimateOnScroll>
+          <div className="space-y-4">
+            {chakras.map((chakra, i) => (
+              <AnimateOnScroll key={i} delay={i * 80}>
+                <div className="rounded-xl border border-border/50 bg-card/30 overflow-hidden">
+                  <div className="flex items-start gap-4 p-5">
+                    {/* Цветной маркер + номер */}
+                    <div
+                      className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md"
+                      style={{ backgroundColor: chakra.color }}
+                    >
+                      {chakra.num}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-baseline gap-2 mb-1">
+                        <h3 className="font-display text-lg font-light">{chakra.name}</h3>
+                        <span className="text-muted-foreground/50 text-xs italic">{chakra.sanskrit}</span>
+                        <span className="text-xs text-muted-foreground/40">· {chakra.location}</span>
+                      </div>
+                      <p className="text-primary/70 text-xs mb-2">{chakra.keywords}</p>
+                      <div className="grid sm:grid-cols-2 gap-3 text-xs text-muted-foreground/80">
+                        <div>
+                          <span className="text-foreground/60 font-medium">Признаки блока: </span>
+                          {chakra.signs}
+                        </div>
+                        <div>
+                          <span className="text-foreground/60 font-medium">Камни: </span>
+                          {chakra.stones}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </AnimateOnScroll>

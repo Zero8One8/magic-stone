@@ -217,7 +217,7 @@ const Quiz = () => {
                   >
                     <div className="flex items-start gap-4">
                       <span className="flex-shrink-0 w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center text-xs text-primary/70 group-hover:border-primary group-hover:text-primary transition-colors">
-                        {String.fromCharCode(65 + idx)}
+                        {idx + 1}
                       </span>
                       <span className="text-sm md:text-base leading-relaxed pt-1">
                         {answer.label}
