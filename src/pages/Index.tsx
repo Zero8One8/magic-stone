@@ -9,7 +9,7 @@ import ClosingSection from "@/components/ClosingSection";
 
 const Index = () => {
   return (
-    <main className="min-h-screen bg-background overflow-hidden">
+    <main className="min-h-screen bg-background overflow-hidden pt-0">
       <HeroSection />
       <ArticleSection />
       <CrystalOfTheDay />
