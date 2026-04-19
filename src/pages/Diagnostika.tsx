@@ -13,10 +13,13 @@ const chakras = [
     sanskrit: "Mūlādhāra",
     location: "Основание позвоночника",
     color: "#FF4B4B",
-    element: "Земля",
+    element: "🌍 Земля",
+    mantra: "ЛАМ",
     keywords: "Безопасность, стабильность, выживание, опора",
     signs: "Хроническая тревога, страхи, нестабильность, проблемы с деньгами и жильём, болезни ног, позвоночника, прямой кишки.",
     stones: "Чёрный турмалин, гематит, обсидиан, красный яшма, гранат",
+    meditation: "Сядьте, ощутите вес тела на земле. Повторяйте ЛАМ 7 раз, представляя красный свет в основании позвоночника.",
+    affirmation: "Я в безопасности. Земля поддерживает меня. У меня есть всё, что нужно.",
   },
   {
     num: "2",
@@ -24,10 +27,13 @@ const chakras = [
     sanskrit: "Svādhiṣṭhāna",
     location: "Область крестца, ниже пупка",
     color: "#FF8C00",
-    element: "Вода",
+    element: "💧 Вода",
+    mantra: "ВАМ",
     keywords: "Эмоции, сексуальность, творчество, удовольствие",
     signs: "Подавленные эмоции, творческий блок, сексуальные проблемы, зависимости, болезни почек, мочевого пузыря, репродуктивной системы.",
     stones: "Карнелиан, оранжевый кальцит, лунный камень, перламутр",
+    meditation: "Лягте, положите руки на живот ниже пупка. Повторяйте ВАМ, чувствуя, как оранжевый свет разливается волной тепла.",
+    affirmation: "Я разрешаю себе чувствовать. Мои эмоции — это моя сила, а не слабость.",
   },
   {
     num: "3",
@@ -35,10 +41,13 @@ const chakras = [
     sanskrit: "Maṇipūra",
     location: "Солнечное сплетение",
     color: "#FFD700",
-    element: "Огонь",
+    element: "🔥 Огонь",
+    mantra: "РАМ",
     keywords: "Воля, сила, уверенность, самооценка",
     signs: "Неуверенность в себе, зависимость от чужого мнения, прокрастинация, потеря воли, проблемы с желудком, поджелудочной, печенью.",
     stones: "Цитрин, тигровый глаз, жёлтый яспис, пирит, янтарь",
+    meditation: "Дышите животом. На выдохе произносите РАМ и представляйте яркое жёлтое пламя в солнечном сплетении, сжигающее сомнения.",
+    affirmation: "Я обладаю силой действовать. Моя воля чиста и направлена на благо.",
   },
   {
     num: "4",
@@ -46,10 +55,13 @@ const chakras = [
     sanskrit: "Anāhata",
     location: "Центр груди",
     color: "#3CB371",
-    element: "Воздух",
+    element: "🌬️ Воздух",
+    mantra: "ЙАМ",
     keywords: "Любовь, сострадание, принятие, исцеление",
     signs: "Закрытость, недоверие, старые обиды, страх близости, горе, болезни сердца, лёгких, верхней части спины.",
     stones: "Розовый кварц, родонит, малахит, зелёный авантюрин, изумруд",
+    meditation: "Положите руку на грудь. На вдохе — любовь к себе, на выдохе — ЙАМ. Зелёный свет обволакивает сердце теплом.",
+    affirmation: "Я достоин любви. Я открываю сердце и принимаю себя таким, какой я есть.",
   },
   {
     num: "5",
@@ -57,10 +69,13 @@ const chakras = [
     sanskrit: "Viśuddha",
     location: "Область горла",
     color: "#4169E1",
-    element: "Пространство (эфир)",
+    element: "🌌 Пространство (эфир)",
+    mantra: "ХАМ",
     keywords: "Общение, самовыражение, честность, творчество",
     signs: "Страх говорить правду, трудности с самовыражением, ложь себе, болезни горла, щитовидной железы, шеи.",
     stones: "Голубой топаз, аквамарин, лазурит, бирюза, ангелит",
+    meditation: "Опустите подбородок к груди, затем медленно поднимите. Произносите ХАМ с вибрацией в горле. Голубой свет очищает.",
+    affirmation: "Мой голос важен. Я говорю свою правду ясно, честно и с любовью.",
   },
   {
     num: "6",
@@ -68,10 +83,13 @@ const chakras = [
     sanskrit: "Ājñā",
     location: "Область третьего глаза (лоб)",
     color: "#6A0DAD",
-    element: "Свет",
+    element: "✨ Свет",
+    mantra: "ОМ",
     keywords: "Интуиция, ясновидение, мудрость, внутреннее знание",
     signs: "Спутанность мыслей, игнорирование интуиции, головные боли, нарушения сна, проблемы со зрением и гормонами.",
     stones: "Лабрадорит, лазурит, аметист, флюорит, иолит",
+    meditation: "Прикройте глаза, направьте взгляд в точку между бровями. Медленно произносите ОМ. Индиго-свет пульсирует в центре лба.",
+    affirmation: "Я доверяю своей интуиции. Моё внутреннее знание ведёт меня верным путём.",
   },
   {
     num: "7",
@@ -79,10 +97,13 @@ const chakras = [
     sanskrit: "Sahasrāra",
     location: "Макушка головы",
     color: "#9B59B6",
-    element: "Мысль/сознание",
+    element: "🌀 Мысль/сознание",
+    mantra: "АХ / тишина",
     keywords: "Связь с высшим, осознанность, духовность, просветление",
     signs: "Духовная пустота, ощущение бессмысленности, отрезанность от мира, депрессии, хронические боли без причины.",
     stones: "Аметист, горный хрусталь, селенит, лепидолит, белый топаз",
+    meditation: "Сядьте в тишине. Представьте тысячелепестковый лотос на макушке, раскрывающийся в поток фиолетово-белого света сверху.",
+    affirmation: "Я связан с Высшим. Я часть бесконечного потока жизни и мудрости.",
   },
 ];
 
@@ -201,6 +222,29 @@ const Diagnostika = () => {
               Диагностика охватывает все семь чакр. Каждый центр отвечает за определённую сферу жизни — физическую, эмоциональную и духовную.
             </p>
           </AnimateOnScroll>
+
+          <AnimateOnScroll>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+              {chakras.map((chakra) => (
+                <div key={`quick-${chakra.num}`} className="rounded-lg border border-border/50 bg-card/30 px-3 py-2.5">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
+                      style={{ backgroundColor: chakra.color }}
+                    >
+                      {chakra.num}
+                    </span>
+                    <p className="text-xs font-medium text-foreground truncate">{chakra.name}</p>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-snug line-clamp-2">{chakra.keywords}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-center text-xs text-muted-foreground/70 mb-8">
+              Нужна ещё более детальная расшифровка по каждой чакре? Ниже полный разбор каждого центра.
+            </p>
+          </AnimateOnScroll>
+
           <div className="space-y-4">
             {chakras.map((chakra, i) => (
               <AnimateOnScroll key={i} delay={i * 80}>
@@ -219,8 +263,12 @@ const Diagnostika = () => {
                         <span className="text-muted-foreground/50 text-xs italic">{chakra.sanskrit}</span>
                         <span className="text-xs text-muted-foreground/40">· {chakra.location}</span>
                       </div>
-                      <p className="text-primary/70 text-xs mb-2">{chakra.keywords}</p>
-                      <div className="grid sm:grid-cols-2 gap-3 text-xs text-muted-foreground/80">
+                      <div className="flex flex-wrap gap-3 mb-2">
+                        <span className="text-xs text-muted-foreground/60">{chakra.element}</span>
+                        <span className="text-xs font-mono text-primary/80 bg-primary/10 px-2 py-0.5 rounded">мантра: {chakra.mantra}</span>
+                      </div>
+                      <p className="text-primary/70 text-xs mb-3">{chakra.keywords}</p>
+                      <div className="grid sm:grid-cols-2 gap-3 text-xs text-muted-foreground/80 mb-3">
                         <div>
                           <span className="text-foreground/60 font-medium">Признаки блока: </span>
                           {chakra.signs}
@@ -229,6 +277,13 @@ const Diagnostika = () => {
                           <span className="text-foreground/60 font-medium">Камни: </span>
                           {chakra.stones}
                         </div>
+                      </div>
+                      <div className="border-t border-border/30 pt-2 mt-1 space-y-1">
+                        <p className="text-xs text-muted-foreground/70">
+                          <span className="text-foreground/50 font-medium">Медитация: </span>
+                          {chakra.meditation}
+                        </p>
+                        <p className="text-xs text-primary/60 italic">✦ {chakra.affirmation}</p>
                       </div>
                     </div>
                   </div>

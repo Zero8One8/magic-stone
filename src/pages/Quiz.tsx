@@ -209,19 +209,21 @@ const Quiz = () => {
                 <AnimateOnScroll key={idx} delay={idx * 80}>
                   <button
                     onClick={() => handleAnswer(idx)}
-                    className={`w-full text-left px-6 py-5 rounded-xl border transition-all duration-300 group hover:scale-[1.01] active:scale-[0.99] ${
+                    className={`w-full text-left px-5 py-4 rounded-xl border transition-all duration-300 group hover:scale-[1.01] active:scale-[0.99] ${
                       answers[currentQuestion.id] === idx
                         ? "border-primary bg-primary/10 text-foreground"
                         : "border-border/50 bg-card/50 hover:border-primary/40 hover:bg-card text-foreground/80 hover:text-foreground"
                     }`}
                   >
-                    <div className="flex items-start gap-4">
-                      <span className="flex-shrink-0 w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center text-xs text-primary/70 group-hover:border-primary group-hover:text-primary transition-colors">
-                        {idx + 1}
+                    <div className="flex items-center gap-4">
+                      <span className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-base font-bold transition-colors ${
+                        answers[currentQuestion.id] === idx
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground group-hover:bg-primary/20 group-hover:text-primary"
+                      }`}>
+                        {idx + 1}.
                       </span>
-                      <span className="text-sm md:text-base leading-relaxed pt-1">
-                        {answer.label}
-                      </span>
+                      <span className="text-sm md:text-base leading-relaxed">{answer.label}</span>
                     </div>
                   </button>
                 </AnimateOnScroll>
