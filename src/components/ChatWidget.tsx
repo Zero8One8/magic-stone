@@ -57,19 +57,29 @@ const ChatWidget = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage }),
-      });
-
-      const data = await response.json();
-      setMessages((prev) => [...prev, { text: data.reply, isBot: true }]);
+      const sent = await supabaseApi.sendChatMessage(userMessage, userId);
+      if (sent) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            text: "Спасибо, сообщение отправлено. Мы ответим в ближайшее время. Для быстрого ответа напишите в Telegram: https://t.me/magicstonechat",
+            isBot: true,
+          },
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          {
+            text: "Сейчас автоответ недоступен. Напишите нам в Telegram: https://t.me/magicstonechat",
+            isBot: true,
+          },
+        ]);
+      }
     } catch (error) {
       console.error("Ошибка чата:", error);
       setMessages((prev) => [
         ...prev,
-        { text: "Извини, была ошибка. Свяжись с нами в Telegram", isBot: true },
+        { text: "Извини, была ошибка. Свяжись с нами в Telegram: https://t.me/magicstonechat", isBot: true },
       ]);
     } finally {
       setLoading(false);
@@ -78,11 +88,11 @@ const ChatWidget = () => {
 
   return (
     <>
-      {/* Кнопка чата (по центру экрана) */}
+      {/* Кнопка чата (внизу справа) */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:scale-110 transition-transform flex items-center justify-center"
+          className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:scale-110 transition-transform flex items-center justify-center"
         >
           <MessageCircle className="w-6 h-6" />
         </button>
@@ -90,7 +100,7 @@ const ChatWidget = () => {
 
       {/* Само окно чата */}
       {isOpen && (
-        <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-96 max-h-96 bg-background border border-primary/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+        <div className="fixed bottom-20 right-4 z-50 w-[calc(100vw-2rem)] max-w-sm h-[28rem] bg-background border border-primary/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
           {/* Заголовок */}
           <div className="flex items-center justify-between bg-primary/10 p-4 border-b border-border">
             <h3 className="font-semibold text-foreground">Помощь</h3>
