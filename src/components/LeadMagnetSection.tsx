@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Gift, Mail, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import { supabase } from "@/integrations/supabase/client";
 
 const LeadMagnetSection = () => {
   const [email, setEmail] = useState("");
@@ -14,13 +15,14 @@ const LeadMagnetSection = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name }),
+      const { error } = await supabase.from("lead_captures").insert({
+        email,
+        name,
+        source: "lead_magnet",
+        page_url: window.location.pathname,
       });
 
-      if (response.ok) {
+      if (!error) {
         setSubmitted(true);
         setEmail("");
         setName("");

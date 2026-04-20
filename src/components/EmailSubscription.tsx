@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Mail, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 const EmailSubscription = () => {
   const [email, setEmail] = useState("");
@@ -12,13 +13,13 @@ const EmailSubscription = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+      const { error } = await supabase.from("lead_captures").insert({
+        email,
+        source: "footer_subscription",
+        page_url: window.location.pathname,
       });
 
-      if (response.ok) {
+      if (!error) {
         setSubscribed(true);
         setEmail("");
         setTimeout(() => setSubscribed(false), 5000);

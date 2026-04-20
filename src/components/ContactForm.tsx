@@ -53,9 +53,22 @@ const ContactForm = () => {
         phone: parsed.data.phone,
         service: parsed.data.service,
         comment: parsed.data.comment || "",
+        source: "contact_form",
+        page_url: window.location.pathname,
       });
 
       if (error) throw error;
+
+      void supabase.functions.invoke("notify-contact-request", {
+        body: {
+          name: parsed.data.name,
+          phone: parsed.data.phone,
+          service: parsed.data.service,
+          comment: parsed.data.comment || "",
+          source: "contact_form",
+          page_url: window.location.pathname,
+        },
+      });
 
       setSent(true);
       toast.success("Заявка отправлена! Мы свяжемся с вами в ближайшее время.");

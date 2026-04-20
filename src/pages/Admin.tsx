@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, RefreshCw, Inbox } from "lucide-react";
+import { LogOut, RefreshCw, Inbox, Copy, ExternalLink } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 type ContactRequest = Tables<"contact_requests">;
+type LeadCapture = Tables<"lead_captures">;
 
 const STATUS_OPTIONS = [
   { value: "new", label: "Новая", color: "bg-blue-500/20 text-blue-400" },
@@ -20,22 +20,38 @@ const STATUS_OPTIONS = [
 
 const Admin = () => {
   const [requests, setRequests] = useState<ContactRequest[]>([]);
+  const [leads, setLeads] = useState<LeadCapture[]>([]);
   const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [sourceFilter, setSourceFilter] = useState<string>("all");
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const fetchRequests = async () => {
     setLoading(true);
-    const { data, error } = await supabase
+    const [requestsResult, leadsResult] = await Promise.all([
+      supabase
       .from("contact_requests")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false }),
+      supabase
+        .from("lead_captures")
+        .select("*")
+        .order("created_at", { ascending: false }),
+    ]);
 
-    if (error) {
-      toast({ title: "Ошибка", description: error.message, variant: "destructive" });
+    if (requestsResult.error) {
+      toast({ title: "Ошибка", description: requestsResult.error.message, variant: "destructive" });
     } else {
-      setRequests(data || []);
+      setRequests(requestsResult.data || []);
     }
+
+    if (leadsResult.error) {
+      toast({ title: "Ошибка", description: leadsResult.error.message, variant: "destructive" });
+    } else {
+      setLeads(leadsResult.data || []);
+    }
+
     setLoading(false);
   };
 
@@ -76,18 +92,29 @@ const Admin = () => {
     }
   };
 
+  const copyText = async (value: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      toast({ title: `${label} скопирован` });
+    } catch {
+      toast({ title: "Ошибка", description: "Не удалось скопировать", variant: "destructive" });
+    }
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate("/admin/login");
   };
 
-  const getStatusBadge = (status: string) => {
-    const opt = STATUS_OPTIONS.find((s) => s.value === status) || STATUS_OPTIONS[0];
-    return <span className={`px-2 py-1 rounded-full text-xs font-medium ${opt.color}`}>{opt.label}</span>;
-  };
-
   const formatDate = (d: string) =>
     new Date(d).toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+
+  const requestSources = Array.from(new Set(requests.map((r) => r.source || "unknown"))).sort();
+  const filteredRequests = requests.filter((r) => {
+    if (statusFilter !== "all" && r.status !== statusFilter) return false;
+    if (sourceFilter !== "all" && (r.source || "unknown") !== sourceFilter) return false;
+    return true;
+  });
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
@@ -117,7 +144,38 @@ const Admin = () => {
           ))}
         </div>
 
-        {requests.length === 0 && !loading ? (
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="bg-card rounded-lg p-4 border border-border">
+            <p className="text-sm text-muted-foreground mb-2">Фильтр по статусу</p>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Все статусы</SelectItem>
+                {STATUS_OPTIONS.map((s) => (
+                  <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="bg-card rounded-lg p-4 border border-border">
+            <p className="text-sm text-muted-foreground mb-2">Фильтр по источнику</p>
+            <Select value={sourceFilter} onValueChange={setSourceFilter}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Все источники</SelectItem>
+                {requestSources.map((source) => (
+                  <SelectItem key={source} value={source}>{source}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {filteredRequests.length === 0 && !loading ? (
           <div className="text-center py-16 text-muted-foreground">
             <Inbox className="mx-auto h-12 w-12 mb-4 opacity-50" />
             <p>Заявок пока нет</p>
@@ -128,6 +186,7 @@ const Admin = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Дата</TableHead>
+                  <TableHead>Источник</TableHead>
                   <TableHead>Имя</TableHead>
                   <TableHead>Телефон</TableHead>
                   <TableHead>Услуга</TableHead>
@@ -137,11 +196,22 @@ const Admin = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {requests.map((r) => (
+                {filteredRequests.map((r) => (
                   <TableRow key={r.id}>
                     <TableCell className="whitespace-nowrap text-xs">{formatDate(r.created_at)}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{r.source || "—"}</TableCell>
                     <TableCell className="font-medium">{r.name}</TableCell>
-                    <TableCell>{r.phone}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <span>{r.phone}</span>
+                        <button onClick={() => copyText(r.phone, "Телефон")} className="text-muted-foreground hover:text-foreground">
+                          <Copy className="h-3.5 w-3.5" />
+                        </button>
+                        <a href={`tel:${r.phone.replace(/[^\d+]/g, "")}`} className="text-muted-foreground hover:text-foreground">
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      </div>
+                    </TableCell>
                     <TableCell className="text-sm">{r.service}</TableCell>
                     <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">{r.comment || "—"}</TableCell>
                     <TableCell>
@@ -167,6 +237,51 @@ const Admin = () => {
             </Table>
           </div>
         )}
+
+        <div className="space-y-4 pt-8">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-foreground">📬 Подписки и лид-магниты</h2>
+            <p className="text-sm text-muted-foreground">Всего: {leads.length}</p>
+          </div>
+
+          {leads.length === 0 && !loading ? (
+            <div className="text-center py-12 text-muted-foreground bg-card rounded-lg border border-border">
+              <p>Лидов пока нет</p>
+            </div>
+          ) : (
+            <div className="bg-card rounded-lg border border-border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Дата</TableHead>
+                    <TableHead>Источник</TableHead>
+                    <TableHead>Имя</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Страница</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {leads.map((lead) => (
+                    <TableRow key={lead.id}>
+                      <TableCell className="whitespace-nowrap text-xs">{formatDate(lead.created_at)}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground">{lead.source}</TableCell>
+                      <TableCell>{lead.name || "—"}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <span>{lead.email}</span>
+                          <button onClick={() => copyText(lead.email, "Email")} className="text-muted-foreground hover:text-foreground">
+                            <Copy className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-xs text-muted-foreground">{lead.page_url || "—"}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

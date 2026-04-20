@@ -20,8 +20,10 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          page_url: string | null
           phone: string
           service: string
+          source: string | null
           status: string
           updated_at: string
         }
@@ -30,8 +32,10 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
+          page_url?: string | null
           phone: string
           service: string
+          source?: string | null
           status?: string
           updated_at?: string
         }
@@ -40,8 +44,43 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          page_url?: string | null
           phone?: string
           service?: string
+          source?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      lead_captures: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string | null
+          page_url: string | null
+          source: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name?: string | null
+          page_url?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string | null
+          page_url?: string | null
+          source?: string
           status?: string
           updated_at?: string
         }
