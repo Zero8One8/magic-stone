@@ -19,10 +19,11 @@ Deno.serve(async (req) => {
 
   try {
     const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN");
-    const TELEGRAM_NOTIFICATIONS_CHAT_ID = Deno.env.get("TELEGRAM_NOTIFICATIONS_CHAT_ID");
+    const TELEGRAM_NOTIFICATIONS_CHAT_ID =
+      Deno.env.get("TELEGRAM_NOTIFICATIONS_CHAT_ID") || Deno.env.get("ADMIN_ID");
 
     if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_NOTIFICATIONS_CHAT_ID) {
-      return new Response(JSON.stringify({ ok: false, error: "Telegram env is not configured" }), {
+      return new Response(JSON.stringify({ ok: false, error: "Set TELEGRAM_BOT_TOKEN and TELEGRAM_NOTIFICATIONS_CHAT_ID (or ADMIN_ID)" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
