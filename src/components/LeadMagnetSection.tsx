@@ -47,7 +47,7 @@ const LeadMagnetSection = () => {
               Гайд "7 камней для начинающего"
             </h2>
             <p className="text-muted-foreground text-lg">
-              Бесплатное руководство + рекомендации мастера. Отправим на почту за 30 секунд.
+              Бесплатное руководство + рекомендации мастера. Оставьте имя и почту — мы вышлем гайд в течение дня.
             </p>
           </div>
 
@@ -90,10 +90,18 @@ const LeadMagnetSection = () => {
             </form>
           ) : (
             <div className="text-center p-6 bg-primary/10 rounded-lg border border-primary/20">
-              <p className="text-primary font-semibold mb-1">✓ Спасибо!</p>
-              <p className="text-muted-foreground text-sm">
-                Гайд отправлен на почту. Проверь спам-папку, если не видишь.
+              <p className="text-primary font-semibold mb-1">✓ Заявка принята!</p>
+              <p className="text-muted-foreground text-sm mb-3">
+                Вышлем гайд на почту в течение дня. Или получите мгновенно — напишите нам:
               </p>
+              <a
+                href="https://t.me/magicstonechat"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+              >
+                Написать в Telegram
+              </a>
             </div>
           )}
         </AnimateOnScroll>

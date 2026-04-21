@@ -21,7 +21,7 @@ const Catalog = () => {
   });
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background pt-16">
       <header className="border-b border-border/30 py-6">
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
           <Link to="/" className="font-display text-2xl text-foreground hover:text-primary transition-colors">
