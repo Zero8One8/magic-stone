@@ -17,6 +17,7 @@ export type Database = {
       contact_requests: {
         Row: {
           comment: string | null
+          contact_method: string | null
           created_at: string
           id: string
           name: string
@@ -29,6 +30,7 @@ export type Database = {
         }
         Insert: {
           comment?: string | null
+          contact_method?: string | null
           created_at?: string
           id?: string
           name: string
@@ -41,6 +43,7 @@ export type Database = {
         }
         Update: {
           comment?: string | null
+          contact_method?: string | null
           created_at?: string
           id?: string
           name?: string

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,7 @@ const services = [
 const formSchema = z.object({
   name: z.string().trim().min(2, "Имя должно быть не менее 2 символов").max(100),
   phone: z.string().trim().min(6, "Введите корректный номер телефона").max(30),
+  contact_method: z.string().trim().max(100).optional(),
   service: z.string().min(1, "Выберите услугу"),
   comment: z.string().max(1000).optional(),
 });
@@ -31,26 +32,32 @@ const formSchema = z.object({
 const ContactForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [contactMethod, setContactMethod] = useState("");
   const [service, setService] = useState("");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const parsed = formSchema.safeParse({ name, phone, service, comment });
+    if (isSubmittingRef.current) return;
+
+    const parsed = formSchema.safeParse({ name, phone, contact_method: contactMethod, service, comment });
     if (!parsed.success) {
       const firstError = Object.values(parsed.error.flatten().fieldErrors)[0]?.[0];
       toast.error(firstError || "Проверьте введённые данные");
       return;
     }
 
+    isSubmittingRef.current = true;
     setLoading(true);
     try {
       const { error } = await supabase.from("contact_requests").insert({
         name: parsed.data.name,
         phone: parsed.data.phone,
+        contact_method: parsed.data.contact_method || null,
         service: parsed.data.service,
         comment: parsed.data.comment || "",
         source: "contact_form",
@@ -63,6 +70,7 @@ const ContactForm = () => {
         body: {
           name: parsed.data.name,
           phone: parsed.data.phone,
+          contact_method: parsed.data.contact_method || null,
           service: parsed.data.service,
           comment: parsed.data.comment || "",
           source: "contact_form",
@@ -76,6 +84,7 @@ const ContactForm = () => {
       toast.error("Не удалось отправить заявку. Попробуйте позже или напишите в Telegram.");
     } finally {
       setLoading(false);
+      isSubmittingRef.current = false;
     }
   };
 
@@ -123,6 +132,17 @@ const ContactForm = () => {
             onChange={(e) => setPhone(e.target.value)}
             maxLength={30}
             required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="cf-contact" className="text-sm text-foreground/80 mb-1 block">Telegram / WhatsApp</label>
+          <Input
+            id="cf-contact"
+            placeholder="@username или номер WhatsApp"
+            value={contactMethod}
+            onChange={(e) => setContactMethod(e.target.value)}
+            maxLength={100}
           />
         </div>
 

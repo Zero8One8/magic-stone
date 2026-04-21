@@ -189,6 +189,7 @@ const Admin = () => {
                   <TableHead>Источник</TableHead>
                   <TableHead>Имя</TableHead>
                   <TableHead>Телефон</TableHead>
+                  <TableHead>Telegram / WhatsApp</TableHead>
                   <TableHead>Услуга</TableHead>
                   <TableHead>Комментарий</TableHead>
                   <TableHead>Статус</TableHead>
@@ -211,6 +212,16 @@ const Admin = () => {
                           <ExternalLink className="h-3.5 w-3.5" />
                         </a>
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      {r.contact_method ? (
+                        <div className="flex items-center gap-2">
+                          <span>{r.contact_method}</span>
+                          <button onClick={() => copyText(r.contact_method || "", "Контакт") } className="text-muted-foreground hover:text-foreground">
+                            <Copy className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      ) : "—"}
                     </TableCell>
                     <TableCell className="text-sm">{r.service}</TableCell>
                     <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">{r.comment || "—"}</TableCell>

@@ -6,10 +6,12 @@ const corsHeaders = {
 type Payload = {
   name?: string;
   phone?: string;
+  contact_method?: string;
   service?: string;
   comment?: string;
   source?: string;
   page_url?: string;
+  record?: Payload;
 };
 
 Deno.serve(async (req) => {
@@ -29,12 +31,14 @@ Deno.serve(async (req) => {
       });
     }
 
-    const body = (await req.json()) as Payload;
+    const payload = (await req.json()) as Payload;
+    const body = payload.record ?? payload;
     const message = [
       "📩 <b>Новая заявка с сайта</b>",
       "",
       `<b>Имя:</b> ${escapeHtml(body.name || "—")}`,
       `<b>Телефон:</b> ${escapeHtml(body.phone || "—")}`,
+      `<b>Telegram/WhatsApp:</b> ${escapeHtml(body.contact_method || "—")}`,
       `<b>Услуга:</b> ${escapeHtml(body.service || "—")}`,
       `<b>Источник:</b> ${escapeHtml(body.source || "—")}`,
       `<b>Страница:</b> ${escapeHtml(body.page_url || "—")}`,

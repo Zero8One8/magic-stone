@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { crystals } from "@/data/crystals";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { Sparkles } from "lucide-react";
@@ -16,6 +17,7 @@ const getCrystalOfTheDay = () => {
 
 const CrystalOfTheDay = () => {
   const crystal = getCrystalOfTheDay();
+  const navigate = useNavigate();
 
   return (
     <section className="py-20 md:py-28">
@@ -29,7 +31,10 @@ const CrystalOfTheDay = () => {
         </AnimateOnScroll>
 
         <AnimateOnScroll delay={100}>
-          <div className="grid md:grid-cols-2 gap-8 items-center bg-card/60 border border-border/40 rounded-2xl overflow-hidden">
+          <div
+            className="grid md:grid-cols-2 gap-8 items-center bg-card/60 border border-border/40 rounded-2xl overflow-hidden cursor-pointer hover:border-primary/30 transition-colors"
+            onClick={() => navigate(`/catalog/${slugify(crystal.name)}`)}
+          >
             <div className="relative h-64 md:h-full min-h-[300px]">
               <img
                 src={crystal.image}
@@ -60,6 +65,7 @@ const CrystalOfTheDay = () => {
                 <Link
                   to={`/catalog/${slugify(crystal.name)}`}
                   className="inline-block font-body text-sm tracking-[0.15em] uppercase border border-primary/30 text-primary px-8 py-3 rounded-full hover:bg-primary/10 transition-all duration-500"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   Узнать больше →
                 </Link>
@@ -68,6 +74,7 @@ const CrystalOfTheDay = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 font-body text-sm tracking-[0.15em] uppercase bg-primary/10 border border-primary/30 text-primary px-6 py-3 rounded-full hover:bg-primary/20 transition-all duration-500"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                   Камень дня в Telegram
