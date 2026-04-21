@@ -1,39 +1,6 @@
-import { useState } from "react";
-import { Gift, Mail, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Gift, Download } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
-import { supabase } from "@/integrations/supabase/client";
-
 const LeadMagnetSection = () => {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const { error } = await supabase.from("lead_captures").insert({
-        email,
-        name,
-        source: "lead_magnet",
-        page_url: window.location.pathname,
-      });
-
-      if (!error) {
-        setSubmitted(true);
-        setEmail("");
-        setName("");
-        setTimeout(() => setSubmitted(false), 5000);
-      }
-    } catch (error) {
-      console.error("Ошибка отправки:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <section className="py-16 px-6 bg-primary/5 border-y border-primary/10">
@@ -47,63 +14,31 @@ const LeadMagnetSection = () => {
               Гайд "7 камней для начинающего"
             </h2>
             <p className="text-muted-foreground text-lg">
-              Бесплатное руководство + рекомендации мастера. Оставьте имя и почту — мы вышлем гайд в течение дня.
+              Бесплатное руководство + рекомендации мастера. Выдача полностью автоматическая: скачайте сразу.
             </p>
           </div>
 
-          {!submitted ? (
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="relative flex-1">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
-                  <input
-                    type="text"
-                    placeholder="Твоё имя"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    className="w-full bg-background border border-border rounded-lg pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-primary/50 transition-colors"
-                  />
-                </div>
-                <div className="relative flex-1">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
-                  <input
-                    type="email"
-                    placeholder="твоя почта"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full bg-background border border-border rounded-lg pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-primary/50 transition-colors"
-                  />
-                </div>
-                <Button type="submit" disabled={loading} className="sm:px-8">
-                  {loading ? "Отправляем..." : "Получить"}
-                </Button>
-              </div>
-
-              <div className="flex items-start gap-2 text-xs text-muted-foreground/70">
-                <input type="checkbox" required className="mt-0.5" />
-                <label>
-                  Я согласен на отправку гайда и периодические письма про камни (можно отписаться в любой момент)
-                </label>
-              </div>
-            </form>
-          ) : (
-            <div className="text-center p-6 bg-primary/10 rounded-lg border border-primary/20">
-              <p className="text-primary font-semibold mb-1">✓ Заявка принята!</p>
-              <p className="text-muted-foreground text-sm mb-3">
-                Вышлем гайд на почту в течение дня. Или получите мгновенно — напишите нам:
-              </p>
-              <a
-                href="https://t.me/magicstonechat"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-              >
-                Написать в Telegram
-              </a>
-            </div>
-          )}
+          <div className="text-center p-6 bg-primary/10 rounded-lg border border-primary/20 space-y-4">
+            <a
+              href="/guides/7-stones-starter-guide.txt"
+              download
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-3 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Скачать гайд
+            </a>
+            <p className="text-muted-foreground text-sm">
+              Нужен разбор под ваш запрос? Напишите в Telegram.
+            </p>
+            <a
+              href="https://t.me/magicstonechat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-background text-foreground border border-border px-4 py-2 rounded-lg text-sm font-medium hover:border-primary/40 transition-colors"
+            >
+              Написать в Telegram
+            </a>
+          </div>
         </AnimateOnScroll>
       </div>
     </section>
