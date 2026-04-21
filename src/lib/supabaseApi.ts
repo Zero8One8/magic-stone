@@ -74,7 +74,7 @@ export const supabaseApi = {
    */
   async saveQuizResult(
     email: string,
-    result: any,
+    result: Record<string, unknown>,
     name?: string
   ): Promise<boolean> {
     if (!API_BASE) return false;

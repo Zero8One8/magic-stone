@@ -118,7 +118,7 @@ Deno.serve(async () => {
       }
     }
 
-    const newOffset = Math.max(...updates.map((u: any) => u.update_id)) + 1;
+    const newOffset = Math.max(...updates.map((u: { update_id: number }) => u.update_id)) + 1;
     await supabase
       .from("telegram_bot_state")
       .update({ update_offset: newOffset, updated_at: new Date().toISOString() })
@@ -151,7 +151,7 @@ async function sendMessage(
   });
 }
 
-function formatCrystalMessage(crystal: any): string {
+function formatCrystalMessage(crystal: { chakras: string[]; effects: string[]; name: string; description: string }): string {
   const chakras = crystal.chakras.join(", ");
   const effects = crystal.effects.map((e: string) => `• ${e}`).join("\n");
 

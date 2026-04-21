@@ -85,17 +85,17 @@ const getMoonPhase = (date: Date): number => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
-  let c = Math.floor(year / 100);
-  let y = year - 19 * Math.floor(year / 19);
-  let k = Math.floor((c - 17) / 25);
+  const c = Math.floor(year / 100);
+  const y = year - 19 * Math.floor(year / 19);
+  const k = Math.floor((c - 17) / 25);
   let i = c - Math.floor(c / 4) - Math.floor((c - k) / 3) + 19 * y + 15;
   i = i - 30 * Math.floor(i / 30);
   i = i - Math.floor(i / 28) * (1 - Math.floor(i / 28) * Math.floor(29 / (i + 1)) * Math.floor((21 - y) / 11));
   let j = year + Math.floor(year / 4) + i + 2 - c + Math.floor(c / 4);
   j = j - 7 * Math.floor(j / 7);
-  let l = i - j;
-  let m = 3 + Math.floor((l + 40) / 44);
-  let d = l + 28 - 31 * Math.floor(m / 4);
+  const l = i - j;
+  const m = 3 + Math.floor((l + 40) / 44);
+  const d = l + 28 - 31 * Math.floor(m / 4);
 
   const newMoonDate = new Date(year, m - 1, d);
   const diffDays = Math.floor((date.getTime() - newMoonDate.getTime()) / (1000 * 60 * 60 * 24));

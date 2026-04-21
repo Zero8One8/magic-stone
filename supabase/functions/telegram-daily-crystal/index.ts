@@ -98,7 +98,7 @@ Deno.serve(async () => {
   );
 });
 
-function formatCrystalMessage(crystal: any): string {
+function formatCrystalMessage(crystal: { chakras: string[]; effects: string[]; name: string; description: string }): string {
   const chakras = crystal.chakras.join(", ");
   const effects = crystal.effects.map((e: string) => `• ${e}`).join("\n");
 
