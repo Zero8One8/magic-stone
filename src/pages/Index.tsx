@@ -18,6 +18,13 @@ const Index = () => {
       <PhilosophySection />
       <ChannelSection />
       <ClosingSection />
+      
+      {/* Freekassa payment provider banner */}
+      <div className="flex justify-center py-8 px-6 bg-background/50">
+        <a href="https://freekassa.net" target="_blank" rel="noopener noreferrer">
+          <img src="https://cdn.freekassa.net/banners/small-white-1.png" title="Прием платежей" alt="Freekassa - прием платежей" />
+        </a>
+      </div>
     </main>
   );
 };
