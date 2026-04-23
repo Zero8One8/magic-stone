@@ -17,12 +17,16 @@ const Index = () => {
       <LeadMagnetSection />
       <PhilosophySection />
       <ChannelSection />
-      {/* Freekassa payment provider banner */}
-      <div className="flex justify-center items-center py-12 px-6 bg-primary/10 border-t border-border/30">
-        <a href="https://freekassa.net" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
-          <img src="https://cdn.freekassa.net/banners/small-white-1.png" title="Прием платежей" alt="Freekassa - прием платежей" className="h-auto" />
-        </a>
-      </div>
+      
+      {/* Freekassa payment provider */}
+      <section className="py-8 px-6 bg-gradient-to-r from-primary/20 to-primary/10 border-t-2 border-primary/40">
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-sm text-muted-foreground mb-3">Безопасный прием платежей</p>
+          <a href="https://freekassa.net" target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+            Freekassa — Платежная система
+          </a>
+        </div>
+      </section>
       
       <ClosingSection />
     </main>
