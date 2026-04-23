@@ -19,14 +19,11 @@ const Index = () => {
       <ChannelSection />
       
       {/* Freekassa payment provider */}
-      <section className="py-8 px-6 bg-gradient-to-r from-primary/20 to-primary/10 border-t-2 border-primary/40">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-sm text-muted-foreground mb-3">Безопасный прием платежей</p>
-          <a href="https://freekassa.net" target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors">
-            Freekassa — Платежная система
-          </a>
-        </div>
-      </section>
+      <div className="flex justify-center items-center py-8 px-6 bg-primary/10 border-t border-border/30">
+        <a href="https://freekassa.net" target="_blank" rel="noopener noreferrer">
+          <img src="https://cdn.freekassa.net/banners/big-white-1.png" title="Прием платежей" alt="Freekassa - прием платежей" />
+        </a>
+      </div>
       
       <ClosingSection />
     </main>
