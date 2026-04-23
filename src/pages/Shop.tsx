@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ShoppingBag, Sparkles, Flame, Star, ExternalLink } from "lucide-react";
+import { ArrowLeft, ShoppingBag, Sparkles, Flame, Star, ExternalLink, CreditCard } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { BOT_URL, bracelets, rosaries, candles, type Product } from "@/data/products";
+import { buildFreekassaUrl, makeOrderId } from "@/lib/freekassa";
 import ContactForm from "@/components/ContactForm";
 
 const isImageUrl = (str: string) =>
@@ -33,12 +34,25 @@ const ProductCard = ({ product }: { product: Product }) => (
     <h3 className="font-serif text-lg font-bold text-foreground mb-1">{product.title}</h3>
     <span className="text-primary font-semibold text-sm mb-2">{product.price}</span>
     <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-1">{product.description}</p>
-    <a href={`${BOT_URL}?start=${product.botParam}`} target="_blank" rel="noopener noreferrer">
-      <Button variant="outline" className="w-full gap-2">
-        <ShoppingBag className="w-4 h-4" />
-        Заказать
-      </Button>
-    </a>
+    {product.priceRub ? (
+      <a
+        href={buildFreekassaUrl(product.priceRub, makeOrderId(product.botParam))}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Button className="w-full gap-2">
+          <CreditCard className="w-4 h-4" />
+          Оплатить {product.price}
+        </Button>
+      </a>
+    ) : (
+      <a href={`${BOT_URL}?start=${product.botParam}`} target="_blank" rel="noopener noreferrer">
+        <Button variant="outline" className="w-full gap-2">
+          <ShoppingBag className="w-4 h-4" />
+          Обсудить заказ
+        </Button>
+      </a>
+    )}
   </div>
 );
 

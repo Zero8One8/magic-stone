@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles, Shield, Heart, Eye, Star, Zap, BookOpen, Users } from "lucide-react";
+import { ArrowLeft, Sparkles, Shield, Heart, Eye, Star, Zap, BookOpen, Users, CreditCard } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import { buildFreekassaUrl, makeOrderId } from "@/lib/freekassa";
 import ContactForm from "@/components/ContactForm";
 
 const services = [
@@ -9,6 +10,8 @@ const services = [
     icon: Eye,
     title: "Индивидуальная диагностика",
     price: "5 000 ₽",
+    priceRub: 5000,
+    orderSlug: "diagnostika",
     description: "Глубокий энергоинформационный анализ вашего состояния по двум фотографиям (спереди и сзади в полный рост). Вы получите полную картину состояния всех энергетических центров, информацию о блоках, привязках, деструктивных программах и сущностях. По результатам диагностики формируется детальный отчёт с рекомендациями.",
     includes: [
       "Анализ всех семи энергетических центров",
@@ -17,14 +20,16 @@ const services = [
       "Детальный письменный отчёт",
       "Персональные рекомендации",
     ],
-    cta: "Записаться на диагностику",
-    link: "https://t.me/Themagicofstonesbot?start=diagnostika",
+    cta: "Оплатить и записаться",
+    link: null,
     featured: true,
   },
   {
     icon: Sparkles,
     title: "Подбор камней",
     price: "2 500 ₽",
+    priceRub: 2500,
+    orderSlug: "podbor_kamney",
     description: "Индивидуальный подбор минералов на основе вашей диагностики и конкретных запросов. Каждый набор камней формируется с учётом совместимости минералов между собой и с вашей уникальной энергетикой. Вы получаете не просто камни, а рабочий инструмент для решения конкретных жизненных задач.",
     includes: [
       "Подбор камней под ваши задачи",
@@ -32,14 +37,16 @@ const services = [
       "Инструкция по использованию",
       "Рекомендации по уходу за камнями",
     ],
-    cta: "Узнать подробнее",
-    link: "https://t.me/The_magic_of_stones_bot?start=podbor",
+    cta: "Оплатить",
+    link: null,
     featured: false,
   },
   {
     icon: Shield,
     title: "Снятие блоков и привязок",
     price: "от 5 000 ₽",
+    priceRub: null,
+    orderSlug: null,
     description: "Целенаправленная работа по устранению энергетических блоков, привязок и деструктивных программ, выявленных в ходе диагностики. Работа проводится дистанционно и включает несколько сеансов в зависимости от сложности ситуации. После каждого сеанса предоставляется обратная связь о проделанной работе.",
     includes: [
       "Предварительная диагностика",
@@ -56,6 +63,8 @@ const services = [
     icon: Heart,
     title: "Индивидуальное сопровождение",
     price: "30 000 ₽ в месяц",
+    priceRub: 30000,
+    orderSlug: "soprovozhdenie",
     description: "Комплексная программа трансформации с регулярными диагностиками, подбором камней и персональной поддержкой. Включает еженедельные сессии обратной связи, корректировку практик и полное сопровождение на протяжении всего процесса. Идеально для тех, кто готов к глубокой системной работе над собой.",
     includes: [
       "Очищение того, что препятствует внутренней ясности",
@@ -65,14 +74,16 @@ const services = [
       "Индивидуальные медитативные практики",
       "Регулярные сессии обратной связи",
     ],
-    cta: "Обсудить программу",
-    link: "https://t.me/SvetozarAdidev",
+    cta: "Оплатить программу",
+    link: null,
     featured: false,
   },
   {
     icon: BookOpen,
     title: "Консультация по камням",
     price: "1 500 ₽",
+    priceRub: 1500,
+    orderSlug: "konsultaciya",
     description: "Консультация проходит в формате голосового звонка по заранее подготовленным ответам на ваши вопросы, продолжительность 25 минут.",
     includes: [
       "Ответы на ваши вопросы о камнях",
@@ -80,22 +91,24 @@ const services = [
       "Проверка совместимости камней",
       "Рекомендации по использованию",
     ],
-    cta: "Записаться на консультацию",
-    link: "https://t.me/magicstonechat",
+    cta: "Оплатить",
+    link: null,
     featured: false,
   },
   {
     icon: Users,
     title: "Медитация с камнями",
     price: "500 ₽",
+    priceRub: 500,
+    orderSlug: "meditaciya",
     description: "Каждая медитация посвящена определённой теме: заземление, раскрытие сердца, активация интуиции, привлечение изобилия. Что входит: Инструкция по подготовке камней; Гайд по практике; Запись медитации.",
     includes: [
       "Инструкция по подготовке камней",
       "Гайд по практике",
       "Запись медитации",
     ],
-    cta: "Выбрать медитацию",
-    link: "https://t.me/The_magic_of_stones_bot?start=meditaciya",
+    cta: "Оплатить",
+    link: null,
     featured: false,
   },
 ];
@@ -172,15 +185,32 @@ const Services = () => {
                   </div>
 
                   <div className="md:w-48 shrink-0">
-                    <a href={service.link} target="_blank" rel="noopener noreferrer">
-                      <Button
-                        className="w-full"
-                        variant={service.featured ? "default" : "outline"}
-                        size="lg"
+                    {service.priceRub ? (
+                      <a
+                        href={buildFreekassaUrl(service.priceRub, makeOrderId(service.orderSlug!))}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        {service.cta}
-                      </Button>
-                    </a>
+                        <Button
+                          className="w-full gap-2"
+                          variant={service.featured ? "default" : "outline"}
+                          size="lg"
+                        >
+                          <CreditCard className="w-4 h-4" />
+                          {service.cta}
+                        </Button>
+                      </a>
+                    ) : (
+                      <a href={service.link!} target="_blank" rel="noopener noreferrer">
+                        <Button
+                          className="w-full"
+                          variant={service.featured ? "default" : "outline"}
+                          size="lg"
+                        >
+                          {service.cta}
+                        </Button>
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>

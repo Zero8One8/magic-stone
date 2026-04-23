@@ -11,6 +11,8 @@ export const BOT_URL = "https://t.me/The_magic_of_stones_bot";
 export type Product = {
   title: string;
   price: string;
+  /** Numeric price in rubles for Freekassa. Undefined means individual pricing (TG flow). */
+  priceRub?: number;
   image: string;
   description: string;
   badge?: string;
@@ -26,6 +28,7 @@ export const bracelets: Product[] = [
   {
     title: "Готовый браслет «Защита»",
     price: "2 500 ₽",
+    priceRub: 2500,
     image: braceletProtection,
     description: "Браслет из шунгита, чёрного турмалина и обсидиана. Создаёт мощный защитный экран от негативных энергий, помогает сохранять внутреннюю устойчивость и спокойствие в любых ситуациях.",
     badge: "Хит продаж",
@@ -34,6 +37,7 @@ export const bracelets: Product[] = [
   {
     title: "Готовый браслет «Гармония»",
     price: "2 800 ₽",
+    priceRub: 2800,
     image: braceletHarmony,
     description: "Браслет из аметиста, розового кварца и лунного камня. Балансирует эмоциональное состояние, помогает обрести внутреннюю гармонию и открыть сердце для любви и принятия.",
     botParam: "braslet_garmoniya",
@@ -41,6 +45,7 @@ export const bracelets: Product[] = [
   {
     title: "Готовый браслет «Изобилие»",
     price: "3 000 ₽",
+    priceRub: 3000,
     image: braceletAbundance,
     description: "Браслет из цитрина, тигрового глаза и пирита. Притягивает финансовое благополучие, усиливает уверенность в себе и помогает находить новые возможности для роста и развития.",
     botParam: "braslet_izobilie",
@@ -62,6 +67,7 @@ export const rosaries: Product[] = [
   {
     title: "Готовые чётки «Медитация»",
     price: "3 200 ₽",
+    priceRub: 3200,
     image: rosaryMeditation,
     description: "Чётки из аметиста на 108 бусин — классический инструмент для медитации и мантра-практик. Аметист усиливает концентрацию, успокаивает ум и помогает углубить медитативное состояние.",
     botParam: "chetki_meditaciya",
@@ -69,6 +75,7 @@ export const rosaries: Product[] = [
   {
     title: "Готовые чётки «Спокойствие»",
     price: "2 900 ₽",
+    priceRub: 2900,
     image: rosaryCalm,
     description: "Чётки из лабрадорита и лунного камня. Помогают справиться с тревожностью, улучшают качество сна и усиливают интуицию. Идеальны для вечерних практик и работы с подсознанием.",
     botParam: "chetki_spokoystvie",
@@ -90,6 +97,7 @@ export const candles: Product[] = [
   {
     title: "Свеча «Богатство и процветание»",
     price: "1 800 ₽",
+    priceRub: 1800,
     image: "🕯️",
     description: "Программная свеча, заряженная на привлечение финансового потока и материального благополучия. Изготовлена с использованием натуральных масел, трав и минеральной крошки, усиливающих намерение на изобилие.",
     botParam: "svecha_bogatstvo",
@@ -97,6 +105,7 @@ export const candles: Product[] = [
   {
     title: "Свеча «Здоровье»",
     price: "1 800 ₽",
+    priceRub: 1800,
     image: "🕯️",
     description: "Программная свеча для укрепления здоровья и восстановления жизненных сил. Помогает запустить процессы самоисцеления в организме, снимает энергетические блоки в области физического тела.",
     botParam: "svecha_zdorovye",
@@ -104,6 +113,7 @@ export const candles: Product[] = [
   {
     title: "Свеча «Духовный путь»",
     price: "1 800 ₽",
+    priceRub: 1800,
     image: "🕯️",
     description: "Программная свеча для тех, кто стремится к духовному развитию и самопознанию. Усиливает связь с высшим «Я», помогает раскрыть интуицию и найти свой истинный жизненный путь.",
     botParam: "svecha_duhovnyy",
@@ -111,6 +121,7 @@ export const candles: Product[] = [
   {
     title: "Свеча «Любовь»",
     price: "1 800 ₽",
+    priceRub: 1800,
     image: "🕯️",
     description: "Программная свеча для привлечения любви и гармонизации отношений. Работает с сердечной чакрой, помогает раскрыть способность любить и принимать любовь, исцеляет эмоциональные раны прошлого.",
     botParam: "svecha_lyubov",
@@ -118,6 +129,7 @@ export const candles: Product[] = [
   {
     title: "Свеча «Гармония»",
     price: "1 800 ₽",
+    priceRub: 1800,
     image: "🕯️",
     description: "Программная свеча для обретения внутреннего баланса и душевного равновесия. Помогает синхронизировать все аспекты жизни, снимает внутренние конфликты и восстанавливает энергетический баланс.",
     botParam: "svecha_garmoniya",
@@ -125,6 +137,7 @@ export const candles: Product[] = [
   {
     title: "Свеча «Очистка дома»",
     price: "2 000 ₽",
+    priceRub: 2000,
     image: "🕯️",
     description: "Программная свеча для энергетической очистки жилого пространства. Устраняет застойные и негативные энергии, создаёт защитный барьер для дома, наполняет пространство светом и уютом.",
     botParam: "svecha_dom",
@@ -132,6 +145,7 @@ export const candles: Product[] = [
   {
     title: "Свеча «Преодоление препятствий»",
     price: "2 000 ₽",
+    priceRub: 2000,
     image: "🕯️",
     description: "Программная свеча для устранения блоков и препятствий на жизненном пути. Помогает разрушить деструктивные паттерны, снять порчу и сглаз, открыть дорогу к новым возможностям и реализации целей.",
     botParam: "svecha_prepyatstviya",

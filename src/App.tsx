@@ -27,6 +27,8 @@ const Services = lazy(() => import("./pages/Services.tsx"));
 const Shop = lazy(() => import("./pages/Shop.tsx"));
 const Admin = lazy(() => import("./pages/Admin.tsx"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin.tsx"));
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess.tsx"));
+const PaymentFail = lazy(() => import("./pages/PaymentFail.tsx"));
 
 import CookieBanner from "./components/CookieBanner";
 import QuizPopup from "./components/QuizPopup";
@@ -74,6 +76,8 @@ const App = () => (
             <Route path="/shop" element={<Shop />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/payment/success" element={<PaymentSuccess />} />
+            <Route path="/payment/fail" element={<PaymentFail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
