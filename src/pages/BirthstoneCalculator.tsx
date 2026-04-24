@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ArrowLeft, Calculator, Sparkles, Star } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { crystals } from "@/data/crystals";
+import PageSEO from "@/components/PageSEO";
 
 const numerologyStones: Record<number, { stones: string[]; meaning: string; description: string }> = {
   1: {
@@ -109,11 +110,12 @@ const BirthstoneCalculator = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageSEO
+        title="Камень по дате рождения"
+        description="Узнайте свой камень-покровитель по дате рождения. Калькулятор числа души и подбор персонального кристалла по нумерологии."
+        path="/birthstone"
+      />
       <div className="container mx-auto px-4 pt-6">
-        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          На главную
-        </Link>
       </div>
 
       <section className="container mx-auto px-4 py-16 text-center">

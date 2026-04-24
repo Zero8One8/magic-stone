@@ -6,6 +6,7 @@ import ContactForm from "@/components/ContactForm";
 import PaymentButton from "@/components/PaymentButton";
 import { SITE_SERVICES_DEFAULTS, type SiteService } from "@/content/siteDefaults";
 import { useSiteContent } from "@/lib/siteContent";
+import PageSEO from "@/components/PageSEO";
 
 const serviceIcons = {
   Eye,
@@ -20,11 +21,12 @@ const Services = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageSEO
+        title="Услуги мастера"
+        description="Индивидуальная диагностика по камням, чакрам и энергетике. Программы, сессии и индивидуальный подбор амулетов. Цены и условия."
+        path="/services"
+      />
       <div className="container mx-auto px-4 pt-6">
-        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          На главную
-        </Link>
       </div>
 
       <section className="container mx-auto px-4 py-12 text-center">

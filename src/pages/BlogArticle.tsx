@@ -3,6 +3,7 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { ArrowLeft, Clock } from "lucide-react";
 import { SITE_BLOG_DEFAULTS } from "@/content/siteDefaults";
 import { useSiteContent } from "@/lib/siteContent";
+import PageSEO from "@/components/PageSEO";
 
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -22,12 +23,13 @@ const BlogArticle = () => {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <PageSEO
+        title={article.title}
+        description={article.excerpt}
+        path={`/blog/${article.slug}`}
+      />
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/blog" className="text-muted-foreground hover:text-foreground transition-colors text-sm flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" />
-            Все статьи
-          </Link>
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center">
         </div>
       </div>
 

@@ -4,6 +4,7 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import { SITE_FAQ_DEFAULTS } from "@/content/siteDefaults";
 import { useSiteContent } from "@/lib/siteContent";
+import PageSEO from "@/components/PageSEO";
 
 const FAQ = () => {
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
@@ -23,10 +24,14 @@ const FAQ = () => {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <PageSEO
+        title="Частые вопросы"
+        description="Ответы на вопросы о камнях, их свойствах, очищении, ношении и работе с энергетикой минералов."
+        path="/faq"
+      />
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors text-sm flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" />
             На главную
           </Link>
           <Link to="/diagnostika" className="text-primary/70 hover:text-primary text-sm transition-colors">

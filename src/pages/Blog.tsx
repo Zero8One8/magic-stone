@@ -3,12 +3,18 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { ArrowLeft, Clock, ArrowRight } from "lucide-react";
 import { SITE_BLOG_DEFAULTS } from "@/content/siteDefaults";
 import { useSiteContent } from "@/lib/siteContent";
+import PageSEO from "@/components/PageSEO";
 
 const Blog = () => {
   const blogContent = useSiteContent("site_blog", SITE_BLOG_DEFAULTS);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <PageSEO
+        title="Блог о камнях"
+        description="Статьи о свойствах камней, практиках очищения, энергетике минералов и духовных практиках с кристаллами."
+        path="/blog"
+      />
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors text-sm flex items-center gap-2">

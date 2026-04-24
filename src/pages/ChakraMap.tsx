@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { crystals } from "@/data/crystals";
+import PageSEO from "@/components/PageSEO";
 
 type Chakra = {
   name: string;
@@ -119,11 +120,12 @@ const ChakraMap = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageSEO
+        title="Карта чакр"
+        description="Интерактивная карта чакр с камнями. Узнайте, какие минералы активируют каждую чакру и помогают восстановить баланс."
+        path="/chakras"
+      />
       <div className="container mx-auto px-4 pt-6">
-        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          На главную
-        </Link>
       </div>
 
       <section className="container mx-auto px-4 py-12 text-center">

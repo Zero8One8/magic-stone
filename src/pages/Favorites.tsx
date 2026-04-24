@@ -3,6 +3,7 @@ import { crystals } from "@/data/crystals";
 import { useFavorites } from "@/hooks/useFavorites";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { ArrowLeft, Heart, X } from "lucide-react";
+import PageSEO from "@/components/PageSEO";
 
 const slugify = (name: string) =>
   name.toLowerCase().replace(/\s+/g, "-").replace(/[ёЁ]/g, "е");
@@ -13,10 +14,15 @@ const Favorites = () => {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <PageSEO
+        title="Избранные камни"
+        description="Ваша подборка любимых кристаллов и минералов."
+        path="/favorites"
+        noindex={true}
+      />
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors text-sm flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" />
             На главную
           </Link>
           <Link to="/catalog" className="text-primary/70 hover:text-primary text-sm transition-colors">

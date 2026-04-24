@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Moon, Sun, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import PageSEO from "@/components/PageSEO";
 
 type MoonPhase = {
   name: string;
@@ -162,11 +163,12 @@ const MoonCalendar = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageSEO
+        title="Лунный календарь"
+        description="Лунный календарь для работы с камнями. Узнайте, какие минералы надевать в полнолуние, новолуние и в переходные фазы."
+        path="/moon"
+      />
       <div className="container mx-auto px-4 pt-6">
-        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          На главную
-        </Link>
       </div>
 
       <section className="container mx-auto px-4 py-12 text-center">

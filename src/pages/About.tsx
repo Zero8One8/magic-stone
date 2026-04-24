@@ -2,10 +2,16 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Heart, Eye, Shield, Star, ArrowLeft } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import PageSEO from "@/components/PageSEO";
 
 const About = () => {
   return (
     <main className="min-h-screen bg-background">
+      <PageSEO
+        title="О мастере"
+        description="Световар Адидев — мастер ясновидца и энергетика. Надеваю украшения из натуральных камней и провожу индивидуальные диагностики."
+        path="/about"
+      />
       {/* Навигация */}
       <div className="container mx-auto px-4 pt-6">
         <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">

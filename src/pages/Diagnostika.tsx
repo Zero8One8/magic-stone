@@ -5,6 +5,7 @@ import { ArrowLeft, Eye, Shield, Zap, Heart, MessageCircle, CheckCircle2 } from 
 import ContactForm from "@/components/ContactForm";
 import { SITE_LINKS_DEFAULTS } from "@/content/siteDefaults";
 import { useSiteContent } from "@/lib/siteContent";
+import PageSEO from "@/components/PageSEO";
 
 const chakras = [
   {
@@ -137,6 +138,11 @@ const Diagnostika = () => {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <PageSEO
+        title="Индивидуальная диагностика"
+        description="Глубокий разбор энергетики и подбор камней для ваших задач. Диагностика по чакрам, знаку зодиака, намерению."
+        path="/diagnostika"
+      />
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">

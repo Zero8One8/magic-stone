@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Lock } from "lucide-react";
+import PageSEO from "@/components/PageSEO";
 
 const DEFAULT_ADMIN_RESET_REDIRECT = "https://magic-stone.org/admin/reset-password";
 
@@ -63,6 +64,7 @@ const AdminLogin = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <PageSEO title="Вход в админ-панель" description="" path="/admin/login" noindex={true} />
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center space-y-2">
           <Lock className="mx-auto h-10 w-10 text-primary" />

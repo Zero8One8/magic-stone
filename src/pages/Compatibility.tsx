@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { crystals } from "@/data/crystals";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { ArrowLeft, Check, X, AlertTriangle } from "lucide-react";
+import PageSEO from "@/components/PageSEO";
 
 // Compatibility rules based on chakras and energy properties
 const getCompatibility = (a: typeof crystals[0], b: typeof crystals[0]): { status: "good" | "neutral" | "conflict"; reason: string } => {
@@ -61,12 +62,13 @@ const Compatibility = () => {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <PageSEO
+        title="Совместимость камней"
+        description="Проверьте энергетическую совместимость двух камней. Узнайте, какие минералы усиливают друг друга, а какие создают дисбаланс."
+        path="/compatibility"
+      />
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors text-sm flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" />
-            На главную
-          </Link>
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center">
           <Link to="/catalog" className="text-primary/70 hover:text-primary text-sm transition-colors">
             Каталог камней →
           </Link>

@@ -7,6 +7,7 @@ import ContactForm from "@/components/ContactForm";
 import PaymentButton from "@/components/PaymentButton";
 import { SITE_SHOP_CONTENT_DEFAULTS } from "@/content/siteDefaults";
 import { useSiteContent } from "@/lib/siteContent";
+import PageSEO from "@/components/PageSEO";
 
 const isImageUrl = (str: string) =>
   typeof str === "string" &&
@@ -94,11 +95,12 @@ const Shop = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <PageSEO
+        title="Магазин"
+        description="Браслеты, чётки и свечи из натуральных камней. Все амулеты изготовлены вручную с учётом индивидуальных чакр и энергетики."
+        path="/shop"
+      />
       <div className="container mx-auto px-4 pt-6">
-        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          На главную
-        </Link>
       </div>
 
       <section className="container mx-auto px-4 py-12 text-center">

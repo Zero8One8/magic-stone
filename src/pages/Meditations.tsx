@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { ArrowLeft, Clock, Moon, Sun, Sunrise } from "lucide-react";
+import PageSEO from "@/components/PageSEO";
 
 const meditations = [
   {
@@ -88,10 +89,14 @@ const meditations = [
 const Meditations = () => {
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <PageSEO
+        title="Медитации с камнями"
+        description="Практики утренних и вечерних медитаций с кристаллами. Заземление, очищение ауры, работа с чакрами."
+        path="/meditations"
+      />
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors text-sm flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" />
             На главную
           </Link>
           <Link to="/catalog" className="text-primary/70 hover:text-primary text-sm transition-colors">

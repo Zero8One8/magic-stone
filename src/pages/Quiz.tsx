@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { crystals } from "@/data/crystals";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { ArrowLeft, ArrowRight, RotateCcw, Sparkles } from "lucide-react";
+import PageSEO from "@/components/PageSEO";
 
 type Answer = {
   label: string;
@@ -132,13 +133,14 @@ const Quiz = () => {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <PageSEO
+        title="Квиз: подбери свой камень"
+        description="Бесплатный квиз для подбора персонального камня. Ответьте на вопросы и узнайте, какой минерал подходит именно вам."
+        path="/quiz"
+      />
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors text-sm flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" />
-            На главную
-          </Link>
+        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
           {step >= 1 && step <= 5 && (
             <div className="flex items-center gap-2">
               {questions.map((_, i) => (

@@ -4,6 +4,7 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { crystals, allChakras, allProblems, type Crystal } from "@/data/crystals";
 import { useFavorites } from "@/hooks/useFavorites";
 import { Heart } from "lucide-react";
+import PageSEO from "@/components/PageSEO";
 
 const slugify = (name: string) =>
   name.toLowerCase().replace(/\s+/g, "-").replace(/[ёЁ]/g, "е");
@@ -22,8 +23,13 @@ const Catalog = () => {
 
   return (
     <main className="min-h-screen bg-background pt-16">
-      <header className="border-b border-border/30 py-6">
-        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
+      <PageSEO
+        title="Каталог камней"
+        description="Каталог минералов и кристаллов: аметист, лазурит, обсидиан, розовый кварц и др. Фильтрация по чакрам и задачам. Узнайте свойства каждого камня."
+        path="/catalog"
+      />
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 h-16 flex items-center">
+        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between w-full">
           <Link to="/" className="font-display text-2xl text-foreground hover:text-primary transition-colors">
             ← На главную
           </Link>
