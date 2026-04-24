@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { CheckCircle, ShoppingBag } from "lucide-react";
+import { CheckCircle, ShoppingBag, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const PaymentSuccess = () => {
@@ -20,14 +20,22 @@ const PaymentSuccess = () => {
           </p>
         )}
         <p className="text-sm text-muted-foreground mb-6">
-          Мастер свяжется с вами в ближайшее время через Telegram для подтверждения заказа.
+          Заполните данные доставки, чтобы мы могли отправить заказ через OZON.
         </p>
-        <Link to="/shop">
-          <Button className="gap-2 w-full">
-            <ShoppingBag className="w-4 h-4" />
-            Вернуться в магазин
-          </Button>
-        </Link>
+        <div className="space-y-3">
+          <Link to={`/delivery?o=${encodeURIComponent(orderId)}`}>
+            <Button className="gap-2 w-full">
+              <Truck className="w-4 h-4" />
+              Оформить доставку
+            </Button>
+          </Link>
+          <Link to="/shop">
+            <Button variant="outline" className="gap-2 w-full">
+              <ShoppingBag className="w-4 h-4" />
+              Вернуться в магазин
+            </Button>
+          </Link>
+        </div>
       </div>
     </main>
   );

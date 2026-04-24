@@ -16,6 +16,9 @@
         <p>Спасибо за покупку в Magic Stone!</p>
         <p>Номер заказа: <strong><?= htmlspecialchars($_GET['o'] ?? '—') ?></strong></p>
         <br>
+        <a href="https://magic-stone.org/delivery?o=<?= urlencode($_GET['o'] ?? '') ?>" style="display:inline-block; padding:12px 30px; background:#198754; color:white; text-decoration:none; border-radius:8px; font-size:18px; margin-right:8px;">
+            Оформить доставку
+        </a>
         <a href="https://magic-stone.org/shop" style="display:inline-block; padding:12px 30px; background:#6f42c1; color:white; text-decoration:none; border-radius:8px; font-size:18px;">
             Вернуться в магазин
         </a>

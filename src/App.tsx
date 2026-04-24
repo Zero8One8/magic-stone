@@ -29,6 +29,7 @@ const Admin = lazy(() => import("./pages/Admin.tsx"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin.tsx"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess.tsx"));
 const PaymentFail = lazy(() => import("./pages/PaymentFail.tsx"));
+const DeliveryCheckout = lazy(() => import("./pages/DeliveryCheckout.tsx"));
 
 import CookieBanner from "./components/CookieBanner";
 import QuizPopup from "./components/QuizPopup";
@@ -78,6 +79,7 @@ const App = () => (
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/payment/success" element={<PaymentSuccess />} />
             <Route path="/payment/fail" element={<PaymentFail />} />
+            <Route path="/delivery" element={<DeliveryCheckout />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
