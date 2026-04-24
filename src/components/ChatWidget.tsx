@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabaseApi } from "@/lib/supabaseApi";
+import { SITE_LINKS_DEFAULTS } from "@/content/siteDefaults";
+import { useSiteContent } from "@/lib/siteContent";
 
 const ChatWidget = () => {
+  const siteLinks = useSiteContent("site_links", SITE_LINKS_DEFAULTS);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{ text: string; isBot: boolean }[]>([]);
   const [input, setInput] = useState("");
@@ -62,7 +65,7 @@ const ChatWidget = () => {
         setMessages((prev) => [
           ...prev,
           {
-            text: "Спасибо, сообщение отправлено. Мы ответим в ближайшее время. Для быстрого ответа напишите в Telegram: https://t.me/magicstonechat",
+            text: `Спасибо, сообщение отправлено. Мы ответим в ближайшее время. Для быстрого ответа напишите в Telegram: ${siteLinks.telegramChatUrl}`,
             isBot: true,
           },
         ]);
@@ -70,7 +73,7 @@ const ChatWidget = () => {
         setMessages((prev) => [
           ...prev,
           {
-            text: "Сейчас автоответ недоступен. Напишите нам в Telegram: https://t.me/magicstonechat",
+            text: `Сейчас автоответ недоступен. Напишите нам в Telegram: ${siteLinks.telegramChatUrl}`,
             isBot: true,
           },
         ]);
@@ -79,7 +82,7 @@ const ChatWidget = () => {
       console.error("Ошибка чата:", error);
       setMessages((prev) => [
         ...prev,
-        { text: "Извини, была ошибка. Свяжись с нами в Telegram: https://t.me/magicstonechat", isBot: true },
+        { text: `Извини, была ошибка. Свяжись с нами в Telegram: ${siteLinks.telegramChatUrl}`, isBot: true },
       ]);
     } finally {
       setLoading(false);

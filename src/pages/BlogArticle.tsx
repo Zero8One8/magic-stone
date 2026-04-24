@@ -1,11 +1,13 @@
 import { useParams, Link } from "react-router-dom";
-import { blogArticles } from "./Blog";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { ArrowLeft, Clock } from "lucide-react";
+import { SITE_BLOG_DEFAULTS } from "@/content/siteDefaults";
+import { useSiteContent } from "@/lib/siteContent";
 
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
-  const article = blogArticles.find((a) => a.slug === slug);
+  const blogContent = useSiteContent("site_blog", SITE_BLOG_DEFAULTS);
+  const article = blogContent.articles.find((entry) => entry.slug === slug);
 
   if (!article) {
     return (
@@ -66,16 +68,16 @@ const BlogArticle = () => {
 
           <AnimateOnScroll className="mt-16">
             <div className="rounded-xl border border-primary/20 bg-primary/5 p-8 text-center">
-              <h3 className="font-display text-xl mb-3">Хотите узнать, какие камни подойдут именно вам?</h3>
+              <h3 className="font-display text-xl mb-3">{blogContent.cta.title}</h3>
               <p className="text-sm text-muted-foreground mb-6">
-                Пройдите бесплатный квиз или запишитесь на индивидуальную диагностику
+                {blogContent.cta.description}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link to="/quiz" className="font-body text-sm px-6 py-3 rounded-full border border-primary/30 text-primary hover:bg-primary/10 transition-colors">
-                  Пройти квиз
+                  {blogContent.cta.quizButtonText}
                 </Link>
                 <Link to="/diagnostika" className="font-body text-sm px-6 py-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
-                  Диагностика мастера
+                  {blogContent.cta.diagnosticButtonText}
                 </Link>
               </div>
             </div>

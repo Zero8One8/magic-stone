@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { Gift, Download } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import { SITE_LINKS_DEFAULTS } from "@/content/siteDefaults";
+import { useSiteContent } from "@/lib/siteContent";
 
 const GUIDE_FILES = [
   {
@@ -26,6 +28,7 @@ const GUIDE_FILES = [
 ];
 
 const LeadMagnetSection = () => {
+  const siteLinks = useSiteContent("site_links", SITE_LINKS_DEFAULTS);
   const [selectedIds, setSelectedIds] = useState<string[]>([GUIDE_FILES[0].id]);
 
   const selectedFiles = useMemo(
@@ -96,7 +99,7 @@ const LeadMagnetSection = () => {
               Нужен разбор под ваш запрос? Напишите в Telegram.
             </p>
             <a
-              href="https://t.me/magicstonechat"
+              href={siteLinks.telegramChatUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-background text-foreground border border-border px-4 py-2 rounded-lg text-sm font-medium hover:border-primary/40 transition-colors"

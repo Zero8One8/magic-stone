@@ -7,19 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { Send, CheckCircle2 } from "lucide-react";
 import { z } from "zod";
-
-const services = [
-  "Индивидуальная диагностика",
-  "Индивидуальный подбор камней",
-  "Снятие блоков и привязок",
-  "Отливка воском",
-  "Полная энергетическая чистка",
-  "Индивидуальное сопровождение",
-  "Заказ браслета",
-  "Заказ чёток",
-  "Заказ свечи",
-  "Другое",
-];
+import { SITE_CONTACT_FORM_SERVICE_OPTIONS_DEFAULTS, SITE_SERVICES_DEFAULTS } from "@/content/siteDefaults";
+import { useSiteContent } from "@/lib/siteContent";
 
 const formSchema = z.object({
   name: z.string().trim().min(2, "Имя должно быть не менее 2 символов").max(100),
@@ -30,6 +19,7 @@ const formSchema = z.object({
 });
 
 const ContactForm = () => {
+  const siteServices = useSiteContent("site_services", SITE_SERVICES_DEFAULTS);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [contactMethod, setContactMethod] = useState("");
@@ -38,6 +28,9 @@ const ContactForm = () => {
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const isSubmittingRef = useRef(false);
+  const serviceOptions = Array.from(
+    new Set([...siteServices.map((serviceItem) => serviceItem.title), ...SITE_CONTACT_FORM_SERVICE_OPTIONS_DEFAULTS])
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -153,7 +146,7 @@ const ContactForm = () => {
               <SelectValue placeholder="Выберите услугу" />
             </SelectTrigger>
             <SelectContent>
-              {services.map((s) => (
+              {serviceOptions.map((s) => (
                 <SelectItem key={s} value={s}>{s}</SelectItem>
               ))}
             </SelectContent>

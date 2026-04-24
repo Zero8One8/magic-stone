@@ -6,7 +6,7 @@ import rosaryMeditation from "@/assets/shop/rosary-meditation.jpg";
 import rosaryCalm from "@/assets/shop/rosary-calm.jpg";
 import rosaryIndividual from "@/assets/shop/rosary-individual.jpg";
 
-export const BOT_URL = "https://t.me/The_magic_of_stones_bot";
+export const BOT_URL = "https://t.me/Themagicofstonesbot";
 
 export type Product = {
   title: string;

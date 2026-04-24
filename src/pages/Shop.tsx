@@ -2,15 +2,17 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ShoppingBag, Sparkles, Flame, Star, ExternalLink } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
-import { BOT_URL, bracelets, rosaries, candles, type Product } from "@/data/products";
+import { type Product } from "@/data/products";
 import ContactForm from "@/components/ContactForm";
 import PaymentButton from "@/components/PaymentButton";
+import { SITE_SHOP_CONTENT_DEFAULTS } from "@/content/siteDefaults";
+import { useSiteContent } from "@/lib/siteContent";
 
 const isImageUrl = (str: string) =>
   typeof str === "string" &&
   (str.startsWith("/") || str.startsWith("http") || str.startsWith("data:"));
 
-const ProductCard = ({ product }: { product: Product }) => (
+const ProductCard = ({ product, botUrl }: { product: Product; botUrl: string }) => (
   <div className="bg-card rounded-2xl border border-border p-5 hover:border-primary/30 transition-all duration-300 flex flex-col h-full">
     <div className="flex items-start justify-between mb-3">
       {isImageUrl(product.image) ? (
@@ -44,7 +46,7 @@ const ProductCard = ({ product }: { product: Product }) => (
         className="w-full gap-2"
       />
     ) : (
-      <a href={`${BOT_URL}?start=${product.botParam}`} target="_blank" rel="noopener noreferrer">
+      <a href={`${botUrl}?start=${product.botParam}`} target="_blank" rel="noopener noreferrer">
         <Button variant="outline" className="w-full gap-2">
           <ShoppingBag className="w-4 h-4" />
           Обсудить заказ
@@ -59,11 +61,13 @@ const CategorySection = ({
   title,
   subtitle,
   products,
+  botUrl,
 }: {
   icon: React.ElementType;
   title: string;
   subtitle: string;
   products: Product[];
+  botUrl: string;
 }) => (
   <section className="mb-16">
     <AnimateOnScroll>
@@ -78,7 +82,7 @@ const CategorySection = ({
     <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {products.map((p) => (
         <AnimateOnScroll key={p.title}>
-          <ProductCard product={p} />
+          <ProductCard product={p} botUrl={botUrl} />
         </AnimateOnScroll>
       ))}
     </div>
@@ -86,6 +90,8 @@ const CategorySection = ({
 );
 
 const Shop = () => {
+  const shopContent = useSiteContent("site_shop_products", SITE_SHOP_CONTENT_DEFAULTS);
+
   return (
     <main className="min-h-screen bg-background">
       <div className="container mx-auto px-4 pt-6">
@@ -115,21 +121,24 @@ const Shop = () => {
           icon={Sparkles}
           title="Браслеты из натуральных камней"
           subtitle="Готовые браслеты и индивидуальный подбор после диагностики"
-          products={bracelets}
+          products={shopContent.bracelets}
+          botUrl={shopContent.botUrl}
         />
 
         <CategorySection
           icon={Star}
           title="Чётки для медитации"
           subtitle="Инструменты для духовных практик и мантра-медитаций"
-          products={rosaries}
+          products={shopContent.rosaries}
+          botUrl={shopContent.botUrl}
         />
 
         <CategorySection
           icon={Flame}
           title="Программные свечи"
           subtitle="Свечи ручной работы, заряженные на конкретное намерение"
-          products={candles}
+          products={shopContent.candles}
+          botUrl={shopContent.botUrl}
         />
 
         <AnimateOnScroll>
@@ -143,7 +152,7 @@ const Shop = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link to="/diagnostika">
-                <Button variant="default" className="gap-2">
+                <Button className="gap-2">
                   <ExternalLink className="w-4 h-4" />
                   Диагностика
                 </Button>

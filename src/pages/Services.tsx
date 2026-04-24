@@ -4,133 +4,20 @@ import { ArrowLeft, Sparkles, Shield, Heart, Eye, Star, Zap, CreditCard, Droplet
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import ContactForm from "@/components/ContactForm";
 import PaymentButton from "@/components/PaymentButton";
+import { SITE_SERVICES_DEFAULTS, type SiteService } from "@/content/siteDefaults";
+import { useSiteContent } from "@/lib/siteContent";
 
-const services = [
-  {
-    icon: Eye,
-    title: "Индивидуальная диагностика",
-    price: "5 000 ₽",
-    priceRub: 5000,
-    orderSlug: "diagnostika",
-    description: "Глубокий энергоинформационный анализ вашего состояния по двум фотографиям (спереди и сзади в полный рост). Вы получите полную картину состояния всех энергетических центров, информацию о блоках, привязках, деструктивных программах и сущностях. По результатам диагностики формируется детальный отчёт с рекомендациями.",
-    includes: [
-      "Анализ всех семи энергетических центров",
-      "Выявление блоков и привязок",
-      "Обнаружение деструктивных программ",
-      "Детальный письменный отчёт",
-      "Персональные рекомендации",
-    ],
-    cta: "Оплатить и записаться",
-    link: null,
-    featured: true,
-  },
-  {
-    icon: Sparkles,
-    title: "Индивидуальный подбор камней",
-    price: "8 000 ₽",
-    priceRub: 8000,
-    orderSlug: "podbor_kamney",
-    description: "Индивидуальный подбор минералов, исключительно на основе вашей личной диагностики и конкретных запросов. Каждый набор формируется с учетом совместимости минералов между собой и с вашей уникальной энергетикой.",
-    includes: [
-      "Подбор камней под ваши задачи",
-      "Проверка совместимости минералов",
-      "Инструкция по использованию",
-      "Рекомендации по уходу за камнями",
-    ],
-    cta: "Оплатить",
-    link: null,
-    featured: false,
-  },
-  {
-    icon: Shield,
-    title: "Снятие блоков и привязок",
-    price: "5 000 ₽",
-    priceRub: 5000,
-    orderSlug: "snyatie_blokov_i_privyazok",
-    description: "Целенаправленная работа по устранению энергетических блоков, привязок и деструктивных программ, выявленных в ходе диагностики. Работа проводится дистанционно и включает несколько сеансов в зависимости от сложности ситуации. После каждого сеанса предоставляется обратная связь о проделанной работе.",
-    includes: [
-      "Предварительная диагностика",
-      "Работа с выявленными блоками",
-      "Снятие энергетических привязок",
-      "Обратная связь после каждого сеанса",
-      "Контрольная диагностика после завершения",
-    ],
-    cta: "Оплатить",
-    link: null,
-    featured: false,
-  },
-  {
-    icon: Droplets,
-    title: "Отливка воском",
-    price: "3 000 ₽",
-    priceRub: 3000,
-    orderSlug: "otlivka_voskom",
-    description: "Дистанционная работа по фото для снятия тяжелых энергетических наложений, испугов, тревоги и повторяющихся блок-сценариев в жизни.",
-    includes: [
-      "Сглазы, порчи, чужие наложения",
-      "Испуги, страхи, панические и тревожные состояния",
-      "Хроническая усталость и туман в голове",
-      "Злость, обиды, тяжелые отношения",
-      "Эмоционально-зависимые боли: голова, ЖКТ, кожа",
-      "Чужая энергия и перегрузка после конфликтов",
-      "Блоки и повторяющийся круг в деньгах и отношениях",
-      "Снятие плотных узлов в чакральной системе",
-      "Очищение ауры, каналов и тонких тел",
-      "Разгрузка от липких слоев чужих эмоций",
-      "Дистанционно по фото",
-    ],
-    cta: "Оплатить отливку",
-    link: null,
-    featured: true,
-  },
-  {
-    icon: Shield,
-    title: "Полная энергетическая чистка",
-    price: "5 000 ₽",
-    priceRub: 5000,
-    orderSlug: "polnaya_chistka",
-    description: "Дополнительно к отливке воском: глубокая чистка от эмоционального перенапряжения, тревожного фона, энергетических засоров и привязок к тяжелым прошлым сценам.",
-    includes: [
-      "Эмоциональное перенапряжение, злость и вспышки",
-      "Тяжелые переживания и привязки к прошлому",
-      "Тяжесть в теле/голове, внутренние зажимы",
-      "Чужая энергия и токсичные привязки",
-      "Страх и тревога без явной причины",
-      "Блоки в отношениях, деньгах, реализации",
-      "Снятие запруд в нижних и сердечной чакрах",
-      "Очищение каналов между чакрами",
-      "Уменьшение фоновой паники и нервного напряжения",
-      "Возврат ощущения ясности и ресурса",
-      "Дистанционно по фото",
-    ],
-    cta: "Оплатить чистку",
-    link: null,
-    featured: false,
-  },
-  {
-    icon: Heart,
-    title: "Индивидуальное сопровождение",
-    price: "30 000 ₽ в месяц",
-    priceRub: 30000,
-    orderSlug: "soprovozhdenie",
-    description: "Комплексная программа трансформации с регулярными диагностиками, подбором камней и персональной поддержкой. Включает еженедельные сессии обратной связи, корректировку практик и полное сопровождение на протяжении всего процесса. Идеально для тех, кто готов к глубокой системной работе над собой.",
-    includes: [
-      "Очищение того, что препятствует внутренней ясности",
-      "Восстановление утраченного ресурса и внутренней опоры",
-      "Гармонизация связи с Родом, пространством и жизненным Потоком",
-      "Сопровождение к более осознанной и устойчивой Реализации",
-      "Индивидуальные медитативные практики",
-      "Регулярные сессии обратной связи",
-    ],
-    cta: "Оплатить программу",
-    link: null,
-    secondaryCta: "Обсудить программу",
-    secondaryLink: "https://t.me/SvetozarAdidev",
-    featured: false,
-  },
-];
+const serviceIcons = {
+  Eye,
+  Sparkles,
+  Shield,
+  Heart,
+  Droplets,
+} satisfies Record<SiteService["icon"], React.ElementType>;
 
 const Services = () => {
+  const services = useSiteContent("site_services", SITE_SERVICES_DEFAULTS);
+
   return (
     <main className="min-h-screen bg-background">
       <div className="container mx-auto px-4 pt-6">
@@ -160,6 +47,10 @@ const Services = () => {
         <div className="max-w-4xl mx-auto space-y-6">
           {services.map((service) => (
             <AnimateOnScroll key={service.title}>
+              {(() => {
+                const Icon = serviceIcons[service.icon] ?? Sparkles;
+
+                return (
               <div
                 className={`bg-card rounded-2xl border p-6 md:p-8 transition-colors ${
                   service.featured
@@ -173,7 +64,7 @@ const Services = () => {
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                         service.featured ? "bg-primary/20" : "bg-secondary"
                       }`}>
-                        <service.icon className={`w-5 h-5 ${service.featured ? "text-primary" : "text-muted-foreground"}`} />
+                        <Icon className={`w-5 h-5 ${service.featured ? "text-primary" : "text-muted-foreground"}`} />
                       </div>
                       <div>
                         <h2 className="font-serif text-xl font-bold text-foreground">{service.title}</h2>
@@ -202,7 +93,7 @@ const Services = () => {
                   </div>
 
                   <div className="md:w-48 shrink-0 space-y-3">
-                    {service.priceRub ? (
+                    {typeof service.priceRub === "number" ? (
                       <PaymentButton
                         amount={service.priceRub}
                         orderSlug={service.orderSlug!}
@@ -233,6 +124,8 @@ const Services = () => {
                   </div>
                 </div>
               </div>
+                );
+              })()}
             </AnimateOnScroll>
           ))}
         </div>

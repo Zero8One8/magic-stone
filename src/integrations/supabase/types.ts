@@ -179,6 +179,36 @@ export type Database = {
         }
         Relationships: []
       }
+      site_content: {
+        Row: {
+          content: Json
+          content_key: string
+          description: string | null
+          id: string
+          is_active: boolean
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          content?: Json
+          content_key: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          content?: Json
+          content_key?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       telegram_bot_state: {
         Row: {
           id: number

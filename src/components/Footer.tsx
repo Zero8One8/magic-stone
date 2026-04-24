@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import { SITE_LINKS_DEFAULTS } from "@/content/siteDefaults";
+import { useSiteContent } from "@/lib/siteContent";
 
 const Footer = () => {
+  const siteLinks = useSiteContent("site_links", SITE_LINKS_DEFAULTS);
+
   return (
     <footer className="border-t border-border bg-background/50 backdrop-blur-sm">
       <div className="max-w-6xl mx-auto px-6 py-12">
@@ -41,7 +45,7 @@ const Footer = () => {
               <h4 className="font-semibold text-foreground mb-3 text-sm uppercase tracking-wider">Telegram-канал</h4>
               <p className="text-muted-foreground text-sm mb-3">Советы про камни, практики и разборы — выходят в нашем канале</p>
               <a
-                href="https://t.me/Magic_ofstone"
+                href={siteLinks.telegramChannelUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
@@ -57,13 +61,13 @@ const Footer = () => {
             <div className="flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
               <p>© 2026 Магия Камней. Все права защищены.</p>
               <div className="flex gap-4 mt-4 md:mt-0">
-                <a href="https://t.me/Magic_ofstone" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                <a href={siteLinks.telegramChannelUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                   Telegram
                 </a>
-                <a href="https://instagram.com/magic.ofstone" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                <a href={siteLinks.instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                   Instagram
                 </a>
-                <a href="https://t.me/magicstonechat" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                <a href={siteLinks.telegramChatUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                   Контакты
                 </a>
               </div>

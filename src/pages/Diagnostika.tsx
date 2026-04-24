@@ -3,8 +3,8 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import { ArrowLeft, Eye, Shield, Zap, Heart, MessageCircle, CheckCircle2 } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
-
-const TELEGRAM_BOT = "https://t.me/Themagicofstonesbot?start=diagnostika";
+import { SITE_LINKS_DEFAULTS } from "@/content/siteDefaults";
+import { useSiteContent } from "@/lib/siteContent";
 
 const chakras = [
   {
@@ -133,6 +133,8 @@ const includes = [
 ];
 
 const Diagnostika = () => {
+  const siteLinks = useSiteContent("site_links", SITE_LINKS_DEFAULTS);
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       {/* Header */}
@@ -332,7 +334,7 @@ const Diagnostika = () => {
                 Запись на диагностику — через Telegram-бот. Там же вы сможете ознакомиться со всеми услугами и задать вопросы мастеру.
               </p>
               <a
-                href={TELEGRAM_BOT}
+                href={`${siteLinks.botUrl}?start=diagnostika`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-lg text-lg font-medium hover:bg-primary/90 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { X, Menu, Gem } from "lucide-react";
+import { SITE_LINKS_DEFAULTS } from "@/content/siteDefaults";
+import { useSiteContent } from "@/lib/siteContent";
 
 const navLinks = [
   { to: "/catalog", label: "Каталог" },
@@ -14,6 +16,7 @@ const navLinks = [
 ];
 
 const Header = () => {
+  const siteLinks = useSiteContent("site_links", SITE_LINKS_DEFAULTS);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
@@ -144,7 +147,7 @@ const Header = () => {
             Диагностика
           </Link>
           <a
-            href="https://t.me/Magic_ofstone"
+            href={siteLinks.telegramChannelUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-3 block text-center font-body text-sm text-muted-foreground hover:text-primary transition-colors"
