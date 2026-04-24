@@ -16,7 +16,7 @@ const ChannelSection = () => {
       <div className="relative max-w-3xl mx-auto px-6">
         <AnimateOnScroll className="text-center mb-16">
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 leading-tight">
-            Этот канал — <span className="text-gradient-gold">для тех, кто готов</span>
+            Это пространство — <span className="text-gradient-gold">для тех, кто готов</span>
           </h2>
           <p className="font-body text-lg text-muted-foreground">
             Для тех, кто готов <span className="text-primary">попробовать</span>. Мягко. Бережно. В своём темпе.

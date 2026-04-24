@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Lock } from "lucide-react";
 
+const DEFAULT_ADMIN_RESET_REDIRECT = "https://magic-stone.org/admin/reset-password";
+
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,11 +16,13 @@ const AdminLogin = () => {
   const [resetLoading, setResetLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const canonicalResetUrl = (import.meta.env.VITE_ADMIN_RESET_REDIRECT_URL || DEFAULT_ADMIN_RESET_REDIRECT).trim();
+  const currentOriginResetUrl = `${window.location.origin}/admin/reset-password`;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password });
     setLoading(false);
 
     if (error) {
@@ -35,9 +39,18 @@ const AdminLogin = () => {
     }
 
     setResetLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: `${window.location.origin}/admin/reset-password`,
+    let { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
+      redirectTo: canonicalResetUrl,
     });
+
+    if (error && canonicalResetUrl !== currentOriginResetUrl) {
+      // Fallback for environments where only current origin is whitelisted in Supabase.
+      const fallback = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
+        redirectTo: currentOriginResetUrl,
+      });
+      error = fallback.error;
+    }
+
     setResetLoading(false);
 
     if (error) {
@@ -45,7 +58,7 @@ const AdminLogin = () => {
       return;
     }
 
-    toast({ title: "Письмо отправлено", description: "Проверьте почту и откройте ссылку для смены пароля." });
+    toast({ title: "Письмо отправлено", description: "Проверьте почту и папку Спам. Ссылка откроет страницу смены пароля." });
   };
 
   return (
@@ -75,7 +88,7 @@ const AdminLogin = () => {
         <p className="text-xs text-center text-muted-foreground">
           Если письмо не открывает страницу сброса, проверьте, что в Supabase разрешен redirect URL
           <br />
-          {window.location.origin}/admin/reset-password
+          {canonicalResetUrl}
         </p>
       </div>
     </div>

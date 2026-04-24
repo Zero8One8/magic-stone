@@ -56,7 +56,7 @@ const ClosingSection = () => {
           <div className="w-16 h-px bg-primary/30 mx-auto mb-8" />
           <p className="font-body text-muted-foreground italic leading-relaxed">
             Перешли это тому, кто сейчас нуждается в тишине и опоре.<br />
-            Иногда камень приходит к человеку через чужие руки.
+            Иногда камень приходит к каждому через чужие руки.
           </p>
           <p className="text-3xl mt-6">💎</p>
         </AnimateOnScroll>

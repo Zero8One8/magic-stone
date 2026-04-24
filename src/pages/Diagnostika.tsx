@@ -4,7 +4,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import { ArrowLeft, Eye, Shield, Zap, Heart, MessageCircle, CheckCircle2 } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 
-const TELEGRAM_BOT = "https://t.me/The_magic_of_stones_bot?start=diagnostika";
+const TELEGRAM_BOT = "https://t.me/Themagicofstonesbot?start=diagnostika";
 
 const chakras = [
   {
@@ -84,7 +84,7 @@ const chakras = [
     location: "Область третьего глаза (лоб)",
     color: "#6A0DAD",
     element: "✨ Свет",
-    mantra: "ОМ",
+    mantra: "АУМ",
     keywords: "Интуиция, ясновидение, мудрость, внутреннее знание",
     signs: "Спутанность мыслей, игнорирование интуиции, головные боли, нарушения сна, проблемы со зрением и гормонами.",
     stones: "Лабрадорит, лазурит, аметист, флюорит, иолит",
@@ -98,7 +98,7 @@ const chakras = [
     location: "Макушка головы",
     color: "#9B59B6",
     element: "🌀 Мысль/сознание",
-    mantra: "АХ / тишина",
+    mantra: "ОМ",
     keywords: "Связь с высшим, осознанность, духовность, просветление",
     signs: "Духовная пустота, ощущение бессмысленности, отрезанность от мира, депрессии, хронические боли без причины.",
     stones: "Аметист, горный хрусталь, селенит, лепидолит, белый топаз",
