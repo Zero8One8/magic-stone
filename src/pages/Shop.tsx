@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ShoppingBag, Sparkles, Flame, Star, ExternalLink, CreditCard } from "lucide-react";
+import { ArrowLeft, ShoppingBag, Sparkles, Flame, Star, ExternalLink } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { BOT_URL, bracelets, rosaries, candles, type Product } from "@/data/products";
-import { buildFreekassaUrl, makeOrderId } from "@/lib/freekassa";
 import ContactForm from "@/components/ContactForm";
+import PaymentButton from "@/components/PaymentButton";
 
 const isImageUrl = (str: string) =>
   typeof str === "string" &&
@@ -35,16 +35,14 @@ const ProductCard = ({ product }: { product: Product }) => (
     <span className="text-primary font-semibold text-sm mb-2">{product.price}</span>
     <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-1">{product.description}</p>
     {product.priceRub ? (
-      <a
-        href={buildFreekassaUrl(product.priceRub, makeOrderId(product.botParam))}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Button className="w-full gap-2">
-          <CreditCard className="w-4 h-4" />
-          Оплатить {product.price}
-        </Button>
-      </a>
+      <PaymentButton
+        amount={product.priceRub}
+        orderSlug={product.botParam}
+        itemName={product.title}
+        itemType="product"
+        cta={`Оплатить ${product.price}`}
+        className="w-full gap-2"
+      />
     ) : (
       <a href={`${BOT_URL}?start=${product.botParam}`} target="_blank" rel="noopener noreferrer">
         <Button variant="outline" className="w-full gap-2">
@@ -107,7 +105,7 @@ const Shop = () => {
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Браслеты, чётки и программные свечи — готовые изделия и индивидуальный подбор после диагностики мастера.
-            Все заказы оформляются через Telegram-бота.
+            Для товаров с фиксированной ценой оплата проходит на сайте, дальше вы заполняете данные доставки.
           </p>
         </AnimateOnScroll>
       </section>

@@ -11,6 +11,7 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -25,6 +26,26 @@ const AdminLogin = () => {
     } else {
       navigate("/admin");
     }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email.trim()) {
+      toast({ title: "Нужен email", description: "Введите email администратора и затем отправьте ссылку для сброса.", variant: "destructive" });
+      return;
+    }
+
+    setResetLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/admin/reset-password`,
+    });
+    setResetLoading(false);
+
+    if (error) {
+      toast({ title: "Ошибка", description: error.message, variant: "destructive" });
+      return;
+    }
+
+    toast({ title: "Письмо отправлено", description: "Проверьте почту и откройте ссылку для смены пароля." });
   };
 
   return (
@@ -47,7 +68,15 @@ const AdminLogin = () => {
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Вход..." : "Войти"}
           </Button>
+          <Button type="button" variant="ghost" className="w-full" disabled={resetLoading} onClick={handleResetPassword}>
+            {resetLoading ? "Отправка..." : "Отправить ссылку для сброса пароля"}
+          </Button>
         </form>
+        <p className="text-xs text-center text-muted-foreground">
+          Если письмо не открывает страницу сброса, проверьте, что в Supabase разрешен redirect URL
+          <br />
+          {window.location.origin}/admin/reset-password
+        </p>
       </div>
     </div>
   );

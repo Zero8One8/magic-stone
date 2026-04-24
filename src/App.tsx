@@ -27,6 +27,7 @@ const Services = lazy(() => import("./pages/Services.tsx"));
 const Shop = lazy(() => import("./pages/Shop.tsx"));
 const Admin = lazy(() => import("./pages/Admin.tsx"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin.tsx"));
+const AdminResetPassword = lazy(() => import("./pages/AdminResetPassword.tsx"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess.tsx"));
 const PaymentFail = lazy(() => import("./pages/PaymentFail.tsx"));
 const DeliveryCheckout = lazy(() => import("./pages/DeliveryCheckout.tsx"));
@@ -77,6 +78,7 @@ const App = () => (
             <Route path="/shop" element={<Shop />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/reset-password" element={<AdminResetPassword />} />
             <Route path="/payment/success" element={<PaymentSuccess />} />
             <Route path="/payment/fail" element={<PaymentFail />} />
             <Route path="/delivery" element={<DeliveryCheckout />} />

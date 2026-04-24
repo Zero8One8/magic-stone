@@ -9,6 +9,8 @@ import { LogOut, RefreshCw, Inbox, Copy, ExternalLink } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 type ContactRequest = Tables<"contact_requests">;
+type PaymentOrder = Tables<"payment_orders">;
+type DeliveryRequest = Tables<"delivery_requests">;
 type LeadCapture = Tables<"lead_captures">;
 
 const STATUS_OPTIONS = [
@@ -20,6 +22,8 @@ const STATUS_OPTIONS = [
 
 const Admin = () => {
   const [requests, setRequests] = useState<ContactRequest[]>([]);
+  const [paymentOrders, setPaymentOrders] = useState<PaymentOrder[]>([]);
+  const [deliveryRequests, setDeliveryRequests] = useState<DeliveryRequest[]>([]);
   const [leads, setLeads] = useState<LeadCapture[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -29,11 +33,19 @@ const Admin = () => {
 
   const fetchRequests = async () => {
     setLoading(true);
-    const [requestsResult, leadsResult] = await Promise.all([
+    const [requestsResult, paymentsResult, deliveriesResult, leadsResult] = await Promise.all([
       supabase
       .from("contact_requests")
       .select("*")
       .order("created_at", { ascending: false }),
+      supabase
+        .from("payment_orders")
+        .select("*")
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("delivery_requests")
+        .select("*")
+        .order("created_at", { ascending: false }),
       supabase
         .from("lead_captures")
         .select("*")
@@ -46,10 +58,22 @@ const Admin = () => {
       setRequests(requestsResult.data || []);
     }
 
+    if (paymentsResult.error) {
+      toast({ title: "Ошибка", description: paymentsResult.error.message, variant: "destructive" });
+    } else {
+      setPaymentOrders((paymentsResult.data as PaymentOrder[]) || []);
+    }
+
+    if (deliveriesResult.error) {
+      toast({ title: "Ошибка", description: deliveriesResult.error.message, variant: "destructive" });
+    } else {
+      setDeliveryRequests((deliveriesResult.data as DeliveryRequest[]) || []);
+    }
+
     if (leadsResult.error) {
       toast({ title: "Ошибка", description: leadsResult.error.message, variant: "destructive" });
     } else {
-      setLeads(leadsResult.data || []);
+      setLeads((leadsResult.data as LeadCapture[]) || []);
     }
 
     setLoading(false);
@@ -250,6 +274,82 @@ const Admin = () => {
         )}
 
         <div className="space-y-4 pt-8">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-foreground">💳 Оплаты</h2>
+            <p className="text-sm text-muted-foreground">Всего: {paymentOrders.length}</p>
+          </div>
+
+          {paymentOrders.length === 0 && !loading ? (
+            <div className="text-center py-12 text-muted-foreground bg-card rounded-lg border border-border">
+              <p>Оплат пока нет</p>
+            </div>
+          ) : (
+            <div className="bg-card rounded-lg border border-border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Дата</TableHead>
+                    <TableHead>Заказ</TableHead>
+                    <TableHead>Тип</TableHead>
+                    <TableHead>Позиция</TableHead>
+                    <TableHead>Сумма</TableHead>
+                    <TableHead>Статус</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paymentOrders.map((order) => (
+                    <TableRow key={order.id}>
+                      <TableCell className="whitespace-nowrap text-xs">{formatDate(order.created_at)}</TableCell>
+                      <TableCell className="text-xs">{order.order_id}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground">{order.item_type}</TableCell>
+                      <TableCell>{order.item_name}</TableCell>
+                      <TableCell>{Number(order.amount).toLocaleString("ru-RU")} ₽</TableCell>
+                      <TableCell className="text-xs text-muted-foreground">{order.status}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-foreground">🚚 Доставки</h2>
+            <p className="text-sm text-muted-foreground">Всего: {deliveryRequests.length}</p>
+          </div>
+
+          {deliveryRequests.length === 0 && !loading ? (
+            <div className="text-center py-12 text-muted-foreground bg-card rounded-lg border border-border">
+              <p>Доставок пока нет</p>
+            </div>
+          ) : (
+            <div className="bg-card rounded-lg border border-border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Дата</TableHead>
+                    <TableHead>Заказ</TableHead>
+                    <TableHead>ФИО</TableHead>
+                    <TableHead>Телефон</TableHead>
+                    <TableHead>Город</TableHead>
+                    <TableHead>ПВЗ / адрес</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {deliveryRequests.map((delivery) => (
+                    <TableRow key={delivery.id}>
+                      <TableCell className="whitespace-nowrap text-xs">{formatDate(delivery.created_at)}</TableCell>
+                      <TableCell className="text-xs">{delivery.order_id}</TableCell>
+                      <TableCell>{delivery.customer_name}</TableCell>
+                      <TableCell>{delivery.phone}</TableCell>
+                      <TableCell>{delivery.city}</TableCell>
+                      <TableCell className="text-sm text-muted-foreground max-w-[220px] truncate">{delivery.pickup_point}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-foreground">📬 Подписки и лид-магниты</h2>
             <p className="text-sm text-muted-foreground">Всего: {leads.length}</p>

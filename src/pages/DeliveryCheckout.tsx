@@ -34,24 +34,17 @@ const DeliveryCheckout = () => {
     setLoading(true);
 
     try {
-      const deliveryComment = [
-        `Заказ: ${orderId || "не передан"}`,
-        `Город: ${city.trim()}`,
-        `Пункт выдачи/адрес OZON: ${pickupPoint.trim()}`,
-        `Доставка: OZON, за счет получателя`,
-        addressComment.trim() ? `Комментарий: ${addressComment.trim()}` : "",
-      ]
-        .filter(Boolean)
-        .join("\n");
+      const deliveryComment = addressComment.trim();
 
-      const { error } = await supabase.from("contact_requests").insert({
-        name: name.trim(),
-        phone: phone.trim(),
-        contact_method: contactMethod.trim() || null,
-        service: "Оформление доставки заказа",
-        comment: deliveryComment,
-        source: "delivery_form",
-        page_url: window.location.pathname + window.location.search,
+      const { error } = await supabase.rpc("upsert_delivery_request", {
+        p_order_id: orderId || `manual-${Date.now()}`,
+        p_customer_name: name.trim(),
+        p_phone: phone.trim(),
+        p_contact_method: contactMethod.trim() || null,
+        p_city: city.trim(),
+        p_pickup_point: pickupPoint.trim(),
+        p_delivery_comment: deliveryComment || null,
+        p_page_url: window.location.pathname + window.location.search,
       });
 
       if (error) throw error;
@@ -62,7 +55,13 @@ const DeliveryCheckout = () => {
           phone: phone.trim(),
           contact_method: contactMethod.trim() || null,
           service: "Оформление доставки заказа",
-          comment: deliveryComment,
+          comment: [
+            `Заказ: ${orderId || "не передан"}`,
+            `Город: ${city.trim()}`,
+            `Пункт выдачи/адрес OZON: ${pickupPoint.trim()}`,
+            `Доставка: OZON, за счет получателя`,
+            deliveryComment ? `Комментарий: ${deliveryComment}` : "",
+          ].filter(Boolean).join("\n"),
           source: "delivery_form",
           page_url: window.location.pathname + window.location.search,
         },

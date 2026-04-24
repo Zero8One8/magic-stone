@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles, Shield, Heart, Eye, Star, Zap, BookOpen, Users, CreditCard, Droplets } from "lucide-react";
+import { ArrowLeft, Sparkles, Shield, Heart, Eye, Star, Zap, CreditCard, Droplets } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
-import { buildFreekassaUrl, makeOrderId } from "@/lib/freekassa";
 import ContactForm from "@/components/ContactForm";
+import PaymentButton from "@/components/PaymentButton";
 
 const services = [
   {
@@ -26,11 +26,11 @@ const services = [
   },
   {
     icon: Sparkles,
-    title: "Подбор камней",
-    price: "2 500 ₽",
-    priceRub: 2500,
+    title: "Индивидуальный подбор камней",
+    price: "8 000 ₽",
+    priceRub: 8000,
     orderSlug: "podbor_kamney",
-    description: "Индивидуальный подбор минералов на основе вашей диагностики и конкретных запросов. Каждый набор камней формируется с учётом совместимости минералов между собой и с вашей уникальной энергетикой. Вы получаете не просто камни, а рабочий инструмент для решения конкретных жизненных задач.",
+    description: "Индивидуальный подбор минералов, исключительно на основе вашей личной диагностики и конкретных запросов. Каждый набор формируется с учетом совместимости минералов между собой и с вашей уникальной энергетикой.",
     includes: [
       "Подбор камней под ваши задачи",
       "Проверка совместимости минералов",
@@ -44,9 +44,9 @@ const services = [
   {
     icon: Shield,
     title: "Снятие блоков и привязок",
-    price: "от 5 000 ₽",
-    priceRub: null,
-    orderSlug: null,
+    price: "5 000 ₽",
+    priceRub: 5000,
+    orderSlug: "snyatie_blokov_i_privyazok",
     description: "Целенаправленная работа по устранению энергетических блоков, привязок и деструктивных программ, выявленных в ходе диагностики. Работа проводится дистанционно и включает несколько сеансов в зависимости от сложности ситуации. После каждого сеанса предоставляется обратная связь о проделанной работе.",
     includes: [
       "Предварительная диагностика",
@@ -55,8 +55,8 @@ const services = [
       "Обратная связь после каждого сеанса",
       "Контрольная диагностика после завершения",
     ],
-    cta: "Записаться",
-    link: "https://t.me/magicstonechat",
+    cta: "Оплатить",
+    link: null,
     featured: false,
   },
   {
@@ -91,7 +91,6 @@ const services = [
     orderSlug: "polnaya_chistka",
     description: "Дополнительно к отливке воском: глубокая чистка от эмоционального перенапряжения, тревожного фона, энергетических засоров и привязок к тяжелым прошлым сценам.",
     includes: [
-      "Дополнительно к отливке воском",
       "Эмоциональное перенапряжение, злость и вспышки",
       "Тяжелые переживания и привязки к прошлому",
       "Тяжесть в теле/голове, внутренние зажимы",
@@ -125,39 +124,8 @@ const services = [
     ],
     cta: "Оплатить программу",
     link: null,
-    featured: false,
-  },
-  {
-    icon: BookOpen,
-    title: "Консультация по камням",
-    price: "1 500 ₽",
-    priceRub: 1500,
-    orderSlug: "konsultaciya",
-    description: "Консультация проходит в формате голосового звонка по заранее подготовленным ответам на ваши вопросы, продолжительность 25 минут.",
-    includes: [
-      "Ответы на ваши вопросы о камнях",
-      "Анализ вашей коллекции минералов",
-      "Проверка совместимости камней",
-      "Рекомендации по использованию",
-    ],
-    cta: "Оплатить",
-    link: null,
-    featured: false,
-  },
-  {
-    icon: Users,
-    title: "Медитация с камнями",
-    price: "500 ₽",
-    priceRub: 500,
-    orderSlug: "meditaciya",
-    description: "Каждая медитация посвящена определённой теме: заземление, раскрытие сердца, активация интуиции, привлечение изобилия. Что входит: Инструкция по подготовке камней; Гайд по практике; Запись медитации.",
-    includes: [
-      "Инструкция по подготовке камней",
-      "Гайд по практике",
-      "Запись медитации",
-    ],
-    cta: "Оплатить",
-    link: null,
+    secondaryCta: "Обсудить программу",
+    secondaryLink: "https://t.me/SvetozarAdidev",
     featured: false,
   },
 ];
@@ -233,22 +201,17 @@ const Services = () => {
                     </div>
                   </div>
 
-                  <div className="md:w-48 shrink-0">
+                  <div className="md:w-48 shrink-0 space-y-3">
                     {service.priceRub ? (
-                      <a
-                        href={buildFreekassaUrl(service.priceRub, makeOrderId(service.orderSlug!))}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Button
-                          className="w-full gap-2"
-                          variant={service.featured ? "default" : "outline"}
-                          size="lg"
-                        >
-                          <CreditCard className="w-4 h-4" />
-                          {service.cta}
-                        </Button>
-                      </a>
+                      <PaymentButton
+                        amount={service.priceRub}
+                        orderSlug={service.orderSlug!}
+                        itemName={service.title}
+                        itemType="service"
+                        cta={service.cta}
+                        variant={service.featured ? "default" : "outline"}
+                        className="w-full gap-2"
+                      />
                     ) : (
                       <a href={service.link!} target="_blank" rel="noopener noreferrer">
                         <Button
@@ -257,6 +220,13 @@ const Services = () => {
                           size="lg"
                         >
                           {service.cta}
+                        </Button>
+                      </a>
+                    )}
+                    {service.secondaryLink && service.secondaryCta && (
+                      <a href={service.secondaryLink} target="_blank" rel="noopener noreferrer">
+                        <Button className="w-full" variant="ghost" size="lg">
+                          {service.secondaryCta}
                         </Button>
                       </a>
                     )}

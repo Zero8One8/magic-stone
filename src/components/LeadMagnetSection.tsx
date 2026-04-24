@@ -20,12 +20,12 @@ const LeadMagnetSection = () => {
 
           <div className="text-center p-6 bg-primary/10 rounded-lg border border-primary/20 space-y-4">
             <a
-              href="/guides/7-stones-starter-guide.txt"
+              href="/guides/7-kamney-dlya-nachinayushchego.pdf"
               download
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-3 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
             >
               <Download className="w-4 h-4" />
-              Скачать гайд
+              Скачать PDF-гайд
             </a>
             <p className="text-muted-foreground text-sm">
               Нужен разбор под ваш запрос? Напишите в Telegram.

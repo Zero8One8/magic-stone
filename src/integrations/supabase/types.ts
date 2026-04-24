@@ -56,6 +56,57 @@ export type Database = {
         }
         Relationships: []
       }
+      delivery_requests: {
+        Row: {
+          contact_method: string | null
+          created_at: string
+          customer_name: string
+          delivery_comment: string | null
+          id: string
+          order_id: string
+          page_url: string | null
+          phone: string
+          pickup_point: string
+          shipping_method: string
+          source: string
+          status: string
+          updated_at: string
+          city: string
+        }
+        Insert: {
+          contact_method?: string | null
+          created_at?: string
+          customer_name: string
+          delivery_comment?: string | null
+          id?: string
+          order_id: string
+          page_url?: string | null
+          phone: string
+          pickup_point: string
+          shipping_method?: string
+          source?: string
+          status?: string
+          updated_at?: string
+          city: string
+        }
+        Update: {
+          contact_method?: string | null
+          created_at?: string
+          customer_name?: string
+          delivery_comment?: string | null
+          id?: string
+          order_id?: string
+          page_url?: string | null
+          phone?: string
+          pickup_point?: string
+          shipping_method?: string
+          source?: string
+          status?: string
+          updated_at?: string
+          city?: string
+        }
+        Relationships: []
+      }
       lead_captures: {
         Row: {
           created_at: string
@@ -82,6 +133,45 @@ export type Database = {
           email?: string
           id?: string
           name?: string | null
+          page_url?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payment_orders: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          item_name: string
+          item_type: string
+          order_id: string
+          page_url: string | null
+          source: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          item_name: string
+          item_type: string
+          order_id: string
+          page_url?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          item_name?: string
+          item_type?: string
+          order_id?: string
           page_url?: string | null
           source?: string
           status?: string
@@ -148,7 +238,36 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      mark_payment_order_paid: {
+        Args: {
+          p_order_id: string
+        }
+        Returns: undefined
+      }
+      get_payment_order_summary: {
+        Args: {
+          p_order_id: string
+        }
+        Returns: {
+          item_name: string
+          item_type: string
+          order_id: string
+          status: string
+        }[]
+      }
+      upsert_delivery_request: {
+        Args: {
+          p_contact_method: string | null
+          p_customer_name: string
+          p_delivery_comment: string | null
+          p_order_id: string
+          p_page_url: string
+          p_phone: string
+          p_pickup_point: string
+          p_city: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
