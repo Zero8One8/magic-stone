@@ -14,6 +14,133 @@ export type Database = {
   }
   public: {
     Tables: {
+      customers: {
+        Row: {
+          id: string
+          customer_number: number
+          email: string
+          name: string | null
+          phone: string | null
+          source: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          email: string
+          name?: string | null
+          phone?: string | null
+          source?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          name?: string | null
+          phone?: string | null
+          source?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payment_orders: {
+        Row: {
+          id: string
+          order_id: string
+          item_name: string
+          item_type: string
+          amount: number
+          status: string
+          source: string
+          page_url: string | null
+          customer_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          order_id: string
+          item_name: string
+          item_type: string
+          amount: number
+          status?: string
+          source?: string
+          page_url?: string | null
+          customer_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          order_id?: string
+          item_name?: string
+          item_type?: string
+          amount?: number
+          status?: string
+          source?: string
+          page_url?: string | null
+          customer_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      delivery_requests: {
+        Row: {
+          id: string
+          order_id: string
+          customer_name: string
+          email: string | null
+          phone: string
+          contact_method: string | null
+          city: string
+          pickup_point: string
+          delivery_comment: string | null
+          status: string
+          source: string
+          page_url: string | null
+          customer_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          order_id: string
+          customer_name: string
+          email?: string | null
+          phone: string
+          contact_method?: string | null
+          city: string
+          pickup_point: string
+          delivery_comment?: string | null
+          status?: string
+          source?: string
+          page_url?: string | null
+          customer_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          order_id?: string
+          customer_name?: string
+          email?: string | null
+          phone?: string
+          contact_method?: string | null
+          city?: string
+          pickup_point?: string
+          delivery_comment?: string | null
+          status?: string
+          source?: string
+          page_url?: string | null
+          customer_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contact_requests: {
         Row: {
           comment: string | null

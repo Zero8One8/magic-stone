@@ -10,6 +10,9 @@ import type { Tables } from "@/integrations/supabase/types";
 
 type ContactRequest = Tables<"contact_requests">;
 type LeadCapture = Tables<"lead_captures">;
+type PaymentOrder = Tables<"payment_orders">;
+type DeliveryRequest = Tables<"delivery_requests">;
+type Customer = Tables<"customers">;
 
 const STATUS_OPTIONS = [
   { value: "new", label: "Новая", color: "bg-blue-500/20 text-blue-400" },
@@ -21,6 +24,9 @@ const STATUS_OPTIONS = [
 const Admin = () => {
   const [requests, setRequests] = useState<ContactRequest[]>([]);
   const [leads, setLeads] = useState<LeadCapture[]>([]);
+  const [paymentOrders, setPaymentOrders] = useState<PaymentOrder[]>([]);
+  const [deliveryRequests, setDeliveryRequests] = useState<DeliveryRequest[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [sourceFilter, setSourceFilter] = useState<string>("all");
@@ -29,15 +35,12 @@ const Admin = () => {
 
   const fetchRequests = async () => {
     setLoading(true);
-    const [requestsResult, leadsResult] = await Promise.all([
-      supabase
-      .from("contact_requests")
-      .select("*")
-      .order("created_at", { ascending: false }),
-      supabase
-        .from("lead_captures")
-        .select("*")
-        .order("created_at", { ascending: false }),
+    const [requestsResult, leadsResult, ordersResult, deliveriesResult, customersResult] = await Promise.all([
+      supabase.from("contact_requests").select("*").order("created_at", { ascending: false }),
+      supabase.from("lead_captures").select("*").order("created_at", { ascending: false }),
+      supabase.from("payment_orders").select("*").order("created_at", { ascending: false }),
+      supabase.from("delivery_requests").select("*").order("created_at", { ascending: false }),
+      supabase.from("customers").select("*").order("created_at", { ascending: false }),
     ]);
 
     if (requestsResult.error) {
@@ -51,6 +54,10 @@ const Admin = () => {
     } else {
       setLeads(leadsResult.data || []);
     }
+
+    if (!ordersResult.error) setPaymentOrders((ordersResult.data as PaymentOrder[]) || []);
+    if (!deliveriesResult.error) setDeliveryRequests((deliveriesResult.data as DeliveryRequest[]) || []);
+    if (!customersResult.error) setCustomers((customersResult.data as Customer[]) || []);
 
     setLoading(false);
   };
@@ -286,6 +293,161 @@ const Admin = () => {
                         </div>
                       </TableCell>
                       <TableCell className="text-xs text-muted-foreground">{lead.page_url || "—"}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </div>
+
+        {/* Заказы на оплату */}
+        <div className="space-y-4 pt-8">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-foreground">🛒 Заказы</h2>
+            <p className="text-sm text-muted-foreground">Всего: {paymentOrders.length}</p>
+          </div>
+          {paymentOrders.length === 0 && !loading ? (
+            <div className="text-center py-12 text-muted-foreground bg-card rounded-lg border border-border">
+              <Inbox className="mx-auto h-10 w-10 mb-3 opacity-40" />
+              <p>Заказов пока нет</p>
+            </div>
+          ) : (
+            <div className="bg-card rounded-lg border border-border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Дата</TableHead>
+                    <TableHead>ID заказа</TableHead>
+                    <TableHead>Товар / услуга</TableHead>
+                    <TableHead>Тип</TableHead>
+                    <TableHead>Сумма</TableHead>
+                    <TableHead>Статус</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paymentOrders.map((o) => (
+                    <TableRow key={o.id}>
+                      <TableCell className="whitespace-nowrap text-xs">{formatDate(o.created_at)}</TableCell>
+                      <TableCell className="text-xs font-mono">{o.order_id}</TableCell>
+                      <TableCell className="text-sm">{o.item_name}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground">{o.item_type}</TableCell>
+                      <TableCell className="font-semibold">{o.amount} ₽</TableCell>
+                      <TableCell>
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                          o.status === "paid"
+                            ? "bg-green-500/20 text-green-400"
+                            : o.status === "cancelled"
+                            ? "bg-red-500/20 text-red-400"
+                            : "bg-yellow-500/20 text-yellow-400"
+                        }`}>
+                          {o.status === "paid" ? "Оплачен" : o.status === "cancelled" ? "Отменён" : "Ожидает"}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </div>
+
+        {/* Заявки на доставку */}
+        <div className="space-y-4 pt-8">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-foreground">🚚 Доставки</h2>
+            <p className="text-sm text-muted-foreground">Всего: {deliveryRequests.length}</p>
+          </div>
+          {deliveryRequests.length === 0 && !loading ? (
+            <div className="text-center py-12 text-muted-foreground bg-card rounded-lg border border-border">
+              <p>Заявок на доставку пока нет</p>
+            </div>
+          ) : (
+            <div className="bg-card rounded-lg border border-border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Дата</TableHead>
+                    <TableHead>Заказ</TableHead>
+                    <TableHead>Имя</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Телефон</TableHead>
+                    <TableHead>Город</TableHead>
+                    <TableHead>Пункт выдачи</TableHead>
+                    <TableHead>Статус</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {deliveryRequests.map((d) => (
+                    <TableRow key={d.id}>
+                      <TableCell className="whitespace-nowrap text-xs">{formatDate(d.created_at)}</TableCell>
+                      <TableCell className="text-xs font-mono">{d.order_id}</TableCell>
+                      <TableCell>{d.customer_name}</TableCell>
+                      <TableCell className="text-xs">{d.email || "—"}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <span>{d.phone}</span>
+                          <button onClick={() => copyText(d.phone, "Телефон")} className="text-muted-foreground hover:text-foreground">
+                            <Copy className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm">{d.city}</TableCell>
+                      <TableCell className="text-sm max-w-[180px] truncate">{d.pickup_point}</TableCell>
+                      <TableCell>
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                          d.status === "sent" ? "bg-green-500/20 text-green-400" : "bg-blue-500/20 text-blue-400"
+                        }`}>
+                          {d.status === "sent" ? "Отправлено" : "Новая"}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </div>
+
+        {/* База клиентов */}
+        <div className="space-y-4 pt-8">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-foreground">👥 База клиентов</h2>
+            <p className="text-sm text-muted-foreground">Всего: {customers.length}</p>
+          </div>
+          {customers.length === 0 && !loading ? (
+            <div className="text-center py-12 text-muted-foreground bg-card rounded-lg border border-border">
+              <p>Клиентов пока нет</p>
+            </div>
+          ) : (
+            <div className="bg-card rounded-lg border border-border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Дата</TableHead>
+                    <TableHead>#</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Имя</TableHead>
+                    <TableHead>Телефон</TableHead>
+                    <TableHead>Источник</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {customers.map((c) => (
+                    <TableRow key={c.id}>
+                      <TableCell className="whitespace-nowrap text-xs">{formatDate(c.created_at)}</TableCell>
+                      <TableCell className="text-xs font-mono text-muted-foreground">{c.customer_number}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <span>{c.email}</span>
+                          <button onClick={() => copyText(c.email, "Email")} className="text-muted-foreground hover:text-foreground">
+                            <Copy className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </TableCell>
+                      <TableCell>{c.name || "—"}</TableCell>
+                      <TableCell>{c.phone || "—"}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground">{c.source}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
