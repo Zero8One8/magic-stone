@@ -1,23 +1,43 @@
+import { Suspense, lazy, useEffect, useState } from "react";
 import HeroSection from "@/components/HeroSection";
-import ArticleSection from "@/components/ArticleSection";
-import StoriesSection from "@/components/StoriesSection";
-import CrystalOfTheDay from "@/components/CrystalOfTheDay";
-import LeadMagnetSection from "@/components/LeadMagnetSection";
-import PhilosophySection from "@/components/PhilosophySection";
-import ChannelSection from "@/components/ChannelSection";
-import ClosingSection from "@/components/ClosingSection";
+
+const ArticleSection = lazy(() => import("@/components/ArticleSection"));
+const StoriesSection = lazy(() => import("@/components/StoriesSection"));
+const CrystalOfTheDay = lazy(() => import("@/components/CrystalOfTheDay"));
+const LeadMagnetSection = lazy(() => import("@/components/LeadMagnetSection"));
+const PhilosophySection = lazy(() => import("@/components/PhilosophySection"));
+const ChannelSection = lazy(() => import("@/components/ChannelSection"));
+const ClosingSection = lazy(() => import("@/components/ClosingSection"));
 
 const Index = () => {
+  const [showDeferredSections, setShowDeferredSections] = useState(false);
+
+  useEffect(() => {
+    const activateDeferredSections = () => setShowDeferredSections(true);
+
+    if ("requestIdleCallback" in window) {
+      const idleId = window.requestIdleCallback(activateDeferredSections, { timeout: 1200 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(activateDeferredSections, 150);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
+
   return (
     <main className="min-h-screen bg-background overflow-hidden pt-0">
       <HeroSection />
-      <ArticleSection />
-      <CrystalOfTheDay />
-      <StoriesSection />
-      <LeadMagnetSection />
-      <PhilosophySection />
-      <ChannelSection />
-      <ClosingSection />
+      {showDeferredSections ? (
+        <Suspense fallback={null}>
+          <ArticleSection />
+          <CrystalOfTheDay />
+          <StoriesSection />
+          <LeadMagnetSection />
+          <PhilosophySection />
+          <ChannelSection />
+          <ClosingSection />
+        </Suspense>
+      ) : null}
     </main>
   );
 };

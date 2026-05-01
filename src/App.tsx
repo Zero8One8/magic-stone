@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Component, Suspense, lazy, type ReactNode } from "react";
+import { Component, Suspense, lazy, type ReactNode, useEffect } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -55,6 +55,7 @@ const Favorites = lazyWithRetry(() => import("./pages/Favorites.tsx"));
 const About = lazyWithRetry(() => import("./pages/About.tsx"));
 const BirthstoneCalculator = lazyWithRetry(() => import("./pages/BirthstoneCalculator.tsx"));
 const ChakraMap = lazyWithRetry(() => import("./pages/ChakraMap.tsx"));
+const ChakraDetail = lazyWithRetry(() => import("./pages/ChakraDetail.tsx"));
 const MoonCalendar = lazyWithRetry(() => import("./pages/MoonCalendar.tsx"));
 const Services = lazyWithRetry(() => import("./pages/Services.tsx"));
 const Shop = lazyWithRetry(() => import("./pages/Shop.tsx"));
@@ -64,17 +65,19 @@ const PaymentSuccess = lazyWithRetry(() => import("./pages/PaymentSuccess.tsx"))
 const PaymentFail = lazyWithRetry(() => import("./pages/PaymentFail.tsx"));
 const DeliveryCheckout = lazyWithRetry(() => import("./pages/DeliveryCheckout.tsx"));
 
-import CookieBanner from "./components/CookieBanner";
-import QuizPopup from "./components/QuizPopup";
-import ChatWidget from "./components/ChatWidget";
-import Footer from "./components/Footer";
 import Header from "./components/Header";
+import ImageWatermark from "./components/ImageWatermark";
 import ScrollToTop from "./components/ScrollToTop";
+
+const Footer = lazyWithRetry(() => import("./components/Footer"));
+const CookieBanner = lazyWithRetry(() => import("./components/CookieBanner"));
+const QuizPopup = lazyWithRetry(() => import("./components/QuizPopup"));
+const ChatWidget = lazyWithRetry(() => import("./components/ChatWidget"));
 
 // Loading component for lazy boundaries
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="text-lg text-muted-foreground">Загрузка...</div>
+  <div className="min-h-[40vh] flex items-center justify-center" aria-hidden="true">
+    <div className="h-8 w-8 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
   </div>
 );
 
@@ -122,51 +125,61 @@ class AppErrorBoundary extends Component<{ children: ReactNode }, AppErrorBounda
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <AppErrorBoundary>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Header />
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/catalog" element={<Catalog />} />
-              <Route path="/catalog/:name" element={<CrystalDetail />} />
-              <Route path="/quiz" element={<Quiz />} />
-              <Route path="/diagnostika" element={<Diagnostika />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/compatibility" element={<Compatibility />} />
-              <Route path="/meditations" element={<Meditations />} />
-              <Route path="/compare" element={<Compare />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogArticle />} />
-              <Route path="/favorites" element={<Favorites />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/birthstone" element={<BirthstoneCalculator />} />
-              <Route path="/chakras" element={<ChakraMap />} />
-              <Route path="/moon" element={<MoonCalendar />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/payment/success" element={<PaymentSuccess />} />
-              <Route path="/payment/fail" element={<PaymentFail />} />
-              <Route path="/delivery" element={<DeliveryCheckout />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-          <Footer />
-          <CookieBanner />
-          <QuizPopup />
-          <ChatWidget />
-        </BrowserRouter>
-      </AppErrorBoundary>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  useEffect(() => {
+    window.dispatchEvent(new Event("app:ready"));
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <AppErrorBoundary>
+          <BrowserRouter>
+            <ImageWatermark />
+            <ScrollToTop />
+            <Header />
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/catalog" element={<Catalog />} />
+                <Route path="/catalog/:name" element={<CrystalDetail />} />
+                <Route path="/quiz" element={<Quiz />} />
+                <Route path="/diagnostika" element={<Diagnostika />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/compatibility" element={<Compatibility />} />
+                <Route path="/meditations" element={<Meditations />} />
+                <Route path="/compare" element={<Compare />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogArticle />} />
+                <Route path="/favorites" element={<Favorites />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/birthstone" element={<BirthstoneCalculator />} />
+                <Route path="/chakras" element={<ChakraMap />} />
+                <Route path="/chakras/:slug" element={<ChakraDetail />} />
+                <Route path="/moon" element={<MoonCalendar />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/payment/success" element={<PaymentSuccess />} />
+                <Route path="/payment/fail" element={<PaymentFail />} />
+                <Route path="/delivery" element={<DeliveryCheckout />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+            <Suspense fallback={null}>
+              <Footer />
+              <CookieBanner />
+              <QuizPopup />
+              <ChatWidget />
+            </Suspense>
+          </BrowserRouter>
+        </AppErrorBoundary>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

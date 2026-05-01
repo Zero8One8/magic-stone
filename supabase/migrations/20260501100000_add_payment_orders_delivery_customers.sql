@@ -14,6 +14,10 @@ CREATE TABLE IF NOT EXISTS public.customers (
 
 ALTER TABLE public.customers ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can view customers" ON public.customers;
+DROP POLICY IF EXISTS "Authenticated users can update customers" ON public.customers;
+DROP POLICY IF EXISTS "Authenticated users can delete customers" ON public.customers;
+
 CREATE POLICY "Authenticated users can view customers"
   ON public.customers FOR SELECT TO authenticated USING (true);
 
@@ -22,6 +26,8 @@ CREATE POLICY "Authenticated users can update customers"
 
 CREATE POLICY "Authenticated users can delete customers"
   ON public.customers FOR DELETE TO authenticated USING (true);
+
+DROP TRIGGER IF EXISTS update_customers_updated_at ON public.customers;
 
 CREATE TRIGGER update_customers_updated_at
   BEFORE UPDATE ON public.customers
@@ -46,6 +52,11 @@ CREATE TABLE IF NOT EXISTS public.payment_orders (
 
 ALTER TABLE public.payment_orders ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can create payment orders" ON public.payment_orders;
+DROP POLICY IF EXISTS "Authenticated users can view payment orders" ON public.payment_orders;
+DROP POLICY IF EXISTS "Authenticated users can update payment orders" ON public.payment_orders;
+DROP POLICY IF EXISTS "Authenticated users can delete payment orders" ON public.payment_orders;
+
 CREATE POLICY "Anyone can create payment orders"
   ON public.payment_orders FOR INSERT TO anon, authenticated WITH CHECK (true);
 
@@ -57,6 +68,8 @@ CREATE POLICY "Authenticated users can update payment orders"
 
 CREATE POLICY "Authenticated users can delete payment orders"
   ON public.payment_orders FOR DELETE TO authenticated USING (true);
+
+DROP TRIGGER IF EXISTS update_payment_orders_updated_at ON public.payment_orders;
 
 CREATE TRIGGER update_payment_orders_updated_at
   BEFORE UPDATE ON public.payment_orders
@@ -85,6 +98,11 @@ CREATE TABLE IF NOT EXISTS public.delivery_requests (
 
 ALTER TABLE public.delivery_requests ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can create delivery requests" ON public.delivery_requests;
+DROP POLICY IF EXISTS "Authenticated users can view delivery requests" ON public.delivery_requests;
+DROP POLICY IF EXISTS "Authenticated users can update delivery requests" ON public.delivery_requests;
+DROP POLICY IF EXISTS "Authenticated users can delete delivery requests" ON public.delivery_requests;
+
 CREATE POLICY "Anyone can create delivery requests"
   ON public.delivery_requests FOR INSERT TO anon, authenticated WITH CHECK (true);
 
@@ -96,6 +114,8 @@ CREATE POLICY "Authenticated users can update delivery requests"
 
 CREATE POLICY "Authenticated users can delete delivery requests"
   ON public.delivery_requests FOR DELETE TO authenticated USING (true);
+
+DROP TRIGGER IF EXISTS update_delivery_requests_updated_at ON public.delivery_requests;
 
 CREATE TRIGGER update_delivery_requests_updated_at
   BEFORE UPDATE ON public.delivery_requests

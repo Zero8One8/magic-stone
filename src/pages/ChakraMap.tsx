@@ -5,6 +5,7 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { crystals } from "@/data/crystals";
 
 type Chakra = {
+  slug: string;
   name: string;
   sanskrit: string;
   location: string;
@@ -20,6 +21,7 @@ type Chakra = {
 
 const chakrasData: Chakra[] = [
   {
+    slug: "sahasrara",
     name: "Коронная чакра",
     sanskrit: "Сахасрара",
     location: "Макушка головы",
@@ -33,6 +35,7 @@ const chakrasData: Chakra[] = [
     top: "5%",
   },
   {
+    slug: "ajna",
     name: "Третий глаз",
     sanskrit: "Аджна",
     location: "Центр лба между бровями",
@@ -46,6 +49,7 @@ const chakrasData: Chakra[] = [
     top: "15%",
   },
   {
+    slug: "vishuddha",
     name: "Горловая чакра",
     sanskrit: "Вишуддха",
     location: "Область горла",
@@ -59,6 +63,7 @@ const chakrasData: Chakra[] = [
     top: "28%",
   },
   {
+    slug: "anahata",
     name: "Сердечная чакра",
     sanskrit: "Анахата",
     location: "Центр грудной клетки",
@@ -72,6 +77,7 @@ const chakrasData: Chakra[] = [
     top: "40%",
   },
   {
+    slug: "manipura",
     name: "Солнечное сплетение",
     sanskrit: "Манипура",
     location: "Область выше пупка",
@@ -85,6 +91,7 @@ const chakrasData: Chakra[] = [
     top: "52%",
   },
   {
+    slug: "svadhisthana",
     name: "Сакральная чакра",
     sanskrit: "Свадхистана",
     location: "Нижняя часть живота",
@@ -98,6 +105,7 @@ const chakrasData: Chakra[] = [
     top: "64%",
   },
   {
+    slug: "muladhara",
     name: "Корневая чакра",
     sanskrit: "Муладхара",
     location: "Основание позвоночника",
@@ -203,6 +211,14 @@ const ChakraMap = () => {
 
               <div>
                 <h4 className="font-serif text-lg font-semibold text-foreground mb-3">Камни для гармонизации</h4>
+                <div className="mb-3">
+                  <Link
+                    to={`/chakras/${chakrasData[selected].slug}`}
+                    className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-md border border-primary/40 text-primary hover:bg-primary/10 transition-colors"
+                  >
+                    Подробнее о чакре
+                  </Link>
+                </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {chakrasData[selected].stones.map((stoneName) => {
                     const crystal = findCrystal(stoneName);

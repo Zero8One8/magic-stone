@@ -1,0 +1,53 @@
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: #15120f;
+  color: #f1e7d7;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#boot-fallback {
+  min-height: 100vh;
+  display: none;
+  place-items: center;
+  padding: 24px;
+}
+
+.boot-card {
+  width: min(560px, 100%);
+  background: #211b16;
+  border: 1px solid #3b3027;
+  border-radius: 14px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.boot-title {
+  margin: 0 0 10px;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.boot-text {
+  margin: 0;
+  color: #c8b9a1;
+  line-height: 1.5;
+}
+
+.boot-actions {
+  margin-top: 18px;
+}
+
+.boot-button {
+  appearance: none;
+  border: 0;
+  border-radius: 8px;
+  background: #c9a774;
+  color: #22180f;
+  font-weight: 600;
+  padding: 10px 14px;
+  cursor: pointer;
+}

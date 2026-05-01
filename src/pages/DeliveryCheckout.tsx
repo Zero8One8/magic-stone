@@ -61,17 +61,12 @@ const DeliveryCheckout = () => {
         body: {
           name: name.trim(),
           phone: phone.trim(),
+          email: email.trim() || null,
           contact_method: contactMethod.trim() || null,
-          service: "Оформление доставки заказа",
-          comment: [
-            `Заказ: ${orderId || "не передан"}`,
-            `Email: ${email.trim() || "не указан"}`,
-            `Город: ${city.trim()}`,
-            `Пункт выдачи: ${pickupPoint.trim()}`,
-            addressComment.trim() ? `Комментарий: ${addressComment.trim()}` : "",
-          ]
-            .filter(Boolean)
-            .join(" | "),
+          city: city.trim(),
+          pickup_point: pickupPoint.trim(),
+          delivery_comment: addressComment.trim() || null,
+          order_id: orderId || null,
           source: "delivery_form",
           page_url: window.location.pathname + window.location.search,
         },

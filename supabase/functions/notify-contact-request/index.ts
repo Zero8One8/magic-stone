@@ -11,6 +11,12 @@ type Payload = {
   comment?: string;
   source?: string;
   page_url?: string;
+  // delivery fields
+  city?: string;
+  pickup_point?: string;
+  delivery_comment?: string;
+  order_id?: string;
+  email?: string;
   record?: Payload;
 };
 
@@ -33,18 +39,38 @@ Deno.serve(async (req) => {
 
     const payload = (await req.json()) as Payload;
     const body = payload.record ?? payload;
-    const message = [
-      "📩 <b>Новая заявка с сайта</b>",
-      "",
-      `<b>Имя:</b> ${escapeHtml(body.name || "—")}`,
-      `<b>Телефон:</b> ${escapeHtml(body.phone || "—")}`,
-      `<b>Telegram/WhatsApp:</b> ${escapeHtml(body.contact_method || "—")}`,
-      `<b>Услуга:</b> ${escapeHtml(body.service || "—")}`,
-      `<b>Источник:</b> ${escapeHtml(body.source || "—")}`,
-      `<b>Страница:</b> ${escapeHtml(body.page_url || "—")}`,
-      "",
-      `<b>Комментарий:</b> ${escapeHtml(body.comment || "—")}`,
-    ].join("\n");
+
+    const isDelivery = body.source === "delivery_form" || Boolean(body.city);
+
+    let message: string;
+    if (isDelivery) {
+      message = [
+        "🚚 <b>Новая заявка на доставку</b>",
+        "",
+        `<b>Имя:</b> ${escapeHtml(body.name || "—")}`,
+        `<b>Телефон:</b> ${escapeHtml(body.phone || "—")}`,
+        body.email ? `<b>Email:</b> ${escapeHtml(body.email)}` : null,
+        `<b>Telegram/WhatsApp:</b> ${escapeHtml(body.contact_method || "—")}`,
+        `<b>Город:</b> ${escapeHtml(body.city || "—")}`,
+        `<b>Пункт выдачи:</b> ${escapeHtml(body.pickup_point || "—")}`,
+        body.delivery_comment ? `<b>Комментарий:</b> ${escapeHtml(body.delivery_comment)}` : null,
+        body.order_id ? `<b>Заказ:</b> ${escapeHtml(body.order_id)}` : null,
+        `<b>Страница:</b> ${escapeHtml(body.page_url || "—")}`,
+      ].filter(Boolean).join("\n");
+    } else {
+      message = [
+        "📩 <b>Новая заявка с сайта</b>",
+        "",
+        `<b>Имя:</b> ${escapeHtml(body.name || "—")}`,
+        `<b>Телефон:</b> ${escapeHtml(body.phone || "—")}`,
+        `<b>Telegram/WhatsApp:</b> ${escapeHtml(body.contact_method || "—")}`,
+        `<b>Услуга:</b> ${escapeHtml(body.service || "—")}`,
+        `<b>Источник:</b> ${escapeHtml(body.source || "—")}`,
+        `<b>Страница:</b> ${escapeHtml(body.page_url || "—")}`,
+        "",
+        `<b>Комментарий:</b> ${escapeHtml(body.comment || "—")}`,
+      ].join("\n");
+    }
 
     const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: "POST",

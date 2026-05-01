@@ -9,6 +9,7 @@ const TELEGRAM_BOT = "https://t.me/The_magic_of_stones_bot?start=diagnostika";
 const chakras = [
   {
     num: "1",
+    slug: "muladhara",
     name: "Муладхара",
     sanskrit: "Mūlādhāra",
     location: "Основание позвоночника",
@@ -23,6 +24,7 @@ const chakras = [
   },
   {
     num: "2",
+    slug: "svadhisthana",
     name: "Свадхистана",
     sanskrit: "Svādhiṣṭhāna",
     location: "Область крестца, ниже пупка",
@@ -37,6 +39,7 @@ const chakras = [
   },
   {
     num: "3",
+    slug: "manipura",
     name: "Манипура",
     sanskrit: "Maṇipūra",
     location: "Солнечное сплетение",
@@ -51,6 +54,7 @@ const chakras = [
   },
   {
     num: "4",
+    slug: "anahata",
     name: "Анахата",
     sanskrit: "Anāhata",
     location: "Центр груди",
@@ -65,6 +69,7 @@ const chakras = [
   },
   {
     num: "5",
+    slug: "vishuddha",
     name: "Вишудха",
     sanskrit: "Viśuddha",
     location: "Область горла",
@@ -79,6 +84,7 @@ const chakras = [
   },
   {
     num: "6",
+    slug: "ajna",
     name: "Аджна",
     sanskrit: "Ājñā",
     location: "Область третьего глаза (лоб)",
@@ -93,6 +99,7 @@ const chakras = [
   },
   {
     num: "7",
+    slug: "sahasrara",
     name: "Сахасрара",
     sanskrit: "Sahasrāra",
     location: "Макушка головы",
@@ -221,6 +228,17 @@ const Diagnostika = () => {
             <p className="text-muted-foreground text-sm text-center max-w-xl mx-auto mb-12">
               Диагностика охватывает все семь чакр. Каждый центр отвечает за определённую сферу жизни — физическую, эмоциональную и духовную.
             </p>
+            <div className="text-center -mt-8 mb-10">
+              <p className="text-xs text-muted-foreground/80 max-w-2xl mx-auto mb-3">
+                Внизу каждой чакры есть переход в отдельную статью. Там будет полный разбор: признаки дисбаланса, практики, камни и рекомендации мастера.
+              </p>
+              <Link
+                to="/chakras"
+                className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border border-border/70 bg-card/30 hover:bg-card/60 transition-colors"
+              >
+                Общий гид по чакрам - подробнее
+              </Link>
+            </div>
           </AnimateOnScroll>
 
           <AnimateOnScroll>
@@ -284,6 +302,14 @@ const Diagnostika = () => {
                           {chakra.meditation}
                         </p>
                         <p className="text-xs text-primary/60 italic">✦ {chakra.affirmation}</p>
+                        <div className="pt-2">
+                          <Link
+                            to={`/chakras/${chakra.slug}`}
+                            className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-md border border-primary/40 text-primary hover:bg-primary/10 transition-colors"
+                          >
+                            Подробнее о чакре
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>

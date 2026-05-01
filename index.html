@@ -18,9 +18,23 @@
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/og-image.jpg" />
+    <link rel="stylesheet" href="/boot.css" />
   </head>
 
   <body>
+    <div id="boot-fallback" aria-live="polite">
+      <div class="boot-card">
+        <h1 class="boot-title">Загрузка сайта...</h1>
+        <p class="boot-text" id="boot-message">
+          Если страница долго не открывается, нажмите кнопку обновления.
+        </p>
+        <div class="boot-actions">
+          <button class="boot-button" type="button" onclick="window.location.reload()">
+            Обновить страницу
+          </button>
+        </div>
+      </div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
