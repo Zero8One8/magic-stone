@@ -6,6 +6,7 @@ const navLinks = [
   { to: "/catalog", label: "Каталог" },
   { to: "/quiz", label: "Подбор камня" },
   { to: "/meditations", label: "Медитации" },
+  { to: "/moon", label: "🌙 Луна" },
   { to: "/services", label: "Услуги" },
   { to: "/shop", label: "Магазин" },
   { to: "/blog", label: "Блог" },
