@@ -57,6 +57,7 @@ const BirthstoneCalculator = lazyWithRetry(() => import("./pages/BirthstoneCalcu
 const ChakraMap = lazyWithRetry(() => import("./pages/ChakraMap.tsx"));
 const ChakraDetail = lazyWithRetry(() => import("./pages/ChakraDetail.tsx"));
 const MoonCalendar = lazyWithRetry(() => import("./pages/MoonCalendar.tsx"));
+const DivinationPortrait = lazyWithRetry(() => import("./pages/DivinationPortrait.tsx"));
 const Services = lazyWithRetry(() => import("./pages/Services.tsx"));
 const Shop = lazyWithRetry(() => import("./pages/Shop.tsx"));
 const Admin = lazyWithRetry(() => import("./pages/Admin.tsx"));
@@ -157,6 +158,7 @@ const App = () => {
                 <Route path="/chakras" element={<ChakraMap />} />
                 <Route path="/chakras/:slug" element={<ChakraDetail />} />
                 <Route path="/moon" element={<MoonCalendar />} />
+                <Route path="/portrait" element={<DivinationPortrait />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/admin" element={<Admin />} />
