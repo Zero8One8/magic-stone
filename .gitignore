@@ -30,3 +30,6 @@ dist-ssr
 
 # Deploy scripts
 deploy-git-only.ps1
+
+# Local export artifacts
+channel-images-watermarked.zip
