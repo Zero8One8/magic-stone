@@ -3,6 +3,7 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import { ArrowLeft, Eye, Shield, Zap, Heart, MessageCircle, CheckCircle2 } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+import { chakraSectionContent } from "@/data/chakraSectionContent";
 
 const TELEGRAM_BOT = "https://t.me/The_magic_of_stones_bot?start=diagnostika";
 
@@ -226,17 +227,17 @@ const Diagnostika = () => {
               7 энергетических центров
             </h2>
             <p className="text-muted-foreground text-sm text-center max-w-xl mx-auto mb-12">
-              Диагностика охватывает все семь чакр. Каждый центр отвечает за определённую сферу жизни — физическую, эмоциональную и духовную.
+              {chakraSectionContent.intro}
             </p>
             <div className="text-center -mt-8 mb-10">
               <p className="text-xs text-muted-foreground/80 max-w-2xl mx-auto mb-3">
-                Внизу каждой чакры есть переход в отдельную статью. Там будет полный разбор: признаки дисбаланса, практики, камни и рекомендации мастера.
+                {chakraSectionContent.teaser}
               </p>
               <Link
                 to="/chakras"
                 className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border border-border/70 bg-card/30 hover:bg-card/60 transition-colors"
               >
-                Общий гид по чакрам - подробнее
+                {chakraSectionContent.linkLabel}
               </Link>
             </div>
           </AnimateOnScroll>

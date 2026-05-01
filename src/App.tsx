@@ -66,7 +66,6 @@ const PaymentFail = lazyWithRetry(() => import("./pages/PaymentFail.tsx"));
 const DeliveryCheckout = lazyWithRetry(() => import("./pages/DeliveryCheckout.tsx"));
 
 import Header from "./components/Header";
-import ImageWatermark from "./components/ImageWatermark";
 import ScrollToTop from "./components/ScrollToTop";
 
 const Footer = lazyWithRetry(() => import("./components/Footer"));
@@ -137,7 +136,6 @@ const App = () => {
         <Sonner />
         <AppErrorBoundary>
           <BrowserRouter>
-            <ImageWatermark />
             <ScrollToTop />
             <Header />
             <Suspense fallback={<PageLoader />}>

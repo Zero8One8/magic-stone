@@ -1,0 +1,442 @@
+{
+  "src/assets/alexandrite.jpg": {
+    "hash": "69dc8517841f0cd77a34d458875a19e9156aa216",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/amazonite.jpg": {
+    "hash": "211c9b3d2e8aa368571053a99b89385ca833dd0a",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/amber.jpg": {
+    "hash": "72aeb3952143becba38220739e433da3b0dc324b",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/amethyst.jpg": {
+    "hash": "097e8fde2418d23312a9c0872dbdc6055eb0836f",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/ametrine.jpg": {
+    "hash": "8c1ee2fd48007c07ef8f51c571b70402079bd510",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/andalusite.jpg": {
+    "hash": "6fcfb3079029f8a5dbc7f248622a8debe0f2b7b5",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/aqua-aura.jpg": {
+    "hash": "86b9e7cc3bb623737b86503f52c2958902140f67",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/aquamarine.jpg": {
+    "hash": "b28614b2276ae3e72026fd6ed0d12902715940cc",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/aurichalcite.jpg": {
+    "hash": "d9e39ea08b96a85ecdde422db4bcc7c42abc3069",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/azurite.jpg": {
+    "hash": "ebdaeaae01f1a158596cb133eb2c1678787930cb",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/black-moss-agate.jpg": {
+    "hash": "d094862bac919f851bfadcc427dc3766080b5c7d",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/black-spinel.jpg": {
+    "hash": "0e62c0515a33310f99f2d1cd2d2a6fe7d4cb1ef5",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/blue-apatite.jpg": {
+    "hash": "1b7638a42f1703630ab5a85aaed52c0dffa4d2ee",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/blue-calcite.jpg": {
+    "hash": "8cdffc3bcb162e90bcfc2141928c1c3204d46748",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/blue-chalcedony.jpg": {
+    "hash": "291e25af954e9b3426a538be452a320fed52af59",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/blue-kyanite.jpg": {
+    "hash": "3b9a32f568f210317532f59fce271b152c404968",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/blue-tiger-eye.jpg": {
+    "hash": "7c0b53bb73585ff1d91ee2d2f602c04f3221ded6",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/blue-topaz.jpg": {
+    "hash": "e76b5c56cab030c2512b1bdfcdece1db909b7883",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/carnelian.jpg": {
+    "hash": "856b51a625803bbabaefb0089d1f66b7c8e7687e",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/celestine.jpg": {
+    "hash": "c5fa11db8cbc1bffce1013ea24b1458740188084",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/charoite.jpg": {
+    "hash": "ac9bd7b9c10541bde69bb11839deb89c3d03c142",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/chrysoberyl.jpg": {
+    "hash": "b429ad83bce5d6d4b8ff7a7267a6a714bbba789a",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/chrysocolla.jpg": {
+    "hash": "7c53a730c2e4ade9a8ab81fe79199fd33dcc4f3e",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/chrysoprase.jpg": {
+    "hash": "29c624e429c1740381c4cc21d1ca537ca7509ea4",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/citrine.jpg": {
+    "hash": "87a872fc843439df8437391331a91329a33c4804",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/clear-quartz.jpg": {
+    "hash": "f0d4b961c01763d7317d5e6d93a0b78b2a2d1e0e",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/clinozoisite.jpg": {
+    "hash": "7b885e13e50f702c4e622688446078a54395da09",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/dalmatian-jasper.jpg": {
+    "hash": "9aa5ab0d4bdca61858236aa2e6d05c8571e12772",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/danburite.jpg": {
+    "hash": "25cde0f286551196ba9f18b88c9d38f582e4c954",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/dioptase.jpg": {
+    "hash": "0cf142bf980e889086d5bea23d5882c31346e8a8",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/dravite.jpg": {
+    "hash": "298a92389ffc79fe446acefae844899019667b00",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/dumortierite.jpg": {
+    "hash": "eb1799677bde4468665e31fcd2db408cfe8ac56b",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/elite-shungite.jpg": {
+    "hash": "a458886b15294d916698c6398bf6e0b8c9e875c5",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/emerald.jpg": {
+    "hash": "d7052128d2590eb4f109d04b6ebed2fb5d4e62c5",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/epidote.jpg": {
+    "hash": "6fcb04971b705a2e2f932659908df37bf2a47da1",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/fire-opal.jpg": {
+    "hash": "266bed70556549bdc098cbde028f74496e440051",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/fluorite.jpg": {
+    "hash": "a8c9ab10756d2ac46bf4d52fbb894996f908e1d9",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/garnet.jpg": {
+    "hash": "23c9ebfc02d7ab04c185dc8471f6e647a85a9f20",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/golden-labradorite.jpg": {
+    "hash": "fc0f4a57a8f2f67b54bd97d62daef53be323bcd7",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/golden-topaz.jpg": {
+    "hash": "d94155d4df2fe26d5a3c5fa7596c77a1e4a47e77",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/green-apatite.jpg": {
+    "hash": "b86183d54edfe485f09a7e8f7e77c1e6ed8447c3",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/green-aventurine.jpg": {
+    "hash": "89a0b0b2298fbcb0bc406856fa1593d5ab567fe3",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/green-kyanite.jpg": {
+    "hash": "ee145ea8e4e3b802d3d28c36249a850511ca6c50",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/heliodor.jpg": {
+    "hash": "f8f44ce1bc911e449e664189241408625515c1b0",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/hematite.jpg": {
+    "hash": "de7054ee4d3595838ce46bf9df879e21c237be94",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/hero-crystal.jpg": {
+    "hash": "68f8b8a0d75ba0ab9f59f0f1651f3aab3e0a5f91",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/howlite.jpg": {
+    "hash": "1ee392a35d669457d95beae54e7d7a780fcb9906",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/iolite.jpg": {
+    "hash": "041b849b3a1c1e9dc173bf0a88f4a443fbf331a5",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/jadeite.jpg": {
+    "hash": "988591b54d7235bc619f40b5891bd28abbdefe5c",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/kunzite.jpg": {
+    "hash": "87e76a85861c1f5e98842921e1bb89b50ff08f80",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/labradorite.jpg": {
+    "hash": "6cc5ad765a2654eb3ea1a71d2e05ed7876fbe2a3",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/lapis-lazuli.jpg": {
+    "hash": "ff344fadce411882ed9d105e2616e5b63617d56a",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/larimar.jpg": {
+    "hash": "e33520c8397816c8a7839bbadb171814336a759a",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/lepidolite.jpg": {
+    "hash": "c11e798e074e727882fa8eed7c7d917f73d92724",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/malachite.jpg": {
+    "hash": "f252895ed4894beb87e13898f6369f56238cebe5",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/moldavite.jpg": {
+    "hash": "d51c994c6bdee5b750b2784c6579abf56a7de88e",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/moonstone.jpg": {
+    "hash": "7d75a15433595dd69da600c2d0e356359f7ba639",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/morganite.jpg": {
+    "hash": "3be560e0121ddf9c015734c5b5ee7ef3e3300fa9",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/moss-agate.jpg": {
+    "hash": "278eb3d92421cf7747f12dce77bb06982ad16c66",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/mother-of-pearl.jpg": {
+    "hash": "40987adfa1c5542ef2433e420ec6e436c748e50d",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/nephrite.jpg": {
+    "hash": "4edad416e895643b0625254beca1e9cc22d7e62f",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/obsidian.jpg": {
+    "hash": "1e9d422dd651b645a2f40286c96c4ceca0cccda9",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/ocean-jasper.jpg": {
+    "hash": "8751323a91d485e17b007ae30b94be72fff90cc6",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/onyx.jpg": {
+    "hash": "d6db777f771f7322092f879c3b53075153ff2b90",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/orange-calcite.jpg": {
+    "hash": "034c5b4e5a03654730cc9b6f8e4f78edf2b5d129",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/orange-carnelian.jpg": {
+    "hash": "ac4e92950c31892b5de605493785bbbfa68ef249",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/pearl.jpg": {
+    "hash": "db2afd6718a245141c76498581510cf9111e2174",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/peridot.jpg": {
+    "hash": "c34718dc086d363e6a1a79306ade63fffb5c4ba4",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/pink-spinel.jpg": {
+    "hash": "6733cdade6fc79c9338b3f571e1a7693293ce1a8",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/pink-tourmaline.jpg": {
+    "hash": "8c6d017ca87b640f8e1ba8a2e96a8b843d8c67d5",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/prasiolite.jpg": {
+    "hash": "913574574618bc7d6c9d3cf735771bba7b7a64c2",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/prehnite.jpg": {
+    "hash": "1e9650215413dd834ac873ff48f32243a61639d1",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/pyrite.jpg": {
+    "hash": "351cf3046d95743e678db150320ef15ea6bb3262",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/red-jasper.jpg": {
+    "hash": "5ca7f31efc4bfc325c0c39ea9685f0c3451ebd26",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/rhodochrosite.jpg": {
+    "hash": "181718382d5e9adee29443ce1c33c938a5ebbfaf",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/rhodonite.jpg": {
+    "hash": "1f4e672aca9d0b3f11852dd640c056f85d0e3739",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/rose-quartz.jpg": {
+    "hash": "37c54c013659fb0a273e8717b3620aed9cd8aa59",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/rubellite.jpg": {
+    "hash": "d29092c670c201ad76a04c03e414ccc675dbb267",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/ruby.jpg": {
+    "hash": "8f7baae51c1e8166b82881a4fc7a5f3c510f04c0",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/rutilated-quartz.jpg": {
+    "hash": "0a0288f1346dd60ef26b6dc198096db878ea0598",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/sapphire.jpg": {
+    "hash": "53344eddd794ef2b54a595d32660cce625827b7f",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/sardonyx.jpg": {
+    "hash": "e7c171fd2d9cb32edf747947116f43f574f97ff2",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/scolecite.jpg": {
+    "hash": "3171057b9e4a9f24615e9845de096a32db1a50a2",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/selenite.jpg": {
+    "hash": "683d66735327b9044fa44931af4c2fda367bdf3a",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/seraphinite.jpg": {
+    "hash": "cd813b5ed088a5d392b84a878520be3bb5e6c3de",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/shop/bracelet-abundance.jpg": {
+    "hash": "b9b60285118470be4a0206dfb4d31e1f579fb1e7",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/shop/bracelet-harmony.jpg": {
+    "hash": "3b14b967f93bfd08edb61dbaf234c8d7ec21825b",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/shop/bracelet-individual.jpg": {
+    "hash": "196640ddcb38610b212520afbc210add109d8964",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/shop/bracelet-protection.jpg": {
+    "hash": "b130b12a99cb9684333e20fe4267976d6854d618",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/shop/labradorite-bracelet-1.jpg": {
+    "hash": "4143f410203cd78efa1ed0643d4c07a53c3278ce",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/shop/labradorite-bracelet-2.jpg": {
+    "hash": "fe0ec51dd40ce0c4c8db676af03603ef52ef55a9",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/shop/rosary-calm.jpg": {
+    "hash": "adf08bc4bca9c136b97053e7f08f7ecf611819db",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/shop/rosary-individual.jpg": {
+    "hash": "30ded807203eee5545574ac171053ae47e592317",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/shop/rosary-meditation.jpg": {
+    "hash": "912fb966be3c75042375c9f03a815017efef0012",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/shungite.jpg": {
+    "hash": "ece99313a3ddefe7aa9d738a96f53ec0392ee21d",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/smoky-quartz.jpg": {
+    "hash": "7f29431b4c2a603d84f7f5dede4f7246f8bb29cc",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/sodalite.jpg": {
+    "hash": "7cf3a9d572ebc19f2d804a435893eb687faf4c75",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/spectrolite.jpg": {
+    "hash": "d0f3afe74463c0f150ad8e6ed0fc7b86aadb6386",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/staurolite.jpg": {
+    "hash": "808cffe4687346772cbbc8636e0c92d0a845cdda",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/sugilite.jpg": {
+    "hash": "c933feda337e3524c5336e37d20095f4e53b6bdf",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/tanzanite.jpg": {
+    "hash": "edf1fcf4c20da36f703a047450bd85a784cc06a4",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/tiger-eye.jpg": {
+    "hash": "a46557081477bf7547aea5b11c7f3a18f842379a",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/tiger-iron.jpg": {
+    "hash": "974dc62952b0cf35f9dc2a9e948b41cd960fd2e2",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/tourmaline.jpg": {
+    "hash": "9afaee9222d9bce40421f3a657cc428884322a0e",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/turquoise.jpg": {
+    "hash": "c10bcf540dc1e217196624423d63e4c604c5e40d",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/unakite.jpg": {
+    "hash": "30e3d14226ff1b863b704215b11d184ff7b96912",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/uvarovite.jpg": {
+    "hash": "74fb8a5865ed320a074fd41be9bfcf2aff55dab8",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/vesuvianite.jpg": {
+    "hash": "a403431c13456ff3fc9db7dc7e339a2454204be3",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/watermelon-tourmaline.jpg": {
+    "hash": "955b406464698c1781b76157fba21c638fcafe47",
+    "version": "wm-v2-soft"
+  },
+  "src/assets/willemite.jpg": {
+    "hash": "a692f4ac7d63e2f29691ff1f1418a78aac5cf627",
+    "version": "wm-v2-soft"
+  }
+}

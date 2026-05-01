@@ -74,54 +74,6 @@
     background: linear-gradient(135deg, hsl(270 40% 20%), hsl(30 15% 7%));
   }
 
-    .wm-wrap {
-      position: relative;
-      display: inline-block;
-      max-width: 100%;
-      overflow: hidden;
-    }
-    .wm-wrap.wm-block {
-      display: block;
-    }
-    .wm-wrap > img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-    }
-    .wm-wrap::before {
-      content: "magic-stone.org   magic-stone.org";
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: clamp(11px, 1vw, 14px);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: rgba(255, 255, 255, 0.18);
-      transform: rotate(-17deg) scale(1.08);
-      text-transform: lowercase;
-      pointer-events: none;
-      z-index: 2;
-      white-space: nowrap;
-    }
-    .wm-wrap::after {
-      content: "magic-stone.org";
-      position: absolute;
-      right: 8px;
-      bottom: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      color: rgba(255, 255, 255, 0.78);
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      border-radius: 5px;
-      padding: 2px 6px;
-      pointer-events: none;
-      z-index: 3;
-    }
-
   /* Scroll-triggered animations */
   .animate-on-scroll {
     opacity: 0;

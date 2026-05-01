@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, MessageCircle, Sparkles } from "lucide-react";
+import { useEffect } from "react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { chakraBySlug, chakraArticles } from "@/data/chakraArticles";
 
@@ -8,6 +9,71 @@ const TELEGRAM_BOT = "https://t.me/The_magic_of_stones_bot?start=diagnostika";
 const ChakraDetail = () => {
   const { slug = "" } = useParams();
   const chakra = chakraBySlug(slug);
+
+  useEffect(() => {
+    if (!chakra) return;
+
+    const pageUrl = `https://magic-stone.com/chakras/${chakra.slug}`;
+    const title = `${chakra.name}: баланс, признаки блока, практики и камни`;
+    const description = `${chakra.name} (${chakra.sanskrit}) - подробный разбор: признаки дисбаланса, практики гармонизации и камни поддержки.`;
+
+    document.title = `${title} | Magic Stone`;
+
+    const setMeta = (attr: "name" | "property", key: string, value: string) => {
+      let tag = document.head.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement | null;
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute(attr, key);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", value);
+    };
+
+    let canonical = document.head.querySelector("link[rel='canonical']") as HTMLLinkElement | null;
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", pageUrl);
+
+    setMeta("name", "description", description);
+    setMeta("property", "og:title", `${title} | Magic Stone`);
+    setMeta("property", "og:description", description);
+    setMeta("property", "og:type", "article");
+    setMeta("property", "og:url", pageUrl);
+
+    let ld = document.getElementById("chakra-json-ld") as HTMLScriptElement | null;
+    if (!ld) {
+      ld = document.createElement("script");
+      ld.type = "application/ld+json";
+      ld.id = "chakra-json-ld";
+      document.head.appendChild(ld);
+    }
+    ld.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: `${chakra.name}: практики и камни`,
+      description,
+      author: {
+        "@type": "Organization",
+        name: "Magic Stone",
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "Magic Stone",
+      },
+      mainEntityOfPage: pageUrl,
+      image: chakra.image,
+      articleSection: "Чакры",
+      keywords: `${chakra.name}, ${chakra.sanskrit}, чакры, камни, диагностика`,
+    });
+
+    return () => {
+      const cleanupLd = document.getElementById("chakra-json-ld");
+      if (cleanupLd) cleanupLd.remove();
+    };
+  }, [chakra]);
 
   if (!chakra) {
     return (
