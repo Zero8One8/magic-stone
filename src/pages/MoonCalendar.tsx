@@ -76,12 +76,9 @@ const AnimatedMoon = ({ age, size = 200 }: { age: number; size?: number }) => {
   const r = size / 2 - 4;
   const cx = size / 2;
   const cy = size / 2;
-  const innerRx = Math.abs(2 * illumination - 1) * r;
-  const darkX = isWaxing ? cx : cx - r;
-  const ellipseFill =
-    illumination > 0.5
-      ? isWaxing ? "#F5E6C8" : "#06030f"
-      : isWaxing ? "#06030f" : "#F5E6C8";
+  const phaseCurve = Math.abs(2 * illumination - 1);
+  const shadowOpacity = 0.14 + (1 - illumination) * 0.28;
+  const shadowOffset = (isWaxing ? -1 : 1) * r * (0.18 + phaseCurve * 0.64);
 
   return (
     <div style={{ animation: "moonFloat 7s ease-in-out infinite" }}>
@@ -117,16 +114,21 @@ const AnimatedMoon = ({ age, size = 200 }: { age: number; size?: number }) => {
             <clipPath id="mc-clip">
               <circle cx={cx} cy={cy} r={r} />
             </clipPath>
-            <radialGradient id="mc-grad" cx="36%" cy="32%" r="68%">
-              <stop offset="0%"   stopColor="#fffdf0" />
-              <stop offset="40%"  stopColor="#F5E6C8" />
-              <stop offset="75%"  stopColor="#d4a84b" />
-              <stop offset="100%" stopColor="#8a5c18" />
+            <radialGradient id="mc-grad" cx="34%" cy="28%" r="72%">
+              <stop offset="0%" stopColor="#fffef7" />
+              <stop offset="36%" stopColor="#f3eee3" />
+              <stop offset="72%" stopColor="#d8d0c2" />
+              <stop offset="100%" stopColor="#90857a" />
             </radialGradient>
             <radialGradient id="mc-glow" cx="50%" cy="50%" r="50%">
               <stop offset="0%"   stopColor="rgba(255,245,200,0.35)" />
               <stop offset="100%" stopColor="rgba(255,245,200,0)" />
             </radialGradient>
+            <linearGradient id="mc-shadow" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="rgba(18,14,30,0.62)" />
+              <stop offset="45%" stopColor="rgba(24,20,34,0.34)" />
+              <stop offset="100%" stopColor="rgba(24,20,34,0.12)" />
+            </linearGradient>
             <filter id="mc-blur" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="2.5" />
             </filter>
@@ -144,12 +146,17 @@ const AnimatedMoon = ({ age, size = 200 }: { age: number; size?: number }) => {
             <circle cx={cx * 1.32} cy={cy * 1.25} r={r * 0.05}  fill="#7a500f" />
             <circle cx={cx * 0.45} cy={cy * 1.10} r={r * 0.04}  fill="#7a500f" />
           </g>
-          {/* Shadow (night side) */}
+          {/* Soft artistic phase shadow */}
           <g clipPath="url(#mc-clip)">
-            <rect x={darkX} y={0} width={r} height={size} fill="#03010a" opacity="0.86" />
-            {innerRx > 1 && (
-              <ellipse cx={cx} cy={cy} rx={innerRx} ry={r} fill={ellipseFill} opacity="0.92" />
-            )}
+            <circle cx={cx + shadowOffset} cy={cy} r={r} fill="url(#mc-shadow)" opacity={shadowOpacity} />
+            <ellipse
+              cx={cx + shadowOffset * 0.45}
+              cy={cy}
+              rx={r * (0.72 + illumination * 0.26)}
+              ry={r}
+              fill="rgba(30,24,38,0.16)"
+              opacity={shadowOpacity}
+            />
           </g>
           {/* Corona dashed ring */}
           <circle

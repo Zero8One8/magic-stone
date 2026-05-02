@@ -32,7 +32,7 @@ import {
   BAZI_BRANCHES,
 } from "@/data/divinationData";
 
-const TELEGRAM_BOT = "https://t.me/The_magic_of_stones_bot?start=portrait";
+const TELEGRAM_BOT = "https://t.me/The_magic_of_stones_bot?start=portrait_pay";
 
 type FormData = {
   name: string;
@@ -52,6 +52,11 @@ type SystemResult = {
   color: string;
 };
 
+type FullPreviewSection = {
+  title: string;
+  text: string;
+};
+
 function parseDate(dateStr: string): { year: number; month: number; day: number } | null {
   const parts = dateStr.split("-");
   if (parts.length !== 3) return null;
@@ -63,6 +68,69 @@ function parseDate(dateStr: string): { year: number; month: number; day: number 
 function parseTime(timeStr: string): { hour: number; minute: number } {
   const parts = timeStr.split(":");
   return { hour: Number(parts[0]) || 0, minute: Number(parts[1]) || 0 };
+}
+
+function getGeneKeyProfile(year: number, month: number, day: number, hour: number, minute: number) {
+  const key = ((Number(`${year}${String(month).padStart(2, "0")}${String(day).padStart(2, "0")}${String(hour).padStart(2, "0")}${String(minute).padStart(2, "0")}`) % 64) + 63) % 64 + 1;
+  const line = ((year + month + day + hour + minute) % 6) + 1;
+  const lineNames = [
+    "Исследователь", "Естественный союзник", "Экспериментатор",
+    "Опора для других", "Проводник перемен", "Визионер"
+  ];
+  const shadows = ["сомнение", "контроль", "спешка", "жёсткость", "страх близости", "распыление"];
+  const gifts = ["проницательность", "принятие", "адаптивность", "устойчивость", "сердечность", "синтез"];
+  const siddhis = ["ясность", "доверие", "естественность", "внутренний стержень", "единство", "мудрость"];
+  const crystals = ["Лабрадорит", "Аметист", "Аквамарин", "Чёрный турмалин", "Розовый кварц", "Горный хрусталь"];
+  const idx = (key - 1) % 6;
+  return {
+    key,
+    line,
+    lineName: lineNames[line - 1],
+    shadow: shadows[idx],
+    gift: gifts[idx],
+    siddhi: siddhis[idx],
+    crystal: crystals[idx],
+  };
+}
+
+function firstSentence(text: string): string {
+  const sentence = text.split(".")[0]?.trim() ?? text.trim();
+  return sentence.endsWith(".") ? sentence : `${sentence}.`;
+}
+
+function dominantCrystal(results: SystemResult[]): string {
+  const counts = new Map<string, number>();
+  for (const result of results) counts.set(result.crystal, (counts.get(result.crystal) ?? 0) + 1);
+  return [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? "Аметист";
+}
+
+function buildIntegratedSummary(results: SystemResult[]): string {
+  if (results.length < 4) return "Ваш портрет пока не собран полностью.";
+  const topCrystal = dominantCrystal(results);
+  return [
+    firstSentence(results[0].brief),
+    firstSentence(results[2].brief),
+    firstSentence(results[7].brief),
+    `В сумме это даёт цельный портрет человека, которому важно не просто понять себя, а соединить интуицию, дисциплину и личную силу в один путь. Главный камень-компилятор этого портрета — ${topCrystal}.`,
+  ].join(" ");
+}
+
+function buildFullPreview(results: SystemResult[], form: FormData): FullPreviewSection[] {
+  const topCrystal = dominantCrystal(results);
+  return [
+    {
+      title: "Общий композитный портрет",
+      text: `По совокупности всех систем у вас выражен путь внутренней сборки через силу характера, чувствительность к знакам и стремление к осмысленным переменам. Это не один «гороскоп», а пересечение нескольких архетипов: личный вектор, кармическая задача, стиль действий, способ проживать кризисы и природные таланты.`,
+    },
+    {
+      title: "Ваш вектор судьбы",
+      text: `Солнце, нумерология, Матрица Судьбы и Генные ключи показывают, где вы сильнее всего раскрываетесь, а Бацзы и Таро уточняют, как именно реализуется эта сила во времени. Для вас важно идти не за внешней скоростью, а за внутренней точностью выбора.`,
+    },
+    {
+      title: "Камни полного расклада",
+      text: `В полном раскладе камни подбираются не по одному знаку, а по слоям: базовый камень личности, камень защиты, камень для денег и реализации, камень для любви и гармонии, камень для переходных периодов. Базовый камень этого портрета сейчас — ${topCrystal}.${form.city ? ` Место рождения ${form.city} используется для более точной астрологической настройки.` : ""}`,
+    },
+  ];
 }
 
 function buildPortrait(form: FormData): SystemResult[] {
@@ -192,7 +260,20 @@ function buildPortrait(form: FormData): SystemResult[] {
     color: "from-cyan-900/30 to-cyan-700/10",
   });
 
-  // 9. Egyptian Horoscope
+  // 9. Gene Keys
+  const gene = getGeneKeyProfile(year, month, day, hour, minute);
+  results.push({
+    system: "Генные ключи",
+    icon: "🧬",
+    resultName: `Ключ ${gene.key} · Линия ${gene.line} (${gene.lineName})`,
+    resultEmoji: "🧬",
+    crystal: gene.crystal,
+    brief: `Ваш Генный ключ ${gene.key} раскрывает путь от тени «${gene.shadow}» к дару «${gene.gift}» и высшему состоянию «${gene.siddhi}». Линия ${gene.line} показывает социальную роль: ${gene.lineName}. Камень поддержки: ${gene.crystal}.`,
+    teaser: "Полный профиль Генных ключей: Activation Sequence, Venus Sequence, Pearl Sequence и связка с денежным и отношенческим кодом.",
+    color: "from-sky-900/30 to-sky-700/10",
+  });
+
+  // 10. Egyptian Horoscope
   const egyptSign = getEgyptianSign(month, day);
   results.push({
     system: "Египетский гороскоп",
@@ -205,7 +286,7 @@ function buildPortrait(form: FormData): SystemResult[] {
     color: "from-yellow-900/30 to-yellow-700/10",
   });
 
-  // 10. Druid Horoscope (combined with Celtic tree but focused on animal)
+  // 11. Druid Horoscope (combined with Celtic tree but focused on animal)
   const druidAnimal = getDruidAnimal(month, day);
   results.push({
     system: "Друидский гороскоп",
@@ -294,6 +375,7 @@ export default function DivinationPortrait() {
   const [results, setResults] = useState<SystemResult[] | null>(null);
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});
   const [error, setError] = useState("");
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     document.title = "Портрет судьбы — 10 систем предсказания | Magic Stone";
@@ -302,7 +384,7 @@ export default function DivinationPortrait() {
       if (!tag) { tag = document.createElement("meta"); tag.setAttribute(attr, key); document.head.appendChild(tag); }
       tag.content = val;
     };
-    const desc = "Узнайте свой полный астрологический портрет: 10 систем — западный зодиак, китайский гороскоп, нумерология, Матрица Судьбы, кельтский огам, Майя Цолькин, Таро рождения, Бацзы, египетский и друидский гороскоп. Бесплатно — с рекомендациями камней.";
+    const desc = "Узнайте свой полный астрологический портрет: 11 систем — западный зодиак, китайский гороскоп, нумерология, Матрица Судьбы, кельтский огам, Майя Цолькин, Таро рождения, Бацзы, Генные ключи, египетский и друидский гороскоп. Бесплатно — с рекомендациями камней.";
     setMeta("name", "description", desc);
     setMeta("property", "og:title", "Портрет судьбы — 10 систем предсказания");
     setMeta("property", "og:description", desc);
@@ -317,10 +399,13 @@ export default function DivinationPortrait() {
     setError("");
     const portrait = buildPortrait(form);
     setResults(portrait);
+    setShowPreview(false);
     setTimeout(() => document.getElementById("results")?.scrollIntoView({ behavior: "smooth" }), 100);
   }, [form]);
 
-  const allCrystals = results ? [...new Set(results.map((r) => r.crystal))].slice(0, 4) : [];
+  const allCrystals = results ? [...new Set(results.map((r) => r.crystal))].slice(0, 6) : [];
+  const integratedSummary = results ? buildIntegratedSummary(results) : "";
+  const fullPreview = results ? buildFullPreview(results, form) : [];
 
   return (
     <main className="min-h-screen bg-background">
@@ -355,8 +440,8 @@ export default function DivinationPortrait() {
             Портрет судьбы
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            10 систем предсказания в одном портрете: западная астрология, китайский гороскоп, нумерология,
-            Матрица Судьбы, кельтский огам, Майя Цолькин, Таро рождения, Бацзы, египетский и друидский гороскоп.
+            11 систем предсказания в одном портрете: западная астрология, китайский гороскоп, нумерология,
+            Матрица Судьбы, кельтский огам, Майя Цолькин, Таро рождения, Бацзы, Генные ключи, египетский и друидский гороскоп.
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-2 text-sm text-muted-foreground">
             <span className="px-3 py-1 bg-primary/10 rounded-full border border-primary/20">🆓 Бесплатно: краткий портрет + рекомендации камней</span>
@@ -446,7 +531,7 @@ export default function DivinationPortrait() {
             <div className="max-w-2xl mx-auto mb-10 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/30 rounded-2xl p-6 text-center">
               <Gem className="w-8 h-8 text-primary mx-auto mb-3" />
               <h3 className="font-serif text-xl font-bold mb-2">Ваши ключевые камни</h3>
-              <p className="text-muted-foreground text-sm mb-3">Собраны по всем 10 системам вашего портрета</p>
+              <p className="text-muted-foreground text-sm mb-3">Собраны по всем 11 системам вашего портрета</p>
               <div className="flex flex-wrap justify-center gap-2">
                 {allCrystals.map((c) => (
                   <a
@@ -460,6 +545,12 @@ export default function DivinationPortrait() {
                   </a>
                 ))}
               </div>
+            </div>
+
+            <div className="max-w-3xl mx-auto mb-10 bg-card border border-primary/20 rounded-2xl p-6">
+              <p className="text-xs uppercase tracking-[0.18em] text-primary mb-3">Компиляция всех систем</p>
+              <h3 className="font-serif text-2xl font-bold mb-3">Общий синтез портрета</h3>
+              <p className="text-muted-foreground leading-relaxed text-sm md:text-base">{integratedSummary}</p>
             </div>
 
             {/* System cards */}
@@ -525,16 +616,36 @@ export default function DivinationPortrait() {
                   <li>💎 Индивидуальная подборка камней под каждую задачу</li>
                   <li>📅 Ваши лучшие и сложные периоды до 2030 года</li>
                 </ul>
-                <a href={TELEGRAM_BOT} target="_blank" rel="noopener noreferrer">
-                  <Button className="w-full max-w-xs py-6 text-base font-semibold bg-amber-600 hover:bg-amber-500 text-white border-0">
-                    Получить полный расклад — 499 ₽
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <Button asChild className="w-full sm:w-auto min-w-[280px] py-6 text-base font-semibold bg-amber-600 hover:bg-amber-500 text-white border-0">
+                    <a href={TELEGRAM_BOT} target="_blank" rel="noopener noreferrer">
+                      Получить полный расклад — 499 ₽
+                    </a>
                   </Button>
-                </a>
+                  <Button variant="outline" type="button" className="w-full sm:w-auto min-w-[280px] py-6 text-base font-semibold" onClick={() => setShowPreview((value) => !value)}>
+                    {showPreview ? "Скрыть предпросмотр" : "Посмотреть, что войдёт в полный расклад"}
+                  </Button>
+                </div>
                 <p className="text-xs text-muted-foreground mt-3">
-                  Готовим персонально в течение 24 часов. Оплата через Telegram.
+                  Кнопка ведёт в Telegram-бота сразу к оплате услуги. Ниже можно открыть предпросмотр полного расклада без оплаты.
                 </p>
               </div>
             </div>
+
+            {showPreview && (
+              <div className="max-w-3xl mx-auto mt-6 bg-card border border-border rounded-2xl p-6">
+                <p className="text-xs uppercase tracking-[0.18em] text-primary mb-3">Предпросмотр для владельца сайта</p>
+                <h3 className="font-serif text-2xl font-bold mb-4">Как выглядит полный расклад</h3>
+                <div className="space-y-4 text-left">
+                  {fullPreview.map((section) => (
+                    <div key={section.title} className="border border-border rounded-xl p-4">
+                      <h4 className="font-semibold mb-2">{section.title}</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{section.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </AnimateOnScroll>
         </section>
       )}
