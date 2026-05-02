@@ -291,7 +291,7 @@ const STAR_DATA = Array.from({ length: 165 }, (_, i) => {
 
 // Single slow beautiful comet
 const METEOR_DATA = [
-  { top: "22%", left: "4%", duration: "88s", delay: "6s" },
+  { top: "22%", left: "4%", duration: "120s", delay: "6s" },
 ];
 
 // ──────────────────────────────────────────────────────────────
@@ -445,7 +445,7 @@ const MoonCalendar = () => {
               }}
             >
               <svg
-                width="560" height="130"
+                width="280" height="65"
                 viewBox="0 0 560 130"
                 style={{ overflow: "visible" }}
               >
@@ -490,11 +490,11 @@ const MoonCalendar = () => {
                     filter="url(#cm-blur-dust)" />
 
                   {/* Primary ion tail — sharp blue-white streak */}
-                  <rect x="8" y="62" width="466" height="6" rx="3"
-                    fill="url(#cm-ion)" opacity="0.82" />
+                  <rect x="8" y="63" width="466" height="3" rx="1.5"
+                    fill="url(#cm-ion)" opacity="0.72" />
                   {/* Secondary ion strand — faint parallel */}
-                  <rect x="70" y="68" width="400" height="3" rx="1.5"
-                    fill="url(#cm-ion)" opacity="0.24" />
+                  <rect x="70" y="67" width="400" height="1.5" rx="1"
+                    fill="url(#cm-ion)" opacity="0.18" />
 
                   {/* Outer coma */}
                   <circle cx="488" cy="65" r="46"
@@ -505,17 +505,16 @@ const MoonCalendar = () => {
                     fill="rgba(255,254,238,0.48)"
                     filter="url(#cm-blur-coma2)" />
 
-                  {/* Nucleus glow */}
-                  <circle cx="490" cy="65" r="11"
-                    fill="rgba(255,252,225,0.70)"
+                  {/* Coma condensation — bright center, fully blurred, no hard sphere */}
+                  <circle cx="490" cy="65" r="16"
+                    fill="rgba(255,252,232,0.60)"
                     filter="url(#cm-blur-coma2)" />
-                  {/* Nucleus core — white hot */}
-                  <circle cx="490" cy="65" r="7"
-                    fill="white"
+                  {/* Nuclear point — tiny speck of intense light, not a ball */}
+                  <circle cx="490" cy="65" r="2.5"
+                    fill="rgba(255,255,252,0.92)"
                     style={{
-                      filter: "drop-shadow(0 0 8px rgba(255,252,210,1)) drop-shadow(0 0 20px rgba(255,228,120,0.90)) drop-shadow(0 0 50px rgba(255,195,70,0.55)) drop-shadow(0 0 100px rgba(255,175,40,0.24))",
+                      filter: "drop-shadow(0 0 5px rgba(255,252,220,1)) drop-shadow(0 0 14px rgba(255,228,130,0.80)) drop-shadow(0 0 35px rgba(255,200,80,0.45))",
                     }} />
-                  <circle cx="490" cy="65" r="4" fill="white" opacity="0.98" />
                 </g>
               </svg>
             </div>
