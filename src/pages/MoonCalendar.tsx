@@ -18,95 +18,200 @@ import {
   type LunarDayData,
 } from "@/data/divinationData";
 
-// ============================================================
-// Animated SVG Moon
-// ============================================================
-const MoonSVG = ({ age, size = 160 }: { age: number; size?: number }) => {
+// ──────────────────────────────────────────────────────────────
+// CSS keyframes injected once
+// ──────────────────────────────────────────────────────────────
+const MOON_CSS = `
+@keyframes moonFloat {
+  0%,100% { transform: translateY(0px) rotate(-1deg); }
+  50%      { transform: translateY(-18px) rotate(1deg); }
+}
+@keyframes moonGlow {
+  0%,100% {
+    filter: drop-shadow(0 0 22px rgba(245,230,200,0.5))
+            drop-shadow(0 0 55px rgba(220,180,100,0.25));
+  }
+  50% {
+    filter: drop-shadow(0 0 42px rgba(255,245,200,0.85))
+            drop-shadow(0 0 100px rgba(220,180,100,0.45))
+            drop-shadow(0 0 160px rgba(180,140,80,0.2));
+  }
+}
+@keyframes haloBreath {
+  0%,100% { transform:scale(1);   opacity:0.18; }
+  50%      { transform:scale(1.12); opacity:0.32; }
+}
+@keyframes haloBreath2 {
+  0%,100% { transform:scale(1);   opacity:0.10; }
+  50%      { transform:scale(1.20); opacity:0.20; }
+}
+@keyframes twinkle {
+  0%,100% { opacity:var(--tw-base); transform:scale(1); }
+  45%     { opacity:calc(var(--tw-base)*2.8); transform:scale(1.7); }
+}
+@keyframes nebulaFloat {
+  0%,100% { transform:scale(1) translate(0,0);   opacity:.055; }
+  50%      { transform:scale(1.12) translate(-2%,2%); opacity:.10; }
+}
+@keyframes nebula2 {
+  0%,100% { transform:scale(1) translate(0,0);   opacity:.04; }
+  50%      { transform:scale(1.08) translate(2%,-3%); opacity:.085; }
+}
+@keyframes shootStar {
+  0%   { transform:translateX(-120px) translateY(-60px) rotate(30deg); opacity:1; }
+  100% { transform:translateX(320px) translateY(160px) rotate(30deg); opacity:0; }
+}
+@keyframes coronaPulse {
+  0%,100% { stroke-dashoffset: 0;   opacity: 0.28; }
+  50%      { stroke-dashoffset: 40; opacity: 0.50; }
+}
+`;
+
+// ──────────────────────────────────────────────────────────────
+// Animated Moon
+// ──────────────────────────────────────────────────────────────
+const AnimatedMoon = ({ age, size = 200 }: { age: number; size?: number }) => {
   const illumination = (1 - Math.cos((age / 29.53058868) * 2 * Math.PI)) / 2;
   const isWaxing = age < 14.77;
-  const r = size / 2 - 2;
+  const r = size / 2 - 4;
   const cx = size / 2;
   const cy = size / 2;
   const innerRx = Math.abs(2 * illumination - 1) * r;
   const darkX = isWaxing ? cx : cx - r;
   const ellipseFill =
     illumination > 0.5
-      ? isWaxing
-        ? "#F5E6C8"
-        : "#06030f"
-      : isWaxing
-      ? "#06030f"
-      : "#F5E6C8";
+      ? isWaxing ? "#F5E6C8" : "#06030f"
+      : isWaxing ? "#06030f" : "#F5E6C8";
 
   return (
-    <svg
-      viewBox={`0 0 ${size} ${size}`}
-      width={size}
-      height={size}
-      style={{ filter: "drop-shadow(0 0 28px rgba(200,180,130,0.45))" }}
-    >
-      <defs>
-        <clipPath id="moonClipDyn">
-          <circle cx={cx} cy={cy} r={r} />
-        </clipPath>
-        <radialGradient id="moonGradDyn" cx="38%" cy="35%">
-          <stop offset="0%" stopColor="#fffbe6" />
-          <stop offset="55%" stopColor="#F5E6C8" />
-          <stop offset="100%" stopColor="#c4963e" />
-        </radialGradient>
-      </defs>
-      <circle cx={cx} cy={cy} r={r} fill="url(#moonGradDyn)" />
-      <g clipPath="url(#moonClipDyn)" opacity="0.12">
-        <circle cx={cx * 0.65} cy={cy * 0.6} r={r * 0.1} fill="#8a6020" />
-        <circle cx={cx * 1.25} cy={cy * 0.85} r={r * 0.07} fill="#8a6020" />
-        <circle cx={cx * 0.9} cy={cy * 1.4} r={r * 0.08} fill="#8a6020" />
-      </g>
-      <g clipPath="url(#moonClipDyn)">
-        <rect x={darkX} y={0} width={r} height={size} fill="#06030f" opacity="0.87" />
-        {innerRx > 1 && (
-          <ellipse cx={cx} cy={cy} rx={innerRx} ry={r} fill={ellipseFill} opacity="0.9" />
-        )}
-      </g>
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke="#F5E6C8" strokeWidth="0.6" opacity="0.35" />
-    </svg>
+    <div style={{ animation: "moonFloat 7s ease-in-out infinite" }}>
+      <div style={{ position: "relative", width: size, height: size }}>
+        {/* Outer halo ring 2 */}
+        <div style={{
+          position: "absolute",
+          inset: `-${Math.round(size * 0.28)}px`,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(245,220,140,0.14) 30%, transparent 70%)",
+          filter: "blur(20px)",
+          animation: "haloBreath2 9s ease-in-out infinite",
+          pointerEvents: "none",
+        }} />
+        {/* Inner halo ring */}
+        <div style={{
+          position: "absolute",
+          inset: `-${Math.round(size * 0.14)}px`,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(245,220,140,0.2) 35%, transparent 68%)",
+          filter: "blur(10px)",
+          animation: "haloBreath 5.5s ease-in-out infinite",
+          pointerEvents: "none",
+        }} />
+
+        <svg
+          viewBox={`0 0 ${size} ${size}`}
+          width={size}
+          height={size}
+          style={{ animation: "moonGlow 5s ease-in-out infinite", display: "block" }}
+        >
+          <defs>
+            <clipPath id="mc-clip">
+              <circle cx={cx} cy={cy} r={r} />
+            </clipPath>
+            <radialGradient id="mc-grad" cx="36%" cy="32%" r="68%">
+              <stop offset="0%"   stopColor="#fffdf0" />
+              <stop offset="40%"  stopColor="#F5E6C8" />
+              <stop offset="75%"  stopColor="#d4a84b" />
+              <stop offset="100%" stopColor="#8a5c18" />
+            </radialGradient>
+            <radialGradient id="mc-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stopColor="rgba(255,245,200,0.35)" />
+              <stop offset="100%" stopColor="rgba(255,245,200,0)" />
+            </radialGradient>
+            <filter id="mc-blur" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="2.5" />
+            </filter>
+          </defs>
+
+          {/* Soft glow behind */}
+          <circle cx={cx} cy={cy} r={r + 10} fill="url(#mc-glow)" filter="url(#mc-blur)" />
+          {/* Moon face */}
+          <circle cx={cx} cy={cy} r={r} fill="url(#mc-grad)" />
+          {/* Craters */}
+          <g clipPath="url(#mc-clip)" opacity="0.18">
+            <circle cx={cx * 0.62} cy={cy * 0.58} r={r * 0.09}  fill="#7a500f" />
+            <circle cx={cx * 1.22} cy={cy * 0.82} r={r * 0.065} fill="#7a500f" />
+            <circle cx={cx * 0.85} cy={cy * 1.38} r={r * 0.075} fill="#7a500f" />
+            <circle cx={cx * 1.32} cy={cy * 1.25} r={r * 0.05}  fill="#7a500f" />
+            <circle cx={cx * 0.45} cy={cy * 1.10} r={r * 0.04}  fill="#7a500f" />
+          </g>
+          {/* Shadow (night side) */}
+          <g clipPath="url(#mc-clip)">
+            <rect x={darkX} y={0} width={r} height={size} fill="#03010a" opacity="0.86" />
+            {innerRx > 1 && (
+              <ellipse cx={cx} cy={cy} rx={innerRx} ry={r} fill={ellipseFill} opacity="0.92" />
+            )}
+          </g>
+          {/* Corona dashed ring */}
+          <circle
+            cx={cx} cy={cy} r={r + 4}
+            fill="none"
+            stroke="rgba(245,230,180,0.32)"
+            strokeWidth="1.2"
+            strokeDasharray="6 4"
+            style={{ animation: "coronaPulse 4s linear infinite" }}
+          />
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,245,210,0.22)" strokeWidth="1" />
+        </svg>
+      </div>
+    </div>
   );
 };
 
-function lunarDayForDate(date: Date): number {
-  return lunarDay(date);
-}
+// ──────────────────────────────────────────────────────────────
+// Star field (stable data, outside component)
+// ──────────────────────────────────────────────────────────────
+const STAR_DATA = Array.from({ length: 80 }, (_, i) => ({
+  top:    `${(i * 37 + 3) % 100}%`,
+  left:   `${(i * 61 + 7) % 100}%`,
+  size:   0.8 + (i % 4) * 0.55,
+  base:   0.15 + (i % 6) * 0.09,
+  delay:  `${(i * 0.37) % 5}s`,
+  dur:    `${2.5 + (i % 4) * 0.8}s`,
+  bright: i % 9 === 0,
+}));
 
-function getMoonPhaseIcon(date: Date): string {
-  const phase = moonPhaseKey(date);
-  return MOON_PHASE_DATA[phase]?.icon ?? "🌕";
-}
-
+// ──────────────────────────────────────────────────────────────
+// Helpers
+// ──────────────────────────────────────────────────────────────
 function getDaysInMonth(y: number, m: number) {
   return new Date(y, m + 1, 0).getDate();
 }
+function getMoonPhaseIcon(date: Date): string {
+  return MOON_PHASE_DATA[moonPhaseKey(date)]?.icon ?? "🌕";
+}
 
-// ============================================================
+// ──────────────────────────────────────────────────────────────
 // Page
-// ============================================================
+// ──────────────────────────────────────────────────────────────
 const MoonCalendar = () => {
   const today = useMemo(() => new Date(), []);
   const [viewDate, setViewDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [selectedLunarDay, setSelectedLunarDay] = useState<LunarDayData | null>(null);
 
-  const todayAge = useMemo(() => moonAge(today), [today]);
+  const todayAge      = useMemo(() => moonAge(today), [today]);
   const todayLunarDay = useMemo(() => lunarDay(today), [today]);
   const todayPhaseKey = useMemo(() => moonPhaseKey(today), [today]);
-  const todayIllum = useMemo(() => moonIllumination(today), [today]);
-  const todayZodiac = useMemo(() => moonZodiacIndex(today), [today]);
-  const todayPhaseData = MOON_PHASE_DATA[todayPhaseKey];
-  const todayLunarData = LUNAR_DAYS[(todayLunarDay - 1) % 30] ?? LUNAR_DAYS[0];
-  const todayMoonSign = MOON_IN_SIGN[todayZodiac];
+  const todayIllum    = useMemo(() => moonIllumination(today), [today]);
+  const todayZodiac   = useMemo(() => moonZodiacIndex(today), [today]);
+  const todayPhaseData  = MOON_PHASE_DATA[todayPhaseKey];
+  const todayLunarData  = LUNAR_DAYS[(todayLunarDay - 1) % 30] ?? LUNAR_DAYS[0];
+  const todayMoonSign   = MOON_IN_SIGN[todayZodiac];
 
   useEffect(() => {
     const phase = todayPhaseData?.name ?? "Луна";
-    const sign = todayMoonSign?.name ?? "";
+    const sign  = todayMoonSign?.name ?? "";
     document.title = `Лунный календарь — ${todayLunarDay} лунный день, Луна в ${sign} | Magic Stone`;
-    const desc = `Сегодня ${todayLunarDay} лунный день, фаза: ${phase}, Луна в ${sign}. Камень дня: ${todayLunarData?.crystal}. Лунный календарь с рекомендациями камней на каждый день.`;
+    const desc = `Сегодня ${todayLunarDay} лунный день, фаза: ${phase}, Луна в ${sign}. Камень дня: ${todayLunarData?.crystal}.`;
     const setMeta = (attr: "name" | "property", key: string, val: string) => {
       let tag = document.head.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement | null;
       if (!tag) { tag = document.createElement("meta"); tag.setAttribute(attr, key); document.head.appendChild(tag); }
@@ -122,12 +227,12 @@ const MoonCalendar = () => {
 
   const { year, month } = { year: viewDate.getFullYear(), month: viewDate.getMonth() };
   const monthNames = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
-  const dayNames = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+  const dayNames   = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
 
   const calendarDays = useMemo(() => {
     const daysInMonth = getDaysInMonth(year, month);
-    const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
-    const prevDays = getDaysInMonth(year, month - 1);
+    const firstDay    = (new Date(year, month, 1).getDay() + 6) % 7;
+    const prevDays    = getDaysInMonth(year, month - 1);
     const days: { day: number; isCurrentMonth: boolean; date: Date }[] = [];
     for (let i = firstDay - 1; i >= 0; i--)
       days.push({ day: prevDays - i, isCurrentMonth: false, date: new Date(year, month - 1, prevDays - i) });
@@ -139,74 +244,165 @@ const MoonCalendar = () => {
     return days;
   }, [year, month]);
 
-  const prevMonth = () => setViewDate(new Date(year, month - 1, 1));
-  const nextMonth = () => setViewDate(new Date(year, month + 1, 1));
   const isToday = (d: Date) =>
     d.getDate() === today.getDate() && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
 
   return (
     <main className="min-h-screen bg-background">
+      <style>{MOON_CSS}</style>
+
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebPage",
         name: "Лунный календарь с камнями",
-        description: "Лунный календарь с фазами луны и рекомендациями кристаллов на каждый лунный день",
         url: "https://magic-stone.com/moon",
       }) }} />
 
-      <div className="container mx-auto px-4 pt-6">
-        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
-          <ArrowLeft className="w-4 h-4" /> На главную
-        </Link>
-      </div>
+      {/* ══════════════════════════════════════════════
+          HERO — full-screen cosmic
+      ══════════════════════════════════════════════ */}
+      <section className="relative overflow-hidden" style={{ minHeight: "100dvh" }}>
+        {/* Deep space background */}
+        <div className="absolute inset-0" style={{
+          background: "linear-gradient(160deg, #03010a 0%, #0a0320 35%, #120528 65%, #060215 100%)",
+        }} />
 
-      {/* Hero — cosmic dark with animated moon */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#06030f] via-[#0d0820] to-background pointer-events-none" />
+        {/* Animated nebulae */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+          <div style={{
+            position: "absolute", top: "5%", left: "10%",
+            width: "60%", height: "55%",
+            borderRadius: "50%",
+            background: "radial-gradient(ellipse, rgba(100,40,180,0.18) 0%, transparent 70%)",
+            filter: "blur(40px)",
+            animation: "nebulaFloat 14s ease-in-out infinite",
+          }} />
+          <div style={{
+            position: "absolute", bottom: "10%", right: "8%",
+            width: "50%", height: "50%",
+            borderRadius: "50%",
+            background: "radial-gradient(ellipse, rgba(40,80,200,0.14) 0%, transparent 70%)",
+            filter: "blur(50px)",
+            animation: "nebula2 18s ease-in-out infinite",
+          }} />
+          <div style={{
+            position: "absolute", top: "40%", right: "20%",
+            width: "30%", height: "30%",
+            borderRadius: "50%",
+            background: "radial-gradient(ellipse, rgba(180,80,60,0.08) 0%, transparent 65%)",
+            filter: "blur(35px)",
+            animation: "nebulaFloat 22s 4s ease-in-out infinite",
+          }} />
+        </div>
+
         {/* Stars */}
-        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          {Array.from({ length: 55 }, (_, i) => (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+          {STAR_DATA.map((s, i) => (
             <div
               key={i}
-              className="absolute rounded-full bg-white"
               style={{
-                width: `${1 + (i % 3) * 0.5}px`,
-                height: `${1 + (i % 3) * 0.5}px`,
-                top: `${(i * 37 % 65)}%`,
-                left: `${(i * 61 % 100)}%`,
-                opacity: 0.25 + (i % 5) * 0.1,
+                position: "absolute",
+                top: s.top,
+                left: s.left,
+                width: `${s.bright ? s.size * 2.2 : s.size}px`,
+                height: `${s.bright ? s.size * 2.2 : s.size}px`,
+                borderRadius: "50%",
+                backgroundColor: s.bright ? "#ffe88a" : "#ffffff",
+                ["--tw-base" as string]: s.base,
+                animation: `twinkle ${s.dur} ${s.delay} ease-in-out infinite`,
+                boxShadow: s.bright ? `0 0 ${s.size * 4}px rgba(255,230,100,0.6)` : "none",
               }}
             />
           ))}
+          {/* Shooting stars */}
+          <div style={{
+            position: "absolute", top: "18%", left: "15%",
+            width: "80px", height: "1.5px",
+            background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 100%)",
+            borderRadius: "2px",
+            animation: "shootStar 8s 3s ease-in infinite",
+          }} />
+          <div style={{
+            position: "absolute", top: "55%", left: "60%",
+            width: "60px", height: "1px",
+            background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 100%)",
+            borderRadius: "2px",
+            animation: "shootStar 10s 7s ease-in infinite",
+          }} />
         </div>
 
-        <div className="relative container mx-auto px-4 py-14 flex flex-col items-center text-center">
-          <AnimateOnScroll>
-            <div className="mb-6"><MoonSVG age={todayAge} size={180} /></div>
-            <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow">
-              Лунный календарь
-            </h1>
-            <div className="flex flex-wrap justify-center gap-3 mb-4">
-              <span className="px-4 py-2 bg-white/10 backdrop-blur rounded-full text-white text-sm border border-white/20">
-                {todayLunarData.emoji} {todayLunarDay} лунный день
+        {/* Back button — offset for fixed header */}
+        <div className="absolute top-20 left-4 sm:left-8 z-20">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-white/60 hover:text-white/90 transition-colors text-sm px-4 py-2 rounded-full border border-white/10"
+            style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(8px)" }}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            На главную
+          </Link>
+        </div>
+
+        {/* Hero content */}
+        <div
+          className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center"
+          style={{ paddingTop: "100px", paddingBottom: "60px" }}
+        >
+          {/* Moon */}
+          <div className="mb-10">
+            <AnimatedMoon age={todayAge} size={220} />
+          </div>
+
+          <h1
+            className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-3 leading-tight"
+            style={{ textShadow: "0 2px 30px rgba(200,170,100,0.4)" }}
+          >
+            Лунный календарь
+          </h1>
+          <p className="text-white/50 text-sm sm:text-base mb-8 max-w-lg">
+            {todayLunarData.name} · {todayPhaseData?.name} · Луна в {todayMoonSign?.name}
+          </p>
+
+          {/* Status badges */}
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8">
+            {[
+              { icon: todayLunarData.emoji, text: `${todayLunarDay} лунный день` },
+              { icon: todayPhaseData?.icon ?? "🌕", text: todayPhaseData?.name ?? "" },
+              { icon: "🌙", text: `Луна в ${todayMoonSign?.name}` },
+              { icon: "✨", text: `${todayIllum}% освещённость` },
+            ].map((b, i) => (
+              <span
+                key={i}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm text-white/85 border border-white/15"
+                style={{ background: "rgba(255,255,255,0.07)", backdropFilter: "blur(8px)" }}
+              >
+                <span>{b.icon}</span>{b.text}
               </span>
-              <span className="px-4 py-2 bg-white/10 backdrop-blur rounded-full text-white text-sm border border-white/20">
-                {todayPhaseData?.icon} {todayPhaseData?.name}
-              </span>
-              <span className="px-4 py-2 bg-white/10 backdrop-blur rounded-full text-white text-sm border border-white/20">
-                🌙 Луна в {todayMoonSign?.name}
-              </span>
-              <span className="px-4 py-2 bg-white/10 backdrop-blur rounded-full text-white text-sm border border-white/20">
-                💡 {todayIllum}% освещённость
-              </span>
-            </div>
-            <p className="text-white/65 max-w-xl text-sm">{todayLunarData.meaning}</p>
-          </AnimateOnScroll>
+            ))}
+          </div>
+
+          {/* Crystal of the day */}
+          <div
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-amber-400/25 text-amber-200/90 text-sm"
+            style={{ background: "rgba(180,130,40,0.12)", backdropFilter: "blur(8px)" }}
+          >
+            <Gem className="w-4 h-4" />
+            <span>Камень дня: <strong>{todayLunarData.crystal}</strong></span>
+            {todayLunarData.crystalExtra && (
+              <span className="text-white/40 ml-1">& {todayLunarData.crystalExtra}</span>
+            )}
+          </div>
+
+          {/* Scroll cue */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-40">
+            <span className="text-white text-xs tracking-widest uppercase">Листать</span>
+            <div className="w-px h-10 bg-gradient-to-b from-white/40 to-transparent" />
+          </div>
         </div>
       </section>
 
       {/* Today's Crystal & Guidance */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto px-4 py-10">
         <AnimateOnScroll>
           <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-gradient-to-br from-primary/20 to-accent/10 border border-primary/30 rounded-2xl p-6">
@@ -223,7 +419,7 @@ const MoonCalendar = () => {
             </div>
 
             <div className="bg-card border border-border rounded-2xl p-6">
-              <h2 className="font-serif text-xl font-bold mb-4">Рекомендации</h2>
+              <h2 className="font-serif text-xl font-bold mb-4">Рекомендации дня</h2>
               <div className="mb-3">
                 <p className="text-xs uppercase tracking-wider text-primary mb-2">✅ Делать</p>
                 <ul className="space-y-1">
@@ -284,14 +480,18 @@ const MoonCalendar = () => {
         </AnimateOnScroll>
       </section>
 
-      {/* Monthly Calendar */}
+      {/* Monthly calendar */}
       <section className="container mx-auto px-4 py-6">
         <AnimateOnScroll>
           <div className="max-w-3xl mx-auto bg-card border border-border rounded-2xl p-6">
             <div className="flex items-center justify-between mb-6">
-              <Button variant="ghost" size="icon" onClick={prevMonth}><ChevronLeft className="w-5 h-5" /></Button>
+              <Button variant="ghost" size="icon" onClick={() => setViewDate(new Date(year, month - 1, 1))}>
+                <ChevronLeft className="w-5 h-5" />
+              </Button>
               <h2 className="font-serif text-xl font-bold">{monthNames[month]} {year}</h2>
-              <Button variant="ghost" size="icon" onClick={nextMonth}><ChevronRight className="w-5 h-5" /></Button>
+              <Button variant="ghost" size="icon" onClick={() => setViewDate(new Date(year, month + 1, 1))}>
+                <ChevronRight className="w-5 h-5" />
+              </Button>
             </div>
             <div className="grid grid-cols-7 mb-2">
               {dayNames.map((d) => (
@@ -300,28 +500,27 @@ const MoonCalendar = () => {
             </div>
             <div className="grid grid-cols-7 gap-1">
               {calendarDays.map((cell, i) => {
-                const ld = lunarDayForDate(cell.date);
+                const ld = lunarDay(cell.date);
                 const icon = getMoonPhaseIcon(cell.date);
-                const isTodayCell = isToday(cell.date);
+                const todayCell = isToday(cell.date);
                 return (
                   <div
                     key={i}
                     onClick={() => cell.isCurrentMonth && setSelectedLunarDay(LUNAR_DAYS[(ld - 1) % 30] ?? LUNAR_DAYS[0])}
                     className={`aspect-square flex flex-col items-center justify-center rounded-lg cursor-pointer transition-colors
-                      ${cell.isCurrentMonth ? "bg-background hover:bg-primary/10" : "opacity-30"}
-                      ${isTodayCell ? "bg-primary/20 border border-primary ring-1 ring-primary/40" : "border border-transparent"}
+                      ${cell.isCurrentMonth ? "bg-background hover:bg-primary/10" : "opacity-25"}
+                      ${todayCell ? "bg-primary/20 border border-primary ring-1 ring-primary/40" : "border border-transparent"}
                     `}
-                    title={`${ld} лунный день`}
                   >
                     <span className="text-[10px] leading-none">{icon}</span>
-                    <span className={`text-xs font-medium leading-none mt-0.5 ${isTodayCell ? "text-primary font-bold" : ""}`}>{cell.day}</span>
+                    <span className={`text-xs font-medium leading-none mt-0.5 ${todayCell ? "text-primary font-bold" : ""}`}>{cell.day}</span>
                     <span className="text-[8px] text-muted-foreground leading-none">{ld}</span>
                   </div>
                 );
               })}
             </div>
             <p className="text-xs text-center text-muted-foreground mt-3">
-              Нажмите на дату чтобы узнать о лунном дне · цифра внизу ячейки = лунный день
+              Нажмите на дату · цифра внизу = лунный день
             </p>
           </div>
         </AnimateOnScroll>
@@ -331,7 +530,7 @@ const MoonCalendar = () => {
       {selectedLunarDay && (
         <section className="container mx-auto px-4 pb-4">
           <div className="max-w-3xl mx-auto bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/30 rounded-2xl p-6 relative">
-            <button onClick={() => setSelectedLunarDay(null)} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground text-lg leading-none">✕</button>
+            <button onClick={() => setSelectedLunarDay(null)} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground text-lg">✕</button>
             <h3 className="font-serif text-xl font-bold mb-1">
               {selectedLunarDay.emoji} {selectedLunarDay.day} лунный день — {selectedLunarDay.name}
             </h3>
@@ -357,15 +556,11 @@ const MoonCalendar = () => {
         </section>
       )}
 
-      {/* 30 Lunar Days Guide */}
+      {/* 30 Lunar Days */}
       <section className="container mx-auto px-4 py-8">
         <AnimateOnScroll>
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-center mb-2">
-            Все 30 лунных дней и камни
-          </h2>
-          <p className="text-center text-muted-foreground text-sm mb-8">
-            Нажмите на день чтобы узнать подробнее — практики, аффирмации и рекомендации камней
-          </p>
+          <h2 className="font-serif text-2xl md:text-3xl font-bold text-center mb-2">Все 30 лунных дней</h2>
+          <p className="text-center text-muted-foreground text-sm mb-8">Камни, аффирмации и рекомендации на каждый день</p>
           <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
             {LUNAR_DAYS.map((ld) => (
               <LunarDayCard key={ld.day} data={ld} isToday={ld.day === todayLunarDay} />
@@ -374,13 +569,11 @@ const MoonCalendar = () => {
         </AnimateOnScroll>
       </section>
 
-      {/* 8 Phases overview */}
+      {/* 8 Phases */}
       <section className="container mx-auto px-4 py-8">
         <AnimateOnScroll>
           <h2 className="font-serif text-2xl md:text-3xl font-bold text-center mb-2">Фазы Луны и камни</h2>
-          <p className="text-center text-muted-foreground text-sm mb-8">
-            Как использовать кристаллы в каждую фазу лунного цикла
-          </p>
+          <p className="text-center text-muted-foreground text-sm mb-8">Как использовать кристаллы в каждую фазу</p>
           <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
             {Object.entries(MOON_PHASE_DATA).map(([key, phase]) => (
               <div key={key} className={`bg-card border rounded-2xl p-5 ${key === todayPhaseKey ? "border-primary ring-1 ring-primary/40" : "border-border"}`}>
@@ -398,13 +591,11 @@ const MoonCalendar = () => {
         </AnimateOnScroll>
       </section>
 
-      {/* Moon in zodiac signs */}
+      {/* Moon in zodiac */}
       <section className="container mx-auto px-4 py-8">
         <AnimateOnScroll>
           <h2 className="font-serif text-2xl font-bold text-center mb-2">Луна в знаках Зодиака</h2>
-          <p className="text-center text-muted-foreground text-sm mb-8">
-            Луна проходит все 12 знаков за 27.3 дня — каждые 2–3 дня меняя знак и энергию дня
-          </p>
+          <p className="text-center text-muted-foreground text-sm mb-8">Каждые 2–3 дня Луна меняет знак и энергетику</p>
           <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
             {MOON_IN_SIGN.map((sign, i) => (
               <div key={i} className={`bg-card border rounded-xl p-4 ${i === todayZodiac ? "border-primary ring-1 ring-primary/40" : "border-border"}`}>
@@ -424,11 +615,10 @@ const MoonCalendar = () => {
       <section className="container mx-auto px-4 py-12 max-w-3xl">
         <AnimateOnScroll>
           <div className="space-y-5 text-muted-foreground text-sm leading-relaxed">
-            <h2 className="font-serif text-2xl font-bold text-foreground">Лунный календарь и кристаллы: как это работает</h2>
-            <p>Лунный календарь — древний инструмент синхронизации практики с кристаллами с природными ритмами. Луна совершает полный оборот за 29.5 суток, создавая 30 лунных дней с уникальной энергетикой.</p>
-            <p><strong className="text-foreground">Как работать с камнями по луне:</strong> В новолуние очищайте кристаллы и закладывайте намерения. В растущую луну заряжайте камни на привлечение желаемого. В полнолуние выставляйте коллекцию на подоконник — это самый мощный способ зарядки. В убывающую луну используйте защитные камни и практикуйте отпускание.</p>
-            <p><strong className="text-foreground">Лунные дни:</strong> Каждый из 30 дней несёт свою энергетику. 1-й — новолуние, время тишины. 15-й — полнолуние, пик силы. С 16-го по 29-й энергия убывает, открывая время очищения и отпускания.</p>
-            <p><strong className="text-foreground">Луна в Зодиаке:</strong> Помимо фаз, важно учитывать знак Луны. Луна в Тельце — для работы с камнями изобилия, в Скорпионе — для трансформации, в Рыбах — для медитации и исцеления.</p>
+            <h2 className="font-serif text-2xl font-bold text-foreground">Лунный календарь и кристаллы</h2>
+            <p>Лунный календарь — инструмент синхронизации практики с природными ритмами. Луна совершает полный оборот за 29.5 суток, создавая 30 лунных дней с уникальной энергетикой.</p>
+            <p><strong className="text-foreground">Как работать с камнями по луне:</strong> В новолуние очищайте кристаллы и закладывайте намерения. В растущую луну заряжайте камни на привлечение желаемого. В полнолуние выставляйте коллекцию на подоконник — это самый мощный способ зарядки.</p>
+            <p><strong className="text-foreground">Луна в Зодиаке:</strong> Луна в Тельце — для камней изобилия, в Скорпионе — для трансформации, в Рыбах — для медитации и исцеления.</p>
           </div>
         </AnimateOnScroll>
       </section>
@@ -436,9 +626,9 @@ const MoonCalendar = () => {
   );
 };
 
-// ============================================================
+// ──────────────────────────────────────────────────────────────
 // Lunar Day Card
-// ============================================================
+// ──────────────────────────────────────────────────────────────
 const LunarDayCard = ({ data, isToday }: { data: LunarDayData; isToday: boolean }) => {
   const [open, setOpen] = useState(false);
   return (

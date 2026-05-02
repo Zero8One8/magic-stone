@@ -9,7 +9,7 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center" style={{ paddingTop: "72px" }}>
         <p className="text-muted-foreground font-body text-sm tracking-[0.3em] uppercase mb-8 animate-[fadeIn_1s_ease-out]">
           Когда слова бессильны
         </p>

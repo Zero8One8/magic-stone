@@ -5,11 +5,10 @@ import sharp from "sharp";
 
 const root = process.cwd();
 const statePath = path.join(root, ".watermark-state.json");
-const version = "wm-v2-soft";
+const version = "wm-v3-bottom";
+// NOTE: walk() is recursive — only root needed to avoid double-processing subdirs
 const sourceDirs = [
   path.join(root, "src", "assets"),
-  path.join(root, "src", "assets", "shop"),
-  path.join(root, "src", "assets", "chakras"),
 ];
 const channelOutDir = path.join(root, "public", "channel-images");
 const imageExt = new Set([".jpg", ".jpeg", ".png", ".webp"]);
@@ -64,55 +63,27 @@ function escapeXml(text) {
 }
 
 function buildOverlaySvg(width, height, label) {
-  const fontSize = Math.max(12, Math.round(Math.min(width, height) * 0.028));
-  const smallSize = Math.max(10, Math.round(Math.min(width, height) * 0.016));
-  const repeated = `${label}    ${label}    ${label}`;
+  // Bottom-center horizontal label only — minimal, non-intrusive
+  const badgeH  = Math.max(18, Math.round(Math.min(width, height) * 0.036));
+  const fs      = Math.max(9,  Math.round(badgeH * 0.52));
+  const badgeW  = Math.min(Math.round(width * 0.55), 260);
+  const bx      = Math.round((width - badgeW) / 2);
+  const by      = height - badgeH - Math.max(6, Math.round(height * 0.018));
 
-  return `
-  <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="rgba(255,255,255,0.00)" />
-        <stop offset="100%" stop-color="rgba(255,255,255,0.00)" />
-      </linearGradient>
-    </defs>
-
-    <rect x="0" y="0" width="${width}" height="${height}" fill="url(#bg)" />
-
-    <g transform="translate(${Math.round(width / 2)}, ${Math.round(height / 2)}) rotate(-18)">
-      <text
-        x="0"
-        y="0"
-        text-anchor="middle"
-        dominant-baseline="middle"
-        font-family="Segoe UI, Arial, sans-serif"
-        font-size="${fontSize}"
-        font-weight="700"
-        letter-spacing="1.3"
-        fill="rgba(255,255,255,0.09)"
-      >${escapeXml(repeated)}</text>
-    </g>
-
-    <g>
-      <rect
-        x="${Math.max(6, width - 240)}"
-        y="${Math.max(6, height - 34)}"
-        width="${Math.min(216, width - 12)}"
-        height="24"
-        rx="6"
-        fill="rgba(0,0,0,0.26)"
-        stroke="rgba(255,255,255,0.18)"
-      />
-      <text
-        x="${Math.max(14, width - 214)}"
-        y="${Math.max(23, height - 11)}"
-        font-family="Segoe UI, Arial, sans-serif"
-        font-size="${smallSize}"
-        font-weight="700"
-        letter-spacing="1"
-        fill="rgba(255,255,255,0.72)"
-      >${escapeXml(label)}</text>
-    </g>
+  return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+    <rect x="${bx}" y="${by}" width="${badgeW}" height="${badgeH}"
+          rx="${Math.round(badgeH / 2)}"
+          fill="rgba(0,0,0,0.22)" />
+    <text
+      x="${Math.round(width / 2)}"
+      y="${by + Math.round(badgeH * 0.68)}"
+      text-anchor="middle"
+      font-family="Segoe UI, Arial, sans-serif"
+      font-size="${fs}"
+      font-weight="600"
+      letter-spacing="1.2"
+      fill="rgba(255,255,255,0.58)"
+    >${escapeXml(label)}</text>
   </svg>`;
 }
 

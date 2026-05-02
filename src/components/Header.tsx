@@ -57,12 +57,12 @@ const Header = () => {
           </Link>
 
           {/* Десктопная навигация */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-0.5">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className={`px-3 py-2 rounded-md text-sm font-body transition-colors ${
+                className={`px-2.5 py-1.5 rounded-md text-xs font-body transition-colors ${
                   location.pathname === link.to
                     ? "text-primary bg-primary/10"
                     : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
@@ -77,7 +77,7 @@ const Header = () => {
           <div className="flex items-center gap-3">
             <Link
               to="/diagnostika"
-              className="hidden sm:inline-block text-xs font-body tracking-wider uppercase border border-primary/40 text-primary px-4 py-2 rounded-full hover:bg-primary/10 transition-all duration-300"
+              className="hidden xl:inline-block text-xs font-body tracking-wider uppercase border border-primary/40 text-primary px-4 py-2 rounded-full hover:bg-primary/10 transition-all duration-300"
             >
               Диагностика
             </Link>
@@ -85,7 +85,7 @@ const Header = () => {
             {/* Кнопка гамбургер */}
             <button
               onClick={() => setOpen(true)}
-              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-accent/50 transition-colors text-foreground"
+              className="xl:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-accent/50 transition-colors text-foreground"
               aria-label="Открыть меню"
             >
               <Menu className="w-5 h-5" />
