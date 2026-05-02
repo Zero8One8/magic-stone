@@ -29,7 +29,7 @@ const CrystalDetail = () => {
       <header className="border-b border-border/30 py-6">
         <div className="max-w-4xl mx-auto px-6 flex items-center justify-between">
           <Link to="/catalog" className="font-display text-lg text-foreground hover:text-primary transition-colors">
-            ← Каталог
+            ← Назад
           </Link>
         </div>
       </header>

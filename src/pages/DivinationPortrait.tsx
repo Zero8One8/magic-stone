@@ -370,23 +370,37 @@ function getDruidAnimal(month: number, day: number): SimpleSign {
 // ============================================================
 const CRYSTAL_BOT_LINK = "https://t.me/The_magic_of_stones_bot?start=crystal_";
 
+const SYSTEMS_PREVIEW = [
+  { icon: "🌟", name: "Западная астрология", hint: "Ваш знак зодиака, раскрытый глубже" },
+  { icon: "🐉", name: "Китайский гороскоп", hint: "Ваше животное + стихия 60-летнего цикла" },
+  { icon: "🔢", name: "Нумерология", hint: "Число жизненного пути и архетип личности" },
+  { icon: "🔮", name: "Матрица Судьбы", hint: "Ваши кармические коды и задачи воплощения" },
+  { icon: "🌳", name: "Кельтский огам", hint: "Ваше сакральное дерево по кельтскому календарю" },
+  { icon: "🌞", name: "Майя Цолькин", hint: "Ваш Кин и тон из 260-дневного календаря майя" },
+  { icon: "🃏", name: "Таро рождения", hint: "Ваш главный аркан — карта судьбы" },
+  { icon: "☯️", name: "Бацзы", hint: "Четыре столпа судьбы китайской астрологии" },
+  { icon: "🧬", name: "Генные ключи", hint: "Тень, Дар и Сиддхи вашего ДНК-кода" },
+  { icon: "𓂀", name: "Египетский гороскоп", hint: "Ваш бог-покровитель из пантеона Древнего Египта" },
+  { icon: "🦎", name: "Друидский гороскоп", hint: "Ваше священное животное-тотем по кельтской традиции" },
+];
+
 export default function DivinationPortrait() {
   const [form, setForm] = useState<FormData>({ name: "", date: "", time: "", city: "" });
   const [results, setResults] = useState<SystemResult[] | null>(null);
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});
-  const [error, setError] = useState("");
   const [showPreview, setShowPreview] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    document.title = "Портрет судьбы — 10 систем предсказания | Magic Stone";
+    document.title = "Портрет Судьбы — 11 систем предсказания | Magic Stone";
     const setMeta = (attr: "name" | "property", key: string, val: string) => {
       let tag = document.head.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement | null;
       if (!tag) { tag = document.createElement("meta"); tag.setAttribute(attr, key); document.head.appendChild(tag); }
       tag.content = val;
     };
-    const desc = "Узнайте свой полный астрологический портрет: 11 систем — западный зодиак, китайский гороскоп, нумерология, Матрица Судьбы, кельтский огам, Майя Цолькин, Таро рождения, Бацзы, Генные ключи, египетский и друидский гороскоп. Бесплатно — с рекомендациями камней.";
+    const desc = "Бесплатный персональный портрет судьбы по 11 системам: западная астрология, китайский гороскоп, нумерология, Матрица Судьбы, кельтский огам, Майя Цолькин, Таро, Бацзы, Генные ключи, египетский и друидский гороскоп. С рекомендациями камней для каждого архетипа.";
     setMeta("name", "description", desc);
-    setMeta("property", "og:title", "Портрет судьбы — 10 систем предсказания");
+    setMeta("property", "og:title", "Портрет Судьбы — 11 систем предсказания");
     setMeta("property", "og:description", desc);
     let canonical = document.head.querySelector("link[rel='canonical']") as HTMLLinkElement | null;
     if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
@@ -399,7 +413,6 @@ export default function DivinationPortrait() {
     setError("");
     const portrait = buildPortrait(form);
     setResults(portrait);
-    setShowPreview(false);
     setTimeout(() => document.getElementById("results")?.scrollIntoView({ behavior: "smooth" }), 100);
   }, [form]);
 
@@ -416,8 +429,8 @@ export default function DivinationPortrait() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
-            name: "Портрет судьбы — 10 систем",
-            description: "Бесплатный астрологический портрет по 10 системам с рекомендациями камней",
+            name: "Портрет Судьбы — 11 систем",
+            description: "Бесплатный персональный портрет по 11 системам предсказания с рекомендациями камней",
             url: "https://magic-stone.com/portrait",
           }),
         }}
@@ -431,36 +444,85 @@ export default function DivinationPortrait() {
       </div>
 
       {/* Hero */}
-      <section className="container mx-auto px-4 py-12 text-center">
+      <section className="container mx-auto px-4 py-14 text-center">
         <AnimateOnScroll>
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-violet-900/60 via-primary/30 to-amber-900/40 mx-auto mb-6 flex items-center justify-center shadow-lg shadow-primary/20">
-            <Sparkles className="w-12 h-12 text-primary" />
+          {/* Glowing orb */}
+          <div className="relative w-28 h-28 mx-auto mb-8">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-violet-600/40 via-primary/30 to-amber-500/30 blur-xl animate-pulse" />
+            <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-violet-900/80 via-primary/40 to-amber-900/60 flex items-center justify-center shadow-2xl shadow-primary/30 border border-primary/20">
+              <Sparkles className="w-14 h-14 text-amber-300 drop-shadow-lg" />
+            </div>
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Портрет судьбы
+
+          <p className="text-xs uppercase tracking-[0.22em] text-primary mb-3 font-medium">Первый в своём роде</p>
+          <h1 className="font-serif text-4xl md:text-6xl font-bold text-foreground mb-5 leading-tight">
+            Портрет Судьбы
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            11 систем предсказания в одном портрете: западная астрология, китайский гороскоп, нумерология,
-            Матрица Судьбы, кельтский огам, Майя Цолькин, Таро рождения, Бацзы, Генные ключи, египетский и друидский гороскоп.
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-6">
+            Ваша судьба записана одновременно в <strong className="text-foreground">11 древних системах мира.</strong><br className="hidden md:block" />
+            Никто раньше не собирал их все в одном месте — до сейчас.
           </p>
-          <div className="mt-4 flex flex-wrap justify-center gap-2 text-sm text-muted-foreground">
-            <span className="px-3 py-1 bg-primary/10 rounded-full border border-primary/20">🆓 Бесплатно: краткий портрет + рекомендации камней</span>
-            <span className="px-3 py-1 bg-amber-900/20 rounded-full border border-amber-700/30">💫 499 ₽: полный развёрнутый расклад</span>
+
+          {/* Value badges */}
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-sm font-medium">
+              🆓 Бесплатно: краткий портрет + камни
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-amber-600/20 border border-amber-500/40 text-amber-300 text-sm font-medium">
+              ✨ Полный расклад — 499 ₽
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary/15 border border-primary/30 text-primary text-sm font-medium">
+              ⚡ Мгновенно, без регистрации
+            </span>
+          </div>
+
+          {/* Unique feature callout */}
+          <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 text-left mb-8">
+            <div className="bg-card/60 border border-border/50 rounded-xl p-4">
+              <div className="text-2xl mb-2">🌍</div>
+              <h3 className="font-semibold text-foreground text-sm mb-1">11 систем — одна правда</h3>
+              <p className="text-xs text-muted-foreground">Восток и Запад, древность и наука — все системы говорят о вас одновременно. Совпадения шокируют.</p>
+            </div>
+            <div className="bg-card/60 border border-border/50 rounded-xl p-4">
+              <div className="text-2xl mb-2">💎</div>
+              <h3 className="font-semibold text-foreground text-sm mb-1">Камни для каждого архетипа</h3>
+              <p className="text-xs text-muted-foreground">Для каждой из 11 систем — личный камень-резонатор. Не просто список, а точное попадание в вашу природу.</p>
+            </div>
+            <div className="bg-card/60 border border-border/50 rounded-xl p-4">
+              <div className="text-2xl mb-2">🧩</div>
+              <h3 className="font-semibold text-foreground text-sm mb-1">Синтез — главный инсайт</h3>
+              <p className="text-xs text-muted-foreground">После 11 карточек — единый синтез всех систем. Одно ёмкое описание вашего пути, которого не даст ни один отдельный гороскоп.</p>
+            </div>
+          </div>
+
+          {/* Systems preview grid */}
+          <div className="max-w-4xl mx-auto">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">Что входит в ваш портрет</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {SYSTEMS_PREVIEW.map((s) => (
+                <span key={s.name} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-xs hover:border-primary/30 hover:text-foreground transition-colors cursor-default" title={s.hint}>
+                  <span>{s.icon}</span> {s.name}
+                </span>
+              ))}
+            </div>
           </div>
         </AnimateOnScroll>
       </section>
 
       {/* Form */}
-      <section className="container mx-auto px-4 pb-12">
+      <section className="container mx-auto px-4 pb-14">
         <AnimateOnScroll>
           <form
             onSubmit={handleSubmit}
-            className="max-w-xl mx-auto bg-card border border-border rounded-2xl p-6 md:p-8 shadow-lg"
+            className="max-w-xl mx-auto bg-card border border-primary/20 rounded-2xl p-6 md:p-8 shadow-xl shadow-primary/10"
           >
-            <h2 className="font-serif text-2xl font-bold text-foreground mb-6 text-center">Введите данные рождения</h2>
+            <div className="text-center mb-6">
+              <h2 className="font-serif text-2xl font-bold text-foreground mb-1">Введите данные рождения</h2>
+              <p className="text-sm text-muted-foreground">Только дата обязательна — остальное улучшает точность</p>
+            </div>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name" className="text-sm text-muted-foreground mb-1 block">Ваше имя (необязательно)</Label>
+                <Label htmlFor="name" className="text-sm text-muted-foreground mb-1 block">Ваше имя <span className="text-xs opacity-60">(необязательно)</span></Label>
                 <Input
                   id="name"
                   value={form.name}
@@ -470,7 +532,7 @@ export default function DivinationPortrait() {
                 />
               </div>
               <div>
-                <Label htmlFor="date" className="text-sm text-muted-foreground mb-1 block">Дата рождения *</Label>
+                <Label htmlFor="date" className="text-sm text-muted-foreground mb-1 block">Дата рождения <span className="text-primary">*</span></Label>
                 <Input
                   id="date"
                   type="date"
@@ -482,7 +544,7 @@ export default function DivinationPortrait() {
               </div>
               <div>
                 <Label htmlFor="time" className="text-sm text-muted-foreground mb-1 block">
-                  Время рождения <span className="text-xs">(рекомендуется — для Бацзы и точных расчётов)</span>
+                  Время рождения <span className="text-xs opacity-60">(для Бацзы + Генных ключей)</span>
                 </Label>
                 <Input
                   id="time"
@@ -494,7 +556,7 @@ export default function DivinationPortrait() {
               </div>
               <div>
                 <Label htmlFor="city" className="text-sm text-muted-foreground mb-1 block">
-                  Место рождения <span className="text-xs">(для точного асцендента в полном раскладе)</span>
+                  Место рождения <span className="text-xs opacity-60">(для полного расклада с асцендентом)</span>
                 </Label>
                 <Input
                   id="city"
@@ -505,9 +567,9 @@ export default function DivinationPortrait() {
                 />
               </div>
               {error && <p className="text-destructive text-sm">{error}</p>}
-              <Button type="submit" className="w-full py-6 text-base font-semibold">
+              <Button type="submit" className="w-full py-6 text-base font-semibold bg-gradient-to-r from-violet-600 to-amber-600 hover:from-violet-500 hover:to-amber-500 text-white border-0 shadow-lg shadow-violet-900/30">
                 <Sparkles className="w-5 h-5 mr-2" />
-                Составить портрет судьбы
+                Раскрыть мой портрет судьбы →
               </Button>
             </div>
           </form>

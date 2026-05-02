@@ -27,9 +27,7 @@ const Catalog = () => {
           <Link to="/" className="font-display text-2xl text-foreground hover:text-primary transition-colors">
             ← На главную
           </Link>
-          <h1 className="font-display text-2xl md:text-3xl text-foreground">
-            Каталог <span className="text-gradient-gold">камней</span>
-          </h1>
+          <div />
           <Link to="/favorites" className="relative text-muted-foreground hover:text-primary transition-colors">
             <Heart className="w-5 h-5" />
             {count > 0 && (
