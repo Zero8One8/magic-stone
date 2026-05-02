@@ -28,22 +28,26 @@ const MOON_CSS = `
 }
 @keyframes moonGlow {
   0%,100% {
-    filter: drop-shadow(0 0 22px rgba(245,230,200,0.5))
-            drop-shadow(0 0 55px rgba(220,180,100,0.25));
+    filter: drop-shadow(0 0 28px rgba(245,228,185,0.62))
+            drop-shadow(0 0 70px rgba(220,175,90,0.30));
   }
   50% {
-    filter: drop-shadow(0 0 42px rgba(255,245,200,0.85))
-            drop-shadow(0 0 100px rgba(220,180,100,0.45))
-            drop-shadow(0 0 160px rgba(180,140,80,0.2));
+    filter: drop-shadow(0 0 55px rgba(255,248,200,0.92))
+            drop-shadow(0 0 140px rgba(220,175,90,0.54))
+            drop-shadow(0 0 250px rgba(175,130,60,0.22));
   }
 }
 @keyframes haloBreath {
-  0%,100% { transform:scale(1);   opacity:0.18; }
-  50%      { transform:scale(1.12); opacity:0.32; }
+  0%,100% { transform:scale(1);   opacity:0.22; }
+  50%      { transform:scale(1.10); opacity:0.44; }
 }
 @keyframes haloBreath2 {
-  0%,100% { transform:scale(1);   opacity:0.10; }
-  50%      { transform:scale(1.20); opacity:0.20; }
+  0%,100% { transform:scale(1);   opacity:0.14; }
+  50%      { transform:scale(1.18); opacity:0.30; }
+}
+@keyframes coronaBreath {
+  0%,100% { transform:scale(1);   opacity:0.08; }
+  50%      { transform:scale(1.06); opacity:0.17; }
 }
 @keyframes twinkle {
   0%,100% { opacity:var(--tw-base); transform:scale(1); }
@@ -65,25 +69,11 @@ const MOON_CSS = `
   0%   { transform:translateX(-120px) translateY(-60px) rotate(30deg); opacity:1; }
   100% { transform:translateX(320px) translateY(160px) rotate(30deg); opacity:0; }
 }
-@keyframes meteorArc {
-  0% {
-    transform: translate3d(var(--mx0), var(--my0), 0) rotate(var(--mrot));
-    opacity: 0;
-  }
-  8% {
-    opacity: 0.95;
-  }
-  92% {
-    opacity: 0.3;
-  }
-  100% {
-    transform: translate3d(var(--mx1), var(--my1), 0) rotate(var(--mrot));
-    opacity: 0;
-  }
-}
-@keyframes coronaPulse {
-  0%,100% { stroke-dashoffset: 0;   opacity: 0.28; }
-  50%      { stroke-dashoffset: 40; opacity: 0.50; }
+@keyframes cometFly {
+  0%   { transform: translate(-20vw, -9vh); opacity: 0; }
+  8%   { opacity: 1; }
+  90%  { opacity: 0.88; }
+  100% { transform: translate(82vw, 33vh); opacity: 0; }
 }
 `;
 
@@ -103,23 +93,33 @@ const AnimatedMoon = ({ age, size = 200 }: { age: number; size?: number }) => {
   return (
     <div style={{ animation: "moonFloat 7s ease-in-out infinite" }}>
       <div style={{ position: "relative", width: size, height: size }}>
-        {/* Outer halo ring 2 */}
+        {/* Far corona — large atmospheric glow */}
         <div style={{
           position: "absolute",
-          inset: `-${Math.round(size * 0.28)}px`,
+          inset: `-${Math.round(size * 0.65)}px`,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(245,220,140,0.14) 30%, transparent 70%)",
-          filter: "blur(20px)",
-          animation: "haloBreath2 9s ease-in-out infinite",
+          background: "radial-gradient(circle, rgba(210,182,105,0.12) 28%, rgba(190,155,78,0.05) 56%, transparent 72%)",
+          filter: "blur(45px)",
+          animation: "coronaBreath 14s ease-in-out infinite",
           pointerEvents: "none",
         }} />
-        {/* Inner halo ring */}
+        {/* Mid halo */}
         <div style={{
           position: "absolute",
-          inset: `-${Math.round(size * 0.14)}px`,
+          inset: `-${Math.round(size * 0.36)}px`,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(245,220,140,0.2) 35%, transparent 68%)",
-          filter: "blur(10px)",
+          background: "radial-gradient(circle, rgba(245,218,132,0.20) 30%, rgba(220,185,88,0.08) 58%, transparent 74%)",
+          filter: "blur(26px)",
+          animation: "haloBreath2 10s ease-in-out infinite",
+          pointerEvents: "none",
+        }} />
+        {/* Near glow */}
+        <div style={{
+          position: "absolute",
+          inset: `-${Math.round(size * 0.15)}px`,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(255,232,150,0.28) 38%, rgba(240,210,110,0.10) 64%, transparent 78%)",
+          filter: "blur(12px)",
           animation: "haloBreath 5.5s ease-in-out infinite",
           pointerEvents: "none",
         }} />
@@ -198,11 +198,20 @@ const AnimatedMoon = ({ age, size = 200 }: { age: number; size?: number }) => {
           {/* Base sphere surface */}
           <circle cx={cx} cy={cy} r={r} fill="url(#mc-base)" clipPath="url(#mc-clip)" />
 
-          {/* Maria — large dark lunar seas */}
+          {/* Maria — major lunar seas, proper placement */}
           <g clipPath="url(#mc-clip)">
-            <ellipse cx={cx * 0.88} cy={cy * 0.82} rx={r * 0.34} ry={r * 0.24} fill="url(#mc-maria1)" />
-            <ellipse cx={cx * 1.14} cy={cy * 1.12} rx={r * 0.28} ry={r * 0.20} fill="url(#mc-maria2)" />
-            <ellipse cx={cx * 0.68} cy={cy * 1.22} rx={r * 0.20} ry={r * 0.14} fill="url(#mc-maria1)" opacity="0.7" />
+            {/* Mare Imbrium — upper-left, large dominant sea */}
+            <ellipse cx={cx - r*0.12} cy={cy - r*0.18} rx={r*0.36} ry={r*0.28} fill="url(#mc-maria1)" />
+            {/* Oceanus Procellarum — left side, vast */}
+            <ellipse cx={cx - r*0.26} cy={cy - r*0.02} rx={r*0.20} ry={r*0.40} fill="url(#mc-maria1)" opacity="0.72" />
+            {/* Mare Serenitatis — upper center-right */}
+            <ellipse cx={cx + r*0.06} cy={cy - r*0.16} rx={r*0.20} ry={r*0.17} fill="url(#mc-maria2)" />
+            {/* Mare Tranquilitatis — center (Apollo 11) */}
+            <ellipse cx={cx + r*0.12} cy={cy + r*0.04} rx={r*0.22} ry={r*0.16} fill="url(#mc-maria2)" opacity="0.88" />
+            {/* Mare Nubium — lower center */}
+            <ellipse cx={cx - r*0.05} cy={cy + r*0.28} rx={r*0.18} ry={r*0.13} fill="url(#mc-maria1)" opacity="0.80" />
+            {/* Mare Crisium — far right edge */}
+            <ellipse cx={cx + r*0.40} cy={cy - r*0.08} rx={r*0.11} ry={r*0.09} fill="url(#mc-maria2)" opacity="0.85" />
           </g>
 
           {/* Craters — subtle, natural */}
@@ -268,9 +277,9 @@ const STAR_DATA = Array.from({ length: 165 }, (_, i) => {
   };
 });
 
-// Single slow comet — elegant, background, unhurried
+// Single slow comet — elegant background presence
 const METEOR_DATA = [
-  { top: "18%", left: "5%", width: 200, duration: "32s", delay: "4s", x0: "-6vw", y0: "-3vh", x1: "72vw", y1: "28vh", rot: "22deg" },
+  { top: "20%", left: "6%", duration: "52s", delay: "5s" },
 ];
 
 // ──────────────────────────────────────────────────────────────
@@ -411,7 +420,7 @@ const MoonCalendar = () => {
               }}
             />
           ))}
-          {/* Comet — single beautiful slow comet with nucleus, coma, and ion tail */}
+          {/* Single beautiful slow comet */}
           {METEOR_DATA.map((m, i) => (
             <div
               key={`comet-${i}`}
@@ -419,66 +428,76 @@ const MoonCalendar = () => {
                 position: "absolute",
                 top: m.top,
                 left: m.left,
-                width: `${m.width + 16}px`,
-                height: "30px",
-                ["--mx0" as string]: m.x0,
-                ["--my0" as string]: m.y0,
-                ["--mx1" as string]: m.x1,
-                ["--my1" as string]: m.y1,
-                ["--mrot" as string]: m.rot,
-                animation: `meteorArc ${m.duration} ${m.delay} linear infinite`,
-                transformOrigin: "right center",
+                animation: `cometFly ${m.duration} ${m.delay} linear infinite`,
+                pointerEvents: "none",
               }}
             >
-              {/* Ion tail — thin bright streak, fades from nothing (left) to bright (right) */}
               <div style={{
-                position: "absolute",
-                left: 0,
-                top: "50%",
-                transform: "translateY(-50%)",
-                width: `${m.width}px`,
-                height: "1.5px",
-                borderRadius: "999px",
-                background: "linear-gradient(90deg, transparent 0%, rgba(180,215,255,0.08) 16%, rgba(255,222,160,0.42) 60%, rgba(255,246,215,0.78) 88%, transparent 100%)",
-              }} />
-              {/* Dust tail — wide soft glow behind nucleus */}
-              <div style={{
-                position: "absolute",
-                left: "24%",
-                top: "50%",
-                transform: "translateY(-50%)",
-                width: "76%",
-                height: "14px",
-                marginTop: "-7px",
-                borderRadius: "50%",
-                background: "linear-gradient(90deg, transparent 0%, rgba(255,210,130,0.07) 25%, rgba(255,228,162,0.18) 70%, transparent 100%)",
-                filter: "blur(5px)",
-              }} />
-              {/* Coma — diffuse soft sphere around nucleus */}
-              <div style={{
-                position: "absolute",
-                right: "2px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                width: "28px",
-                height: "28px",
-                marginTop: "-14px",
-                borderRadius: "50%",
-                background: "radial-gradient(circle, rgba(255,252,235,0.50) 0%, rgba(255,236,175,0.20) 44%, transparent 72%)",
-                filter: "blur(5px)",
-              }} />
-              {/* Nucleus — bright glowing core */}
-              <div style={{
-                position: "absolute",
-                right: "10px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                width: "7px",
-                height: "7px",
-                borderRadius: "50%",
-                background: "radial-gradient(circle, #fffef6 0%, rgba(255,250,222,0.94) 52%, rgba(255,232,166,0.40) 84%, transparent 100%)",
-                boxShadow: "0 0 9px 4px rgba(255,243,198,0.88), 0 0 22px 8px rgba(255,216,128,0.42), 0 0 52px 18px rgba(255,202,90,0.14)",
-              }} />
+                transform: "rotate(23deg)",
+                transformOrigin: "calc(100% - 32px) 50%",
+                position: "relative",
+                width: "320px",
+                height: "80px",
+              }}>
+                {/* Ion tail — primary sharp streak */}
+                <div style={{
+                  position: "absolute",
+                  left: "2px", top: "50%",
+                  width: "280px", height: "2px",
+                  marginTop: "-1px",
+                  borderRadius: "999px",
+                  background: "linear-gradient(to right, transparent 0%, rgba(185,215,255,0.08) 14%, rgba(255,218,148,0.55) 65%, rgba(255,250,218,0.84) 90%, rgba(255,248,215,0.52) 100%)",
+                }} />
+                {/* Ion tail — secondary faint parallel */}
+                <div style={{
+                  position: "absolute",
+                  left: "58px", top: "50%",
+                  width: "218px", height: "1px",
+                  marginTop: "3px",
+                  borderRadius: "999px",
+                  background: "linear-gradient(to right, transparent 0%, rgba(185,215,255,0.05) 22%, rgba(255,218,148,0.26) 80%, rgba(255,248,215,0.34) 100%)",
+                }} />
+                {/* Dust tail — wide warm glow */}
+                <div style={{
+                  position: "absolute",
+                  left: "56px", top: "50%",
+                  width: "238px", height: "50px",
+                  marginTop: "-25px",
+                  borderRadius: "50%",
+                  background: "linear-gradient(to right, transparent 0%, rgba(255,205,110,0.04) 22%, rgba(255,220,148,0.13) 72%, rgba(255,238,188,0.18) 96%, transparent 100%)",
+                  filter: "blur(12px)",
+                }} />
+                {/* Coma — outer diffuse sphere */}
+                <div style={{
+                  position: "absolute",
+                  right: "2px", top: "50%",
+                  width: "78px", height: "78px",
+                  marginTop: "-39px",
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(255,254,240,0.52) 0%, rgba(255,242,195,0.22) 38%, rgba(255,228,162,0.06) 65%, transparent 80%)",
+                  filter: "blur(10px)",
+                }} />
+                {/* Coma — inner bright */}
+                <div style={{
+                  position: "absolute",
+                  right: "14px", top: "50%",
+                  width: "48px", height: "48px",
+                  marginTop: "-24px",
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(255,253,242,0.80) 0%, rgba(255,245,210,0.38) 48%, transparent 76%)",
+                  filter: "blur(5px)",
+                }} />
+                {/* Nucleus — brilliant core with deep glow */}
+                <div style={{
+                  position: "absolute",
+                  right: "26px", top: "50%",
+                  width: "13px", height: "13px",
+                  marginTop: "-6.5px",
+                  borderRadius: "50%",
+                  background: "#fffef5",
+                  boxShadow: "0 0 6px 4px rgba(255,252,220,0.98), 0 0 18px 9px rgba(255,234,162,0.80), 0 0 46px 20px rgba(255,214,108,0.50), 0 0 92px 40px rgba(255,200,80,0.22)",
+                }} />
+              </div>
             </div>
           ))}
         </div>
