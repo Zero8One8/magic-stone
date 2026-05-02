@@ -135,13 +135,13 @@ const AnimatedMoon = ({ age, size = 200 }: { age: number; size?: number }) => {
               <circle cx={cx} cy={cy} r={r} />
             </clipPath>
 
-            {/* Base surface — warm off-white with natural tonal range */}
-            <radialGradient id="mc-base" cx="38%" cy="30%" r="78%">
-              <stop offset="0%"   stopColor="#fdfbf2" />
-              <stop offset="22%"  stopColor="#f5f0e3" />
-              <stop offset="55%"  stopColor="#e4dcd0" />
-              <stop offset="82%"  stopColor="#c8bfb2" />
-              <stop offset="100%" stopColor="#a09080" />
+            {/* Base surface — cool grey lunar palette, NOT warm */}
+            <radialGradient id="mc-base" cx="36%" cy="28%" r="80%">
+              <stop offset="0%"   stopColor="#e6e2da" />
+              <stop offset="18%"  stopColor="#cecac1" />
+              <stop offset="46%"  stopColor="#aeaaa2" />
+              <stop offset="74%"  stopColor="#82807a" />
+              <stop offset="100%" stopColor="#484540" />
             </radialGradient>
 
             {/* Limb darkening — dark edge ring, concentric inward */}
@@ -167,14 +167,16 @@ const AnimatedMoon = ({ age, size = 200 }: { age: number; size?: number }) => {
               <stop offset="100%" stopColor="rgba(16,12,28,0.04)" />
             </linearGradient>
 
-            {/* Maria (dark surface patches) */}
+            {/* Maria — dark grey lunar seas, realistic */}
             <radialGradient id="mc-maria1" cx="50%" cy="50%" r="50%">
-              <stop offset="0%"   stopColor="rgba(90,78,64,0.28)" />
-              <stop offset="100%" stopColor="rgba(90,78,64,0)" />
+              <stop offset="0%"   stopColor="rgba(40,38,36,0.72)" />
+              <stop offset="52%"  stopColor="rgba(42,40,38,0.34)" />
+              <stop offset="100%" stopColor="rgba(42,40,38,0)" />
             </radialGradient>
             <radialGradient id="mc-maria2" cx="50%" cy="50%" r="50%">
-              <stop offset="0%"   stopColor="rgba(80,70,58,0.22)" />
-              <stop offset="100%" stopColor="rgba(80,70,58,0)" />
+              <stop offset="0%"   stopColor="rgba(35,33,32,0.62)" />
+              <stop offset="52%"  stopColor="rgba(37,35,34,0.28)" />
+              <stop offset="100%" stopColor="rgba(37,35,34,0)" />
             </radialGradient>
 
             {/* Soft outer glow */}
@@ -190,13 +192,23 @@ const AnimatedMoon = ({ age, size = 200 }: { age: number; size?: number }) => {
             <filter id="mc-sblur" x="-10%" y="-10%" width="120%" height="120%">
               <feGaussianBlur stdDeviation="1.2" />
             </filter>
+            {/* Surface texture — fractal noise overlay for realistic regolith */}
+            <filter id="mc-texture" x="-2%" y="-2%" width="104%" height="104%" colorInterpolationFilters="sRGB">
+              <feTurbulence type="fractalNoise" baseFrequency="0.048 0.036" numOctaves="5" seed="31" result="noise"/>
+              <feColorMatrix type="saturate" values="0" in="noise" result="greyNoise"/>
+              <feColorMatrix in="greyNoise" type="matrix"
+                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 3.2 -1.0"
+                result="cnoise"/>
+              <feBlend mode="overlay" in="SourceGraphic" in2="cnoise" result="blended"/>
+              <feComposite operator="in" in="blended" in2="SourceGraphic"/>
+            </filter>
           </defs>
 
           {/* Outer atmospheric glow */}
           <circle cx={cx} cy={cy} r={r + 18} fill="url(#mc-glow)" filter="url(#mc-gblur)" />
 
-          {/* Base sphere surface */}
-          <circle cx={cx} cy={cy} r={r} fill="url(#mc-base)" clipPath="url(#mc-clip)" />
+          {/* Base sphere surface with texture */}
+          <circle cx={cx} cy={cy} r={r} fill="url(#mc-base)" clipPath="url(#mc-clip)" filter="url(#mc-texture)" />
 
           {/* Maria — major lunar seas, proper placement */}
           <g clipPath="url(#mc-clip)">
@@ -277,9 +289,9 @@ const STAR_DATA = Array.from({ length: 165 }, (_, i) => {
   };
 });
 
-// Single slow comet — elegant background presence
+// Single slow beautiful comet
 const METEOR_DATA = [
-  { top: "20%", left: "6%", duration: "52s", delay: "5s" },
+  { top: "22%", left: "4%", duration: "88s", delay: "6s" },
 ];
 
 // ──────────────────────────────────────────────────────────────
@@ -420,7 +432,7 @@ const MoonCalendar = () => {
               }}
             />
           ))}
-          {/* Single beautiful slow comet */}
+          {/* Single beautiful slow comet — SVG-based with real nucleus, coma, dual tails */}
           {METEOR_DATA.map((m, i) => (
             <div
               key={`comet-${i}`}
@@ -432,72 +444,80 @@ const MoonCalendar = () => {
                 pointerEvents: "none",
               }}
             >
-              <div style={{
-                transform: "rotate(23deg)",
-                transformOrigin: "calc(100% - 32px) 50%",
-                position: "relative",
-                width: "320px",
-                height: "80px",
-              }}>
-                {/* Ion tail — primary sharp streak */}
-                <div style={{
-                  position: "absolute",
-                  left: "2px", top: "50%",
-                  width: "280px", height: "2px",
-                  marginTop: "-1px",
-                  borderRadius: "999px",
-                  background: "linear-gradient(to right, transparent 0%, rgba(185,215,255,0.08) 14%, rgba(255,218,148,0.55) 65%, rgba(255,250,218,0.84) 90%, rgba(255,248,215,0.52) 100%)",
-                }} />
-                {/* Ion tail — secondary faint parallel */}
-                <div style={{
-                  position: "absolute",
-                  left: "58px", top: "50%",
-                  width: "218px", height: "1px",
-                  marginTop: "3px",
-                  borderRadius: "999px",
-                  background: "linear-gradient(to right, transparent 0%, rgba(185,215,255,0.05) 22%, rgba(255,218,148,0.26) 80%, rgba(255,248,215,0.34) 100%)",
-                }} />
-                {/* Dust tail — wide warm glow */}
-                <div style={{
-                  position: "absolute",
-                  left: "56px", top: "50%",
-                  width: "238px", height: "50px",
-                  marginTop: "-25px",
-                  borderRadius: "50%",
-                  background: "linear-gradient(to right, transparent 0%, rgba(255,205,110,0.04) 22%, rgba(255,220,148,0.13) 72%, rgba(255,238,188,0.18) 96%, transparent 100%)",
-                  filter: "blur(12px)",
-                }} />
-                {/* Coma — outer diffuse sphere */}
-                <div style={{
-                  position: "absolute",
-                  right: "2px", top: "50%",
-                  width: "78px", height: "78px",
-                  marginTop: "-39px",
-                  borderRadius: "50%",
-                  background: "radial-gradient(circle, rgba(255,254,240,0.52) 0%, rgba(255,242,195,0.22) 38%, rgba(255,228,162,0.06) 65%, transparent 80%)",
-                  filter: "blur(10px)",
-                }} />
-                {/* Coma — inner bright */}
-                <div style={{
-                  position: "absolute",
-                  right: "14px", top: "50%",
-                  width: "48px", height: "48px",
-                  marginTop: "-24px",
-                  borderRadius: "50%",
-                  background: "radial-gradient(circle, rgba(255,253,242,0.80) 0%, rgba(255,245,210,0.38) 48%, transparent 76%)",
-                  filter: "blur(5px)",
-                }} />
-                {/* Nucleus — brilliant core with deep glow */}
-                <div style={{
-                  position: "absolute",
-                  right: "26px", top: "50%",
-                  width: "13px", height: "13px",
-                  marginTop: "-6.5px",
-                  borderRadius: "50%",
-                  background: "#fffef5",
-                  boxShadow: "0 0 6px 4px rgba(255,252,220,0.98), 0 0 18px 9px rgba(255,234,162,0.80), 0 0 46px 20px rgba(255,214,108,0.50), 0 0 92px 40px rgba(255,200,80,0.22)",
-                }} />
-              </div>
+              <svg
+                width="560" height="130"
+                viewBox="0 0 560 130"
+                style={{ overflow: "visible" }}
+              >
+                <defs>
+                  <linearGradient id="cm-ion" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"   stopColor="rgba(180,220,255,0)" />
+                    <stop offset="12%"  stopColor="rgba(190,225,255,0.05)" />
+                    <stop offset="52%"  stopColor="rgba(255,228,165,0.52)" />
+                    <stop offset="88%"  stopColor="rgba(255,253,226,0.84)" />
+                    <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+                  </linearGradient>
+                  <linearGradient id="cm-dust" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"   stopColor="rgba(255,210,130,0)" />
+                    <stop offset="22%"  stopColor="rgba(255,215,140,0.05)" />
+                    <stop offset="68%"  stopColor="rgba(255,228,162,0.22)" />
+                    <stop offset="100%" stopColor="rgba(255,246,206,0)" />
+                  </linearGradient>
+                  <filter id="cm-blur-outer" x="-80%" y="-150%" width="260%" height="400%">
+                    <feGaussianBlur stdDeviation="26" />
+                  </filter>
+                  <filter id="cm-blur-dust" x="-10%" y="-200%" width="120%" height="500%">
+                    <feGaussianBlur stdDeviation="5 18" />
+                  </filter>
+                  <filter id="cm-blur-coma" x="-50%" y="-100%" width="200%" height="300%">
+                    <feGaussianBlur stdDeviation="11" />
+                  </filter>
+                  <filter id="cm-blur-coma2" x="-30%" y="-80%" width="160%" height="260%">
+                    <feGaussianBlur stdDeviation="5" />
+                  </filter>
+                </defs>
+
+                {/* Render rotated at trajectory angle */}
+                <g transform="rotate(23 490 65)">
+                  {/* Outer haze */}
+                  <circle cx="490" cy="65" r="82"
+                    fill="rgba(255,235,170,0.08)"
+                    filter="url(#cm-blur-outer)" />
+
+                  {/* Dust tail — broad warm glow */}
+                  <ellipse cx="258" cy="65" rx="252" ry="28"
+                    fill="url(#cm-dust)"
+                    filter="url(#cm-blur-dust)" />
+
+                  {/* Primary ion tail — sharp blue-white streak */}
+                  <rect x="8" y="62" width="466" height="6" rx="3"
+                    fill="url(#cm-ion)" opacity="0.82" />
+                  {/* Secondary ion strand — faint parallel */}
+                  <rect x="70" y="68" width="400" height="3" rx="1.5"
+                    fill="url(#cm-ion)" opacity="0.24" />
+
+                  {/* Outer coma */}
+                  <circle cx="488" cy="65" r="46"
+                    fill="rgba(255,250,224,0.20)"
+                    filter="url(#cm-blur-coma)" />
+                  {/* Inner coma bright */}
+                  <circle cx="489" cy="65" r="24"
+                    fill="rgba(255,254,238,0.48)"
+                    filter="url(#cm-blur-coma2)" />
+
+                  {/* Nucleus glow */}
+                  <circle cx="490" cy="65" r="11"
+                    fill="rgba(255,252,225,0.70)"
+                    filter="url(#cm-blur-coma2)" />
+                  {/* Nucleus core — white hot */}
+                  <circle cx="490" cy="65" r="7"
+                    fill="white"
+                    style={{
+                      filter: "drop-shadow(0 0 8px rgba(255,252,210,1)) drop-shadow(0 0 20px rgba(255,228,120,0.90)) drop-shadow(0 0 50px rgba(255,195,70,0.55)) drop-shadow(0 0 100px rgba(255,175,40,0.24))",
+                    }} />
+                  <circle cx="490" cy="65" r="4" fill="white" opacity="0.98" />
+                </g>
+              </svg>
             </div>
           ))}
         </div>
@@ -521,7 +541,7 @@ const MoonCalendar = () => {
         >
           {/* Moon */}
           <div className="mb-10">
-            <AnimatedMoon age={todayAge} size={220} />
+            <AnimatedMoon age={todayAge} size={270} />
           </div>
 
           <h1
