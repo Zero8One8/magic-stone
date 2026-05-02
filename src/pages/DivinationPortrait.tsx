@@ -71,7 +71,9 @@ function parseTime(timeStr: string): { hour: number; minute: number } {
 }
 
 function getGeneKeyProfile(year: number, month: number, day: number, hour: number, minute: number) {
-  const key = ((Number(`${year}${String(month).padStart(2, "0")}${String(day).padStart(2, "0")}${String(hour).padStart(2, "0")}${String(minute).padStart(2, "0")}`) % 64) + 63) % 64 + 1;
+  // Key based on birth DATE only — stable regardless of time entry
+  const key = (((year % 100) * 13 + month * 29 + day * 7) % 64) + 1;
+  // Line uses full datetime for finer resolution when time is known
   const line = ((year + month + day + hour + minute) % 6) + 1;
   const lineNames = [
     "Исследователь", "Естественный союзник", "Экспериментатор",

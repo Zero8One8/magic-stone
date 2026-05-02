@@ -411,29 +411,75 @@ const MoonCalendar = () => {
               }}
             />
           ))}
-          {/* Meteors */}
+          {/* Comet — single beautiful slow comet with nucleus, coma, and ion tail */}
           {METEOR_DATA.map((m, i) => (
             <div
-              key={`meteor-${i}`}
+              key={`comet-${i}`}
               style={{
                 position: "absolute",
                 top: m.top,
                 left: m.left,
-                width: `${m.width}px`,
-                height: "1.2px",
-                borderRadius: "999px",
-                background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(230,240,255,0.18) 35%, rgba(255,235,180,0.72) 80%, rgba(255,248,210,0.90) 100%)",
-                filter: "drop-shadow(0 0 4px rgba(248,224,160,0.55))",
-                opacity: 0.72,
+                width: `${m.width + 16}px`,
+                height: "30px",
                 ["--mx0" as string]: m.x0,
                 ["--my0" as string]: m.y0,
                 ["--mx1" as string]: m.x1,
                 ["--my1" as string]: m.y1,
                 ["--mrot" as string]: m.rot,
                 animation: `meteorArc ${m.duration} ${m.delay} linear infinite`,
-                transform: `rotate(${m.rot})`,
+                transformOrigin: "right center",
               }}
-            />
+            >
+              {/* Ion tail — thin bright streak, fades from nothing (left) to bright (right) */}
+              <div style={{
+                position: "absolute",
+                left: 0,
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: `${m.width}px`,
+                height: "1.5px",
+                borderRadius: "999px",
+                background: "linear-gradient(90deg, transparent 0%, rgba(180,215,255,0.08) 16%, rgba(255,222,160,0.42) 60%, rgba(255,246,215,0.78) 88%, transparent 100%)",
+              }} />
+              {/* Dust tail — wide soft glow behind nucleus */}
+              <div style={{
+                position: "absolute",
+                left: "24%",
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: "76%",
+                height: "14px",
+                marginTop: "-7px",
+                borderRadius: "50%",
+                background: "linear-gradient(90deg, transparent 0%, rgba(255,210,130,0.07) 25%, rgba(255,228,162,0.18) 70%, transparent 100%)",
+                filter: "blur(5px)",
+              }} />
+              {/* Coma — diffuse soft sphere around nucleus */}
+              <div style={{
+                position: "absolute",
+                right: "2px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: "28px",
+                height: "28px",
+                marginTop: "-14px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(255,252,235,0.50) 0%, rgba(255,236,175,0.20) 44%, transparent 72%)",
+                filter: "blur(5px)",
+              }} />
+              {/* Nucleus — bright glowing core */}
+              <div style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: "7px",
+                height: "7px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, #fffef6 0%, rgba(255,250,222,0.94) 52%, rgba(255,232,166,0.40) 84%, transparent 100%)",
+                boxShadow: "0 0 9px 4px rgba(255,243,198,0.88), 0 0 22px 8px rgba(255,216,128,0.42), 0 0 52px 18px rgba(255,202,90,0.14)",
+              }} />
+            </div>
           ))}
         </div>
 
