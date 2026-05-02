@@ -134,60 +134,99 @@ const AnimatedMoon = ({ age, size = 200 }: { age: number; size?: number }) => {
             <clipPath id="mc-clip">
               <circle cx={cx} cy={cy} r={r} />
             </clipPath>
-            <radialGradient id="mc-grad" cx="34%" cy="28%" r="72%">
-              <stop offset="0%" stopColor="#fffef7" />
-              <stop offset="36%" stopColor="#f3eee3" />
-              <stop offset="72%" stopColor="#d8d0c2" />
-              <stop offset="100%" stopColor="#90857a" />
+
+            {/* Base surface — warm off-white with natural tonal range */}
+            <radialGradient id="mc-base" cx="38%" cy="30%" r="78%">
+              <stop offset="0%"   stopColor="#fdfbf2" />
+              <stop offset="22%"  stopColor="#f5f0e3" />
+              <stop offset="55%"  stopColor="#e4dcd0" />
+              <stop offset="82%"  stopColor="#c8bfb2" />
+              <stop offset="100%" stopColor="#a09080" />
             </radialGradient>
-            <radialGradient id="mc-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%"   stopColor="rgba(255,245,200,0.35)" />
-              <stop offset="100%" stopColor="rgba(255,245,200,0)" />
+
+            {/* Limb darkening — dark edge ring, concentric inward */}
+            <radialGradient id="mc-limb" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stopColor="rgba(0,0,0,0)" />
+              <stop offset="72%"  stopColor="rgba(0,0,0,0)" />
+              <stop offset="88%"  stopColor="rgba(8,6,18,0.18)" />
+              <stop offset="100%" stopColor="rgba(8,6,18,0.62)" />
             </radialGradient>
+
+            {/* Specular highlight — top-left bright spot */}
+            <radialGradient id="mc-spec" cx="28%" cy="22%" r="38%">
+              <stop offset="0%"   stopColor="rgba(255,253,245,0.70)" />
+              <stop offset="45%"  stopColor="rgba(255,248,230,0.18)" />
+              <stop offset="100%" stopColor="rgba(255,248,230,0)" />
+            </radialGradient>
+
+            {/* Phase shadow — terminator */}
             <linearGradient id="mc-shadow" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="rgba(18,14,30,0.62)" />
-              <stop offset="45%" stopColor="rgba(24,20,34,0.34)" />
-              <stop offset="100%" stopColor="rgba(24,20,34,0.12)" />
+              <stop offset="0%"   stopColor="rgba(10,8,22,0.88)" />
+              <stop offset="35%"  stopColor="rgba(14,10,26,0.52)" />
+              <stop offset="70%"  stopColor="rgba(16,12,28,0.18)" />
+              <stop offset="100%" stopColor="rgba(16,12,28,0.04)" />
             </linearGradient>
-            <filter id="mc-blur" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="2.5" />
+
+            {/* Maria (dark surface patches) */}
+            <radialGradient id="mc-maria1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stopColor="rgba(90,78,64,0.28)" />
+              <stop offset="100%" stopColor="rgba(90,78,64,0)" />
+            </radialGradient>
+            <radialGradient id="mc-maria2" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stopColor="rgba(80,70,58,0.22)" />
+              <stop offset="100%" stopColor="rgba(80,70,58,0)" />
+            </radialGradient>
+
+            {/* Soft outer glow */}
+            <radialGradient id="mc-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stopColor="rgba(255,242,196,0.22)" />
+              <stop offset="60%"  stopColor="rgba(255,235,170,0.08)" />
+              <stop offset="100%" stopColor="rgba(255,235,170,0)" />
+            </radialGradient>
+
+            <filter id="mc-gblur" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="4" />
+            </filter>
+            <filter id="mc-sblur" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="1.2" />
             </filter>
           </defs>
 
-          {/* Soft glow behind */}
-          <circle cx={cx} cy={cy} r={r + 10} fill="url(#mc-glow)" filter="url(#mc-blur)" />
-          {/* Moon face */}
-          <circle cx={cx} cy={cy} r={r} fill="url(#mc-grad)" />
-          {/* Craters */}
-          <g clipPath="url(#mc-clip)" opacity="0.18">
-            <circle cx={cx * 0.62} cy={cy * 0.58} r={r * 0.09}  fill="#7a500f" />
-            <circle cx={cx * 1.22} cy={cy * 0.82} r={r * 0.065} fill="#7a500f" />
-            <circle cx={cx * 0.85} cy={cy * 1.38} r={r * 0.075} fill="#7a500f" />
-            <circle cx={cx * 1.32} cy={cy * 1.25} r={r * 0.05}  fill="#7a500f" />
-            <circle cx={cx * 0.45} cy={cy * 1.10} r={r * 0.04}  fill="#7a500f" />
+          {/* Outer atmospheric glow */}
+          <circle cx={cx} cy={cy} r={r + 18} fill="url(#mc-glow)" filter="url(#mc-gblur)" />
+
+          {/* Base sphere surface */}
+          <circle cx={cx} cy={cy} r={r} fill="url(#mc-base)" clipPath="url(#mc-clip)" />
+
+          {/* Maria — large dark lunar seas */}
+          <g clipPath="url(#mc-clip)">
+            <ellipse cx={cx * 0.88} cy={cy * 0.82} rx={r * 0.34} ry={r * 0.24} fill="url(#mc-maria1)" />
+            <ellipse cx={cx * 1.14} cy={cy * 1.12} rx={r * 0.28} ry={r * 0.20} fill="url(#mc-maria2)" />
+            <ellipse cx={cx * 0.68} cy={cy * 1.22} rx={r * 0.20} ry={r * 0.14} fill="url(#mc-maria1)" opacity="0.7" />
           </g>
-          {/* Soft artistic phase shadow */}
+
+          {/* Craters — subtle, natural */}
+          <g clipPath="url(#mc-clip)" opacity="0.22">
+            <circle cx={cx * 0.64} cy={cy * 0.56} r={r * 0.072} fill="none" stroke="rgba(100,88,70,0.6)" strokeWidth="0.8" />
+            <circle cx={cx * 1.20} cy={cy * 0.80} r={r * 0.054} fill="none" stroke="rgba(100,88,70,0.5)" strokeWidth="0.7" />
+            <circle cx={cx * 0.84} cy={cy * 1.36} r={r * 0.062} fill="none" stroke="rgba(100,88,70,0.55)" strokeWidth="0.7" />
+            <circle cx={cx * 1.30} cy={cy * 1.24} r={r * 0.042} fill="none" stroke="rgba(100,88,70,0.4)" strokeWidth="0.6" />
+            <circle cx={cx * 0.46} cy={cy * 1.08} r={r * 0.035} fill="none" stroke="rgba(100,88,70,0.38)" strokeWidth="0.6" />
+          </g>
+
+          {/* Phase terminator shadow */}
           <g clipPath="url(#mc-clip)">
             <circle cx={cx + shadowOffset} cy={cy} r={r} fill="url(#mc-shadow)" opacity={shadowOpacity} />
-            <ellipse
-              cx={cx + shadowOffset * 0.45}
-              cy={cy}
-              rx={r * (0.72 + illumination * 0.26)}
-              ry={r}
-              fill="rgba(30,24,38,0.16)"
-              opacity={shadowOpacity}
-            />
           </g>
-          {/* Corona dashed ring */}
-          <circle
-            cx={cx} cy={cy} r={r + 4}
-            fill="none"
-            stroke="rgba(245,230,180,0.32)"
-            strokeWidth="1.2"
-            strokeDasharray="6 4"
-            style={{ animation: "coronaPulse 4s linear infinite" }}
-          />
-          <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,245,210,0.22)" strokeWidth="1" />
+
+          {/* Limb darkening overlay — makes sphere 3D */}
+          <circle cx={cx} cy={cy} r={r} fill="url(#mc-limb)" clipPath="url(#mc-clip)" />
+
+          {/* Specular highlight */}
+          <circle cx={cx} cy={cy} r={r} fill="url(#mc-spec)" clipPath="url(#mc-clip)" />
+
+          {/* Subtle edge ring */}
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,248,220,0.12)" strokeWidth="0.8" />
         </svg>
       </div>
     </div>
@@ -229,10 +268,9 @@ const STAR_DATA = Array.from({ length: 165 }, (_, i) => {
   };
 });
 
+// Single slow comet — elegant, background, unhurried
 const METEOR_DATA = [
-  { top: "14%", left: "8%",  width: 168, duration: "13.5s", delay: "2s",  x0: "-8vw", y0: "-2vh", x1: "66vw", y1: "24vh", rot: "24deg" },
-  { top: "34%", left: "58%", width: 132, duration: "15s",   delay: "7s",  x0: "-5vw", y0: "0vh",  x1: "52vw", y1: "20vh", rot: "18deg" },
-  { top: "62%", left: "18%", width: 154, duration: "17.5s", delay: "11s", x0: "-10vw", y0: "-4vh", x1: "64vw", y1: "22vh", rot: "26deg" },
+  { top: "18%", left: "5%", width: 200, duration: "32s", delay: "4s", x0: "-6vw", y0: "-3vh", x1: "72vw", y1: "28vh", rot: "22deg" },
 ];
 
 // ──────────────────────────────────────────────────────────────
@@ -382,10 +420,11 @@ const MoonCalendar = () => {
                 top: m.top,
                 left: m.left,
                 width: `${m.width}px`,
-                height: "1.6px",
+                height: "1.2px",
                 borderRadius: "999px",
-                background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(236,246,255,0.35) 28%, rgba(255,226,162,0.95) 100%)",
-                filter: "drop-shadow(0 0 7px rgba(248,210,140,0.72))",
+                background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(230,240,255,0.18) 35%, rgba(255,235,180,0.72) 80%, rgba(255,248,210,0.90) 100%)",
+                filter: "drop-shadow(0 0 4px rgba(248,224,160,0.55))",
+                opacity: 0.72,
                 ["--mx0" as string]: m.x0,
                 ["--my0" as string]: m.y0,
                 ["--mx1" as string]: m.x1,
