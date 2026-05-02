@@ -49,6 +49,10 @@ const MOON_CSS = `
   0%,100% { opacity:var(--tw-base); transform:scale(1); }
   45%     { opacity:calc(var(--tw-base)*2.8); transform:scale(1.7); }
 }
+@keyframes starDrift {
+  0%,100% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(var(--drift-x), var(--drift-y), 0); }
+}
 @keyframes nebulaFloat {
   0%,100% { transform:scale(1) translate(0,0);   opacity:.055; }
   50%      { transform:scale(1.12) translate(-2%,2%); opacity:.10; }
@@ -60,6 +64,22 @@ const MOON_CSS = `
 @keyframes shootStar {
   0%   { transform:translateX(-120px) translateY(-60px) rotate(30deg); opacity:1; }
   100% { transform:translateX(320px) translateY(160px) rotate(30deg); opacity:0; }
+}
+@keyframes meteorArc {
+  0% {
+    transform: translate3d(var(--mx0), var(--my0), 0) rotate(var(--mrot));
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.95;
+  }
+  92% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate3d(var(--mx1), var(--my1), 0) rotate(var(--mrot));
+    opacity: 0;
+  }
 }
 @keyframes coronaPulse {
   0%,100% { stroke-dashoffset: 0;   opacity: 0.28; }
@@ -177,15 +197,43 @@ const AnimatedMoon = ({ age, size = 200 }: { age: number; size?: number }) => {
 // ──────────────────────────────────────────────────────────────
 // Star field (stable data, outside component)
 // ──────────────────────────────────────────────────────────────
-const STAR_DATA = Array.from({ length: 80 }, (_, i) => ({
-  top:    `${(i * 37 + 3) % 100}%`,
-  left:   `${(i * 61 + 7) % 100}%`,
-  size:   0.8 + (i % 4) * 0.55,
-  base:   0.15 + (i % 6) * 0.09,
-  delay:  `${(i * 0.37) % 5}s`,
-  dur:    `${2.5 + (i % 4) * 0.8}s`,
-  bright: i % 9 === 0,
-}));
+function createSeededRandom(seed = 18731) {
+  let state = seed % 2147483647;
+  if (state <= 0) state += 2147483646;
+  return () => {
+    state = (state * 16807) % 2147483647;
+    return (state - 1) / 2147483646;
+  };
+}
+
+const rand = createSeededRandom();
+const STAR_DATA = Array.from({ length: 165 }, (_, i) => {
+  const cluster = i % 5;
+  const baseX = [14, 31, 48, 68, 84][cluster];
+  const baseY = [18, 42, 66, 28, 58][cluster];
+  const left = Math.max(1, Math.min(99, baseX + (rand() - 0.5) * 30));
+  const top = Math.max(1, Math.min(99, baseY + (rand() - 0.5) * 38));
+  const bright = rand() > 0.9;
+  const size = bright ? 1.7 + rand() * 1.6 : 0.5 + rand() * 1.6;
+  return {
+    top: `${top.toFixed(2)}%`,
+    left: `${left.toFixed(2)}%`,
+    size,
+    base: bright ? 0.42 + rand() * 0.28 : 0.14 + rand() * 0.24,
+    delay: `${(rand() * 6).toFixed(2)}s`,
+    dur: `${(2.1 + rand() * 4.8).toFixed(2)}s`,
+    driftX: `${((rand() - 0.5) * 2.8).toFixed(2)}px`,
+    driftY: `${((rand() - 0.5) * 2.4).toFixed(2)}px`,
+    bright,
+    warm: rand() > 0.72,
+  };
+});
+
+const METEOR_DATA = [
+  { top: "14%", left: "8%",  width: 168, duration: "13.5s", delay: "2s",  x0: "-8vw", y0: "-2vh", x1: "66vw", y1: "24vh", rot: "24deg" },
+  { top: "34%", left: "58%", width: 132, duration: "15s",   delay: "7s",  x0: "-5vw", y0: "0vh",  x1: "52vw", y1: "20vh", rot: "18deg" },
+  { top: "62%", left: "18%", width: 154, duration: "17.5s", delay: "11s", x0: "-10vw", y0: "-4vh", x1: "64vw", y1: "22vh", rot: "26deg" },
+];
 
 // ──────────────────────────────────────────────────────────────
 // Helpers
@@ -271,7 +319,7 @@ const MoonCalendar = () => {
       <section className="relative overflow-hidden" style={{ minHeight: "100dvh" }}>
         {/* Deep space background */}
         <div className="absolute inset-0" style={{
-          background: "linear-gradient(160deg, #03010a 0%, #0a0320 35%, #120528 65%, #060215 100%)",
+          background: "radial-gradient(120% 90% at 50% 10%, #1a2742 0%, #0a1428 46%, #050a16 74%, #02040b 100%)",
         }} />
 
         {/* Animated nebulae */}
@@ -280,7 +328,7 @@ const MoonCalendar = () => {
             position: "absolute", top: "5%", left: "10%",
             width: "60%", height: "55%",
             borderRadius: "50%",
-            background: "radial-gradient(ellipse, rgba(100,40,180,0.18) 0%, transparent 70%)",
+            background: "radial-gradient(ellipse, rgba(42,84,155,0.22) 0%, transparent 72%)",
             filter: "blur(40px)",
             animation: "nebulaFloat 14s ease-in-out infinite",
           }} />
@@ -288,7 +336,7 @@ const MoonCalendar = () => {
             position: "absolute", bottom: "10%", right: "8%",
             width: "50%", height: "50%",
             borderRadius: "50%",
-            background: "radial-gradient(ellipse, rgba(40,80,200,0.14) 0%, transparent 70%)",
+            background: "radial-gradient(ellipse, rgba(34,72,122,0.18) 0%, transparent 72%)",
             filter: "blur(50px)",
             animation: "nebula2 18s ease-in-out infinite",
           }} />
@@ -296,7 +344,7 @@ const MoonCalendar = () => {
             position: "absolute", top: "40%", right: "20%",
             width: "30%", height: "30%",
             borderRadius: "50%",
-            background: "radial-gradient(ellipse, rgba(180,80,60,0.08) 0%, transparent 65%)",
+            background: "radial-gradient(ellipse, rgba(188,151,78,0.14) 0%, transparent 68%)",
             filter: "blur(35px)",
             animation: "nebulaFloat 22s 4s ease-in-out infinite",
           }} />
@@ -311,31 +359,43 @@ const MoonCalendar = () => {
                 position: "absolute",
                 top: s.top,
                 left: s.left,
-                width: `${s.bright ? s.size * 2.2 : s.size}px`,
-                height: `${s.bright ? s.size * 2.2 : s.size}px`,
+                width: `${s.bright ? s.size * 2.0 : s.size}px`,
+                height: `${s.bright ? s.size * 2.0 : s.size}px`,
                 borderRadius: "50%",
-                backgroundColor: s.bright ? "#ffe88a" : "#ffffff",
+                background: s.warm ? "#f6ddb4" : "#e9f1ff",
                 ["--tw-base" as string]: s.base,
-                animation: `twinkle ${s.dur} ${s.delay} ease-in-out infinite`,
-                boxShadow: s.bright ? `0 0 ${s.size * 4}px rgba(255,230,100,0.6)` : "none",
+                ["--drift-x" as string]: s.driftX,
+                ["--drift-y" as string]: s.driftY,
+                animation: `twinkle ${s.dur} ${s.delay} ease-in-out infinite, starDrift ${Number.parseFloat(s.dur) * 2.2}s ${s.delay} ease-in-out infinite`,
+                boxShadow: s.bright
+                  ? `0 0 ${Math.round(s.size * 6)}px rgba(245,214,156,0.78), 0 0 ${Math.round(s.size * 14)}px rgba(132,173,240,0.28)`
+                  : "0 0 2px rgba(184,211,255,0.25)",
               }}
             />
           ))}
-          {/* Shooting stars */}
-          <div style={{
-            position: "absolute", top: "18%", left: "15%",
-            width: "80px", height: "1.5px",
-            background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 100%)",
-            borderRadius: "2px",
-            animation: "shootStar 8s 3s ease-in infinite",
-          }} />
-          <div style={{
-            position: "absolute", top: "55%", left: "60%",
-            width: "60px", height: "1px",
-            background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 100%)",
-            borderRadius: "2px",
-            animation: "shootStar 10s 7s ease-in infinite",
-          }} />
+          {/* Meteors */}
+          {METEOR_DATA.map((m, i) => (
+            <div
+              key={`meteor-${i}`}
+              style={{
+                position: "absolute",
+                top: m.top,
+                left: m.left,
+                width: `${m.width}px`,
+                height: "1.6px",
+                borderRadius: "999px",
+                background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(236,246,255,0.35) 28%, rgba(255,226,162,0.95) 100%)",
+                filter: "drop-shadow(0 0 7px rgba(248,210,140,0.72))",
+                ["--mx0" as string]: m.x0,
+                ["--my0" as string]: m.y0,
+                ["--mx1" as string]: m.x1,
+                ["--my1" as string]: m.y1,
+                ["--mrot" as string]: m.rot,
+                animation: `meteorArc ${m.duration} ${m.delay} linear infinite`,
+                transform: `rotate(${m.rot})`,
+              }}
+            />
+          ))}
         </div>
 
         {/* Back button — offset for fixed header */}
